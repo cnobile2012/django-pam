@@ -1,0 +1,5 @@
+# Base pip packages.
+
+Django
+ipython
+docutils
