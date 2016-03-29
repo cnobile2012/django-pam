@@ -3,3 +3,4 @@
 Django
 ipython
 docutils
+python-pam
