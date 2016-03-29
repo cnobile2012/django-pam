@@ -37,8 +37,9 @@ class PAMBackend(object):
         elif isinstance(user, types.StringTypes):
             query = models.Q(username=user)
         else:
-            raise TypeError(_("The user argument '{}' is not the 'pk' "
-                              "or 'username'.").format(user))
+            raise TypeError(_("The user argument type should be either an "
+                              "integer (pk) or a string (username), found "
+                              "type {}.").format(type(user)))
 
         try:
             user = PAMUser.objects.get(query)
