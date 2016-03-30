@@ -8,5 +8,5 @@ This is a simple backend that uses the *python-pam* package found at https://git
 
 ## Direction I hope to take with this project.
 
- 1. A Dajngo authentication backend plugin.
+ 1. A Django authentication backend plugin.
  2. Login and Logout views.
