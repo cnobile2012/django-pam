@@ -36,7 +36,8 @@ class PAMBackend(ModelBackend):
 
         if self._pam.authenticate(username, password):
             try:
-                user = UserModel._default_manager.get(username=username)
+                user = UserModel._default_manager.get_by_natural_key(
+                    username=username)
             except UserModel.DoesNotExist:
                 user = UserModel.objects.create_user(
                     username, email=None, **extra_fields)
@@ -57,7 +58,7 @@ class PAMBackend(ModelBackend):
         if isinstance(user, (int, long)) or user.isdigit():
             query = models.Q(pk=user)
         elif isinstance(user, types.StringTypes):
-            query = models.Q(username=user)
+            query = models.Q(username=user) | models.Q(email=user)
         else:
             raise TypeError(_("The user argument type should be either an "
                               "integer (pk) or a string (username), found "
