@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_pam',
     ]
 
 MIDDLEWARE_CLASSES = [
@@ -90,6 +91,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Django auth backends.
 AUTHENTICATION_BACKENDS = [
+    'django_pam.auth.backends.PAMBackend',
     'django.contrib.auth.backends.ModelBackend',
     ]
 

@@ -30,7 +30,7 @@ class PAMBackend(object):
 
     def get_user(self, user):
         PAMUser = get_user_model()
-        user = None
+        obj = None
 
         if user.isdigit() and isinstance(int(user), (int, long)):
             query = models.Q(pk=user)
@@ -42,8 +42,8 @@ class PAMBackend(object):
                               "type {}.").format(type(user)))
 
         try:
-            user = PAMUser.objects.get(query)
+            obj = PAMUser.objects.get(query)
         except PAMUser.DoesNotExist:
             pass
 
-        return user
+        return obj
