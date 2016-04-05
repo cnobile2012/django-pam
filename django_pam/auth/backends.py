@@ -54,7 +54,7 @@ class PAMBackend(ModelBackend):
         UserModel = get_user_model()
         obj = None
 
-        if user.isdigit() and isinstance(int(user), (int, long)):
+        if isinstance(user, (int, long)) or user.isdigit():
             query = models.Q(pk=user)
         elif isinstance(user, types.StringTypes):
             query = models.Q(username=user)
