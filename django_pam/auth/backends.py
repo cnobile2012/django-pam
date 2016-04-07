@@ -3,6 +3,7 @@
 # django_pam/auth/backends.py
 #
 
+import logging
 import types
 import pam as pam_base
 
@@ -10,6 +11,8 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.backends import ModelBackend
+
+log = logging.getLogger('django_pam.auth.backends')
 
 
 class PAMBackend(ModelBackend):
@@ -31,6 +34,8 @@ class PAMBackend(ModelBackend):
                              in the user model.
         :rtype: The Django user object.
         """
+        log.debug("username: %s, email: %s, extra_fields: %s",
+                  username, email, extra_fields)
         UserModel = get_user_model()
         user = None
 
@@ -69,4 +74,5 @@ class PAMBackend(ModelBackend):
         except UserModel.DoesNotExist:
             pass
 
+        log.debug("user: %s, obj: %s", user, obj)
         return obj

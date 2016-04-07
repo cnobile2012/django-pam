@@ -20,7 +20,6 @@ except ImportError:
 from django.core.mail import send_mail
 from django.core.exceptions import SuspiciousOperation
 from django.contrib.auth import REDIRECT_FIELD_NAME, login, get_user_model
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from django.contrib import auth
 from django.utils.decorators import method_decorator
@@ -38,20 +37,6 @@ from django.conf import settings
 from .forms import GeneralAuthenticationForm
 
 log = logging.getLogger('django_pam.accounts.views')
-
-
-#
-# Home
-#
-class HomePageView(TemplateView):
-    template_name = "accounts/home.html"
-
-    @method_decorator(login_required(redirect_field_name='newsfeeds'))
-    @method_decorator(never_cache)
-    def dispatch(self, *args, **kwargs):
-        return super(HomePageView, self).dispatch(*args, **kwargs)
-
-home_page_view = HomePageView.as_view()
 
 
 #
