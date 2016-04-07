@@ -65,9 +65,9 @@ class LoginView(FormView):
         in urls.py:
             url(r'^account/login/$', login_view, name='login')
     """
-    form_class = FASbookAuthenticationForm
+    form_class = GeneralAuthenticationForm
     redirect_field_name = REDIRECT_FIELD_NAME
-    template_name = 'accounts/login.html'
+    template_name = 'django_pam/accounts/login.html'
 
     @method_decorator(csrf_protect)
     @method_decorator(never_cache)

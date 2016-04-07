@@ -26,15 +26,14 @@ DEBUG = False
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.admindocs',
     'django.contrib.staticfiles',
     'django_pam',
     ]
@@ -54,12 +53,15 @@ ROOT_URLCONF = 'example_site.urls'
 
 TEMPLATES = [
     {'BACKEND': 'django.template.backends.django.DjangoTemplates',
-     'DIRS': [],
+     'DIRS': [
+         os.path.join(BASE_DIR, 'templates'),
+         ],
      'APP_DIRS': True,
      'OPTIONS': {
          'context_processors': [
              'django.template.context_processors.debug',
              'django.template.context_processors.request',
+             'django.template.context_processors.static',
              'django.contrib.auth.context_processors.auth',
              'django.contrib.messages.context_processors.messages',
              ],
@@ -75,19 +77,19 @@ WSGI_APPLICATION = 'example_site.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
+    {'NAME': ('django.contrib.auth.password_validation.'
+              'UserAttributeSimilarityValidator'),
+     },
+    {'NAME': ('django.contrib.auth.password_validation.'
+              'MinimumLengthValidator'),
+     },
+    {'NAME': ('django.contrib.auth.password_validation.'
+              'CommonPasswordValidator'),
+     },
+    {'NAME': ('django.contrib.auth.password_validation.'
+              'NumericPasswordValidator'),
+     },
+    ]
 
 # Django auth backends.
 AUTHENTICATION_BACKENDS = [
@@ -109,8 +111,91 @@ USE_L10N = True
 
 USE_TZ = True
 
+SITE_URL = '/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = SITE_URL + 'static/'
+
+# Additional locations of static files
+# Put strings here, like "/home/html/static" or "C:/www/django/static".
+# Always use forward slashes, even on Windows.
+# Don't forget to use absolute paths, not relative paths.
+STATICFILES_DIRS = (
+    os.path.abspath(os.path.join(BASE_DIR, 'dev')),
+    )
+
+# A sample logging configuration. The only tangible logging performed by this
+# configuration is to send an email to the site admins on every HTTP 500 error
+# when DEBUG=False. See http://docs.djangoproject.com/en/dev/topics/logging for
+# more details on how to customize your logging configuration.
+LOG_DIR = os.path.abspath(os.path.join(BASE_DIR, '..', 'logs'))
+not os.path.isdir(LOG_DIR) and os.mkdir(LOG_DIR, 0775)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': ("%(asctime)s %(levelname)s %(module)s %(funcName)s "
+                       "[line:%(lineno)d] %(message)s")
+            },
+        'simple': {
+            'format': '%(asctime)s %(levelname)s %(message)s'
+            },
+        },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+            },
+        },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html': 'True',
+            },
+        'console': {
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+            'formatter': 'simple'
+            },
+        'examples_file': {
+            'class': ('example_site.common.loghandlers'
+                      '.DeferredRotatingFileHandler'),
+            'level': 'DEBUG',
+            'formatter': 'verbose',
+            'filename': '/dev/null',
+            'maxBytes': 50000000, # 50 Meg bytes
+            'backupCount': 5,
+            },
+        'django_pam_file': {
+            'class': ('example_site.common.loghandlers'
+                      '.DeferredRotatingFileHandler'),
+            'level': 'DEBUG',
+            'formatter': 'verbose',
+            'filename': '/dev/null',
+            'maxBytes': 50000000, # 50 Meg bytes
+            'backupCount': 5,
+            },
+        },
+    'loggers': {
+        'django.request': {
+            'handlers': ['console', 'mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+            },
+        'examples': {
+            'handlers': ('examples_file', 'mail_admins',),
+            'level': 'ERROR',
+            'propagate': True,
+            },
+        'django_pam': {
+            'handlers': ('django_pam_file', 'mail_admins',),
+            'level': 'ERROR',
+            'propagate': True,
+            },
+        },
+    }

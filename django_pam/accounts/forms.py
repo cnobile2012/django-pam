@@ -70,3 +70,8 @@ class GeneralAuthenticationForm(AuthenticationForm):
                     break
 
         return user
+
+    class Media:
+        css = {
+            'all': ('django_pam/css/auth.css',)
+            }
