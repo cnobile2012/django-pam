@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 #
-# fasbook/common/urls.py
+# django_pam/accounts/urls.py
 #
 
 from django.conf.urls import url
 from django.views.generic import TemplateView
 
-from .views import login_view, logout_view
+from .views import LoginView, LogoutView
 
 
 urlpatterns = [
-    url(r'^login/$', login_view, name='login'),
-    #url(r'^logout/$', logout_view, name='logout'),
+    url(r'^login/$', LoginView.as_view(), name='login'),
+    url(r'^logout/$', LogoutView.as_view(), name='logout'),
     ]

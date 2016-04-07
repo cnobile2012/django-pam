@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+      <div>
+        <ul>
+          <li>
+            Login with dedicated page.
+            <ul>
+              <li><a href="{% url 'django_pam:login' %}">Login</a></li>
+              <li><a href="{% url 'django_pam:logout' %}">Logout</a></li>
+            </ul>
+          </li>
+          <li>
+            Login with modal.
+            <ul>
+              <li>Login</li>
+              <li>Logout</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+{% endblock %}

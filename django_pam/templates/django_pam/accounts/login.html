@@ -1,26 +1,2 @@
 {% extends "django_pam/base.html" %}
-{% block content %}
-      <div class="login">
-        <h2 class="text-center">Login</h2>
-{% if form.non_field_errors %}
-        <div class="alert-error">
-          <button type="button" class="close-message">&times;</button>
-          <strong>Error:</strong>
-          {{ form.non_field_errors }}
-        </div>
-{% endif %}
-        <form role="form" method="post" action="">
-          {% csrf_token %}
-          <input name="next" type="hidden" value="{{ next }}" />
-          <div class="form-fields">
-            <label for="form-username">Username</label>
-            {{ form.username }}
-          </div>
-          <div class="form-fields">
-            <label for="form-password">Password</label>
-            {{ form.password }}
-          </div>
-          <button type="submit" class="form-submit">Login</button>
-        </form>
-      </div>
-{% endblock %}
+{% block content %}{% include "django_pam/accounts/_login.html" %}{% endblock %}

@@ -19,7 +19,6 @@ class HomePageView(TemplateView):
     template_name = "home/home.html"
 
     @method_decorator(login_required(redirect_field_name='/home/'))
-    @method_decorator(never_cache)
     def dispatch(self, *args, **kwargs):
         return super(HomePageView, self).dispatch(*args, **kwargs)
 

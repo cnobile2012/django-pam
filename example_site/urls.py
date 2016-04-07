@@ -20,6 +20,8 @@ from django.views.static import serve
 from django.contrib import admin
 from django.conf import settings
 
+from example_site.home.views import home_page_view
+
 admin.autodiscover()
 
 
@@ -27,16 +29,17 @@ urlpatterns = [
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'accounts/', include('django_pam.accounts.urls',
-    namespace='django_pam')),
+        namespace='django_pam')),
+    url(r'^$', home_page_view, name='home'),
     ]
 
 if settings.DEBUG:
     urlpatterns += [
     url(r'^dev/(?P<path>.*)$', serve,
-    {'document_root': settings.STATIC_URL, 'show_indexes': True}),
+        {'document_root': settings.STATIC_URL, 'show_indexes': True}),
     ]
 else:
     urlpatterns += [
     url(r'^static/(?P<path>.*)$', serve,
-    {'document_root': settings.STATIC_URL, 'show_indexes': True}),
+        {'document_root': settings.STATIC_URL, 'show_indexes': True}),
     ]

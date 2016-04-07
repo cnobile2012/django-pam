@@ -47,8 +47,11 @@ class LoginView(FormView):
     This is a class based version of django.contrib.auth.views.login.
 
     Usage:
-        in urls.py:
-            url(r'^account/login/$', login_view, name='login')
+      in urls.py:
+        url(r'^login/$', LoginView.as_view(
+            form_class=MyCustomAuthFormClass,
+            success_url='/my/custom/success/url/),
+            name='login'),
     """
     form_class = GeneralAuthenticationForm
     redirect_field_name = REDIRECT_FIELD_NAME
@@ -112,14 +115,12 @@ class LoginView(FormView):
         self.set_test_cookie()
         return super(LoginView, self).get(request, *args, **kwargs)
 
-login_view = LoginView.as_view()
-
 
 #
 # LogoutView
 #
 class LogoutView(TemplateResponseMixin, View):
-    template_name = "accounts/logout.html"
+    template_name = "django_pam/accounts/logout.html"
     http_method_names = ('post',)
 
     def post(self, *args, **kwargs):
@@ -128,4 +129,36 @@ class LogoutView(TemplateResponseMixin, View):
 
         return self.render_to_response({})
 
-logout_view = LogoutView.as_view()
+
+## class LogoutView(TemplateResponseMixin, View):
+##     template_name = "registration/logout.html"
+##     redirect_field_name = "next"
+
+##     def get(self, *args, **kwargs):
+##         if not self.request.user.is_authenticated():
+##             return redirect(self.get_redirect_url())
+##         context = self.get_context_data()
+##         return self.render_to_response(context)
+
+##     def post(self, *args, **kwargs):
+##         if self.request.user.is_authenticated():
+##             auth.logout(self.request)
+##         return redirect(self.get_redirect_url())
+
+##     def get_context_data(self, **kwargs):
+##         context = kwargs
+##         redirect_field_name = self.get_redirect_field_name()
+##         context.update({
+##             "redirect_field_name": redirect_field_name,
+##             "redirect_field_value": self.request.REQUEST.get(redirect_field_name),
+##             })
+##         return context
+
+##     def get_redirect_field_name(self):
+##         return self.redirect_field_name
+
+##     def get_redirect_url(self, fallback_url=None, **kwargs):
+##         if fallback_url is None:
+##             fallback_url = settings.LOGIN_URL
+##         kwargs.setdefault("redirect_field_name", self.get_redirect_field_name())
+##         return default_redirect(self.request, fallback_url, **kwargs)
