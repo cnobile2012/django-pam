@@ -18,7 +18,6 @@ log = logging.getLogger('example.home.views')
 class HomePageView(TemplateView):
     template_name = "home/home.html"
 
-    @method_decorator(login_required(redirect_field_name='/home/'))
     def dispatch(self, *args, **kwargs):
         return super(HomePageView, self).dispatch(*args, **kwargs)
 

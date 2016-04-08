@@ -16,7 +16,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Login and redirect URLs.
-LOGIN_URL = 'accounts:login'
+LOGIN_URL = 'django-pam:login'
 LOGIN_REDIRECT_URL = '/'
 
 # Quick-start development settings - unsuitable for production
