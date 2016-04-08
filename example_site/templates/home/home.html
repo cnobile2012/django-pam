@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
-      <div>
+      <div class="container">
         <ul>
           <li>
             Login or Logout with a dedicated page.
-            <ul>
+            <ul class="dedicated">
               <li><a href="{% url 'django-pam:login' %}">Login</a></li>
               <li><a href="{% url 'django-pam:logout' %}">Logout</a></li>
             </ul>
           </li>
           <li>
             Login or Logout with a modal.
-            <ul>
+            <ul class="modal">
               <li>Login</li>
               <li>Logout</li>
             </ul>

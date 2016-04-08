@@ -1,0 +1,33 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  padding-bottom: 3em;
+  background-color: rgba(190, 220, 230, 1);
+  font-size: medium;
+  color: rgba(50, 50, 70, 1);
+}
+
+div.container {
+  width: 300px;
+  margin: 20px auto 0 auto;
+}
+
+.container ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-weight: bold;
+}
+
+.container ul.dedicated li,
+.container ul.modal li{
+  display: block;
+  margin: 10px auto;
+  height: 20px;
+  width: 70px;
+  border: 1px solid rgba(50, 50, 70, 1);
+  border-radius: 10px;
+  background-color: rgba(190, 215, 253, 1);
+}
