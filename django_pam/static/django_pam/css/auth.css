@@ -12,7 +12,8 @@ div.content {
   width: 100%;
 }
 
-div.login {
+div.login,
+div.logout {
   width: 300px;
   margin: 0 auto;
 }

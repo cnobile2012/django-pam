@@ -18,16 +18,16 @@ except ImportError:
     from urllib import parse as urlparse # python3 support
 
 from django.core.mail import send_mail
+from django.core.urlresolvers import reverse
 from django.core.exceptions import SuspiciousOperation
-from django.contrib.auth import REDIRECT_FIELD_NAME, login, get_user_model
+from django.contrib.auth import (
+    REDIRECT_FIELD_NAME, login, logout, get_user_model)
 from django.contrib.auth.models import Group
-from django.contrib import auth
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.cache import never_cache
-from django.views.generic.base import TemplateResponseMixin
-from django.views.generic import View, TemplateView
+from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 from django.views.generic.list import BaseListView
 from django.views.generic.detail import SingleObjectMixin
@@ -119,46 +119,104 @@ class LoginView(FormView):
 #
 # LogoutView
 #
-class LogoutView(TemplateResponseMixin, View):
+class LogoutView(TemplateView):
     template_name = "django_pam/accounts/logout.html"
-    http_method_names = ('post',)
+    redirect_field_name = "next"
 
-    def post(self, *args, **kwargs):
-        if self.request.user.is_authenticated():
-            auth.logout(self.request)
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated():
+            result = redirect(self.get_redirect_url())
+        else:
+            kwargs['redirect_field_name'] = self.redirect_field_name
+            kwargs['redirect_field_value'] = request.GET.get(
+                self.redirect_field_name)
+            context = self.get_context_data(**kwargs)
+            result = self.render_to_response(context)
 
-        return self.render_to_response({})
+        return result
 
+    def post(self, request, *args, **kwargs):
+        if request.user.is_authenticated():
+            logout(self.request)
 
-## class LogoutView(TemplateResponseMixin, View):
-##     template_name = "registration/logout.html"
-##     redirect_field_name = "next"
+        return redirect(self.get_redirect_url())
 
-##     def get(self, *args, **kwargs):
-##         if not self.request.user.is_authenticated():
-##             return redirect(self.get_redirect_url())
-##         context = self.get_context_data()
-##         return self.render_to_response(context)
+    def get_context_data(self, **kwargs):
+        log.debug("kwargs: %s", kwargs)
+        context = super(LogoutView, self).get_context_data(**kwargs)
+        context.update({
+            "redirect_field_name": kwargs.get('redirect_field_name'),
+            "redirect_field_value": kwargs.get('redirect_field_value'),
+            })
+        return context
 
-##     def post(self, *args, **kwargs):
-##         if self.request.user.is_authenticated():
-##             auth.logout(self.request)
-##         return redirect(self.get_redirect_url())
+    def get_redirect_url(self, fallback_url=None, **kwargs):
+        if fallback_url is None:
+            fallback_url = settings.LOGIN_URL
 
-##     def get_context_data(self, **kwargs):
-##         context = kwargs
-##         redirect_field_name = self.get_redirect_field_name()
-##         context.update({
-##             "redirect_field_name": redirect_field_name,
-##             "redirect_field_value": self.request.REQUEST.get(redirect_field_name),
-##             })
-##         return context
+        kwargs["redirect_field_name"] = self.redirect_field_name
+        return self.default_redirect(self.request, fallback_url, **kwargs)
 
-##     def get_redirect_field_name(self):
-##         return self.redirect_field_name
+    def default_redirect(self, request, fallback_url, **kwargs):
+        """
+        Evaluates a redirect url by consulting GET, POST and the session.
+        """
+        log.debug("request: %s, fallback_url: %s, kwargs: %s",
+                  request, fallback_url, kwargs)
+        redirect_field_name = kwargs.get("redirect_field_name", "next")
 
-##     def get_redirect_url(self, fallback_url=None, **kwargs):
-##         if fallback_url is None:
-##             fallback_url = settings.LOGIN_URL
-##         kwargs.setdefault("redirect_field_name", self.get_redirect_field_name())
-##         return default_redirect(self.request, fallback_url, **kwargs)
+        if request.method.upper() == 'POST':
+            next = request.POST.get(redirect_field_name)
+        else:
+            next = request.GET.get(redirect_field_name)
+
+        if not next:
+            # try the session if available
+            if hasattr(request, "session"):
+                session_key_value = kwargs.get("session_key_value",
+                                               "redirect_to")
+                next = request.session.get(session_key_value)
+
+        is_safe = functools.partial(
+            self.ensure_safe_url,
+            allowed_protocols=kwargs.get("allowed_protocols"),
+            allowed_host=request.get_host()
+            )
+
+        redirect_to = next if next and is_safe(next) else fallback_url
+        redirect_to = reverse(redirect_to)
+        # perform one last check to ensure the URL is safe to redirect to. if it
+        # is not then we should bail here as it is likely developer error and
+        # they should be notified
+        is_safe(redirect_to, raise_on_fail=True)
+        return redirect_to
+
+    def ensure_safe_url(self, url, allowed_protocols=None, allowed_host=None,
+                        raise_on_fail=False):
+        log.debug("url: %s", url)
+
+        if allowed_protocols is None:
+            allowed_protocols = ["http", "https"]
+
+        parsed = urlparse.urlparse(url)
+        # perform security checks to ensure no malicious intent
+        # (i.e., an XSS attack with a data URL)
+        safe = True
+
+        if parsed.scheme and parsed.scheme not in allowed_protocols:
+            if raise_on_fail:
+                msg = _("Unsafe redirect to URL with protocol '{}'").format(
+                    parsed.scheme)
+                raise SuspiciousOperation(msg)
+
+            safe = False
+
+        if allowed_host and parsed.netloc and parsed.netloc != allowed_host:
+            if raise_on_fail:
+                msg = _("Unsafe redirect to URL not matching host '{}'").format(
+                    allowed_host)
+                raise SuspiciousOperation(msg)
+
+            safe = False
+
+        return safe

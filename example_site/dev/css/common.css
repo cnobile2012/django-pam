@@ -13,6 +13,12 @@ div.container {
   margin: 20px auto 0 auto;
 }
 
+.container div.welcome {
+  margin: 10px 0;
+  text-align: center;
+  font-weight: bold;
+}
+
 .container ul {
   list-style-type: none;
   margin: 0;
@@ -22,7 +28,7 @@ div.container {
 }
 
 .container ul.dedicated li,
-.container ul.modal li{
+.container ul.modal li {
   display: block;
   margin: 10px auto;
   height: 20px;
@@ -30,4 +36,16 @@ div.container {
   border: 1px solid rgba(50, 50, 70, 1);
   border-radius: 10px;
   background-color: rgba(190, 215, 253, 1);
+  padding-top: 2px;
+}
+
+.container ul.dedicated li a,
+.container ul.modal li a {
+  text-decoration: none;
+}
+
+.container ul.dedicated li:hover,
+.container ul.modal li:hover {
+  background-color: rgba(180, 255, 0, 0.5);
+  color: rgba(50, 50, 70, 1);
 }
