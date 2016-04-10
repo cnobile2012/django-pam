@@ -2,9 +2,9 @@
 {% block content %}
       <div class="container">
 {% if user.is_authenticated %}
-        <h2 class="welcome">
-          Welcome {{ user }} you are authenticated
-        </h2>
+        <h2 class="welcome">Welcome {{ user }} you are Authenticated</h2>
+{% else %}
+        <h2 class="welcome">Welcome, Please Login</h2>
 {% endif %}
         <ul>
           <li>

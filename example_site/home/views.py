@@ -22,7 +22,9 @@ class HomePageView(TemplateView):
     redirect_field_name = REDIRECT_FIELD_NAME
 
     def dispatch(self, *args, **kwargs):
-        kwargs[self.redirect_field_name] = 'home-page' #reverse('home')
+        # Either way works, with or with out the reverse function.
+        #kwargs[self.redirect_field_name] = reverse('home-page')
+        kwargs[self.redirect_field_name] = 'home-page'
         return super(HomePageView, self).dispatch(*args, **kwargs)
 
 home_page_view = HomePageView.as_view()
