@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'accounts/', include('django_pam.urls')),
-    url(r'^$', home_page_view, name='home'),
+    url(r'^$', home_page_view, name='home-page'),
     ]
 
 if settings.DEBUG:
