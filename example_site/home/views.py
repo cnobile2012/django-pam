@@ -8,6 +8,8 @@ import logging
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.core.urlresolvers import reverse
 
 log = logging.getLogger('example.home.views')
 
@@ -17,8 +19,10 @@ log = logging.getLogger('example.home.views')
 #
 class HomePageView(TemplateView):
     template_name = "home/home.html"
+    redirect_field_name = REDIRECT_FIELD_NAME
 
     def dispatch(self, *args, **kwargs):
+        kwargs[self.redirect_field_name] = 'home-page' #reverse('home')
         return super(HomePageView, self).dispatch(*args, **kwargs)
 
 home_page_view = HomePageView.as_view()

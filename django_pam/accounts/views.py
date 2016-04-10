@@ -17,8 +17,6 @@ try:
 except ImportError:
     from urllib import parse as urlparse # python3 support
 
-from django.core.mail import send_mail
-from django.core.urlresolvers import reverse
 from django.core.exceptions import SuspiciousOperation
 from django.contrib.auth import (
     REDIRECT_FIELD_NAME, login, logout, get_user_model)
@@ -121,67 +119,21 @@ class LoginView(FormView):
 #
 class RedirectMixin(object):
 
-    def default_redirect(self, fallback_url, **kwargs):
+    def default_redirect(self, **kwargs):
         """
-        Evaluates a redirect url by consulting GET, POST and the session.
+        Evaluates a redirect url by consulting the kwargs or session.
         """
-        log.debug("fallback_url: %s, kwargs: %s", fallback_url, kwargs)
-        redirect_field_name = kwargs.get("redirect_field_name", "next")
+        log.debug("kwargs: %s", kwargs)
+        redirect_to = kwargs.get(self.redirect_field_name, '/')
 
-        if self.request.method.upper() == 'POST':
-            next = self.request.POST.get(redirect_field_name)
-        else:
-            next = self.request.GET.get(redirect_field_name)
-
-        if not next:
-            # try the session if available
+        if not redirect_to:
+            # Try the session if available
             if hasattr(self.request, "session"):
                 session_key_value = kwargs.get("session_key_value",
                                                "redirect_to")
-                next = self.request.session.get(session_key_value)
+                redirect_to = self.request.session.get(session_key_value)
 
-        is_safe = functools.partial(
-            self.ensure_safe_url,
-            allowed_schemas=kwargs.get("allowed_schemas"),
-            allowed_host=self.request.get_host()
-            )
-
-        redirect_to = reverse(next if next and is_safe(next) else fallback_url)
-        # perform one last check to ensure the URL is safe to redirect to. if it
-        # is not then we should bail here as it is likely developer error and
-        # they should be notified
-        is_safe(redirect_to, raise_on_fail=True)
         return redirect_to
-
-    def ensure_safe_url(self, url, allowed_schemas=None, allowed_host=None,
-                        raise_on_fail=False):
-        log.debug("url: %s", url)
-
-        if allowed_schemas is None:
-            allowed_schemas = ["http", "https"]
-
-        parsed = urlparse.urlparse(url)
-        # perform security checks to ensure no malicious intent
-        # (i.e., an XSS attack with a data URL)
-        safe = True
-
-        if parsed.scheme and parsed.scheme not in allowed_schemas:
-            if raise_on_fail:
-                msg = _("Unsafe redirect to URL with protocol '{}'").format(
-                    parsed.scheme)
-                raise SuspiciousOperation(msg)
-
-            safe = False
-
-        if allowed_host and parsed.netloc and parsed.netloc != allowed_host:
-            if raise_on_fail:
-                msg = _("Unsafe redirect to URL not matching host '{}'").format(
-                    allowed_host)
-                raise SuspiciousOperation(msg)
-
-            safe = False
-
-        return safe
 
 
 #
@@ -190,7 +142,6 @@ class RedirectMixin(object):
 class LogoutView(RedirectMixin, TemplateView):
     template_name = "django_pam/accounts/logout.html"
     redirect_field_name = REDIRECT_FIELD_NAME
-    pattern_name = None
 
     def get(self, request, *args, **kwargs):
         log.debug("request: %s, args: %s, kwargs: %s", request, args, kwargs)
@@ -198,8 +149,6 @@ class LogoutView(RedirectMixin, TemplateView):
         if not request.user.is_authenticated():
             result = redirect(self.get_redirect_url(*args, **kwargs))
         else:
-            kwargs[self.redirect_field_name] = kwargs.get(
-                self.redirect_field_name, '')
             context = self.get_context_data(**kwargs)
             result = self.render_to_response(context)
 
@@ -225,6 +174,11 @@ class LogoutView(RedirectMixin, TemplateView):
         if fallback_url is None:
             fallback_url = settings.LOGIN_URL
 
-        kwargs['redirect_field_name'] = reverse(self.pattern_name, args=args,
-                                                kwargs=kwargs)
-        return self.default_redirect(fallback_url, **kwargs)
+        next = kwargs.get(self.redirect_field_name)
+
+        if next:
+            kwargs[self.redirect_field_name] = next
+        else:
+            kwargs[self.redirect_field_name] = fallback_url
+
+        return self.default_redirect(**kwargs)
