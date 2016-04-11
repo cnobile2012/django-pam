@@ -1,3 +1,9 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
@@ -17,6 +23,8 @@ div.container {
   margin: 10px 0;
   text-align: center;
   font-weight: bold;
+  font-size: 1.5em;
+  line-height: 2em;
 }
 
 .container ul {
@@ -27,20 +35,21 @@ div.container {
   font-weight: bold;
 }
 
-.container ul.dedicated li,
-.container ul.modal li {
+.container ul.with-dedicated li,
+.container ul.with-modal li {
   display: block;
   margin: 10px auto;
-  height: 20px;
+  height: 24px;
   width: 70px;
   border: 1px solid rgba(50, 50, 70, 1);
   border-radius: 10px;
-  background-color: rgba(190, 215, 253, 1);
-  padding-top: 2px;
+/*  color: blue;*/
+/*  background-color: rgba(190, 215, 253, 1);*/
+  padding-top: 1px;
 }
 
-.container ul.dedicated li a,
-.container ul.modal li a {
+.container ul.with-dedicated li a,
+.container ul.with-modal li a {
   text-decoration: none;
 }
 
