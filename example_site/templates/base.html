@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -5,13 +6,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Django PAM Example Site</title>
-    <link href="/static/css/common.css" type="text/css" media="all"
+    <link href="{% static 'css/bootstrap/bootstrap.min.css' %}"
+          type="text/css" media="all" rel="stylesheet" />
+    <link href="{% static 'css/common.css' %}" type="text/css" media="all"
           rel="stylesheet" />
+    <script src="{% static 'js/jquery/jquery-2.2.3.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
 {% block script %}{% endblock %}
   </head>
   <body>
     <div class="content">
 {% block content %}{% endblock %}
     </div>
+{% block modals %}{% endblock %}
   </body>
 </html>

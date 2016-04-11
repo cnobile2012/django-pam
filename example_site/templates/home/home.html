@@ -2,14 +2,14 @@
 {% block content %}
       <div class="container">
 {% if user.is_authenticated %}
-        <h2 class="welcome">Welcome {{ user }} you are Authenticated</h2>
+        <h2 class="welcome">Welcome '{{ user }}' you are Authenticated</h2>
 {% else %}
         <h2 class="welcome">Welcome, Please Login</h2>
 {% endif %}
         <ul>
           <li>
             With a dedicated page.
-            <ul class="dedicated">
+            <ul class="with-dedicated">
 {% if not user.is_authenticated %}
               <li><a href="{% url 'django-pam:login' %}">Login</a></li>
 {% else %}
@@ -21,7 +21,7 @@
           </li>
           <li>
             With a modal.
-            <ul class="modal">
+            <ul class="with-modal">
 {% if not user.is_authenticated %}
               <li>Login</li>
 {% else %}
@@ -31,4 +31,10 @@
           </li>
         </ul>
       </div>
+{% endblock %}
+{% block modals %}
+  <div id="modals">
+{% include "modals/login.html" %}
+{% include "modals/logout.html" %}
+  </div> <!-- div#modals -->
 {% endblock %}
