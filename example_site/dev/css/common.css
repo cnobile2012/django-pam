@@ -15,7 +15,7 @@ body {
 }
 
 div.container {
-  width: 300px;
+  width: 326px;
   margin: 40px auto 0 auto;
 }
 
@@ -23,7 +23,7 @@ div.container {
   margin: 10px 0;
   text-align: center;
   font-weight: bold;
-  font-size: 1.5em;
+  font-size: 165%;
   line-height: 1.1em;
 }
 
@@ -43,8 +43,6 @@ div.container {
   width: 70px;
   border: 1px solid rgba(50, 50, 70, 1);
   border-radius: 10px;
-/*  color: blue;*/
-/*  background-color: rgba(190, 215, 253, 1);*/
   padding-top: 1px;
 }
 
@@ -57,4 +55,58 @@ div.container {
 .container ul.modal li:hover {
   background-color: rgba(180, 255, 0, 0.5);
   color: rgba(50, 50, 70, 1);
+}
+
+/* Mods to django_pam CSS */
+div.login,
+div.logout {
+  width: 300px;
+  margin: 0 auto;
+}
+
+.text-center {
+  text-align: center;
+}
+
+ul.errorlist {
+  padding-left: 40px;
+}
+
+div.alert-error {
+  margin-bottom: 10px;
+  background-color: rgba(215, 250, 0, 0.5);
+  color: rgba(210, 50, 50, 1);
+  border-style: solid;
+  border-color: rgba(215, 250, 0, 1);
+  border-width: 1px;
+}
+
+button.close-message {
+  margin: 2px;
+  padding: 1px 6px;
+  background-color: rgba(215, 250, 0, 0.5);
+  border-color: rgba(215, 250, 0, 1);
+}
+
+div.form-fields,
+button[type=submit] {
+  margin: 10px 0 5px 5px;
+}
+
+button[type=submit] {
+  display: block;
+  margin: 0 auto;
+  width: 60px;
+  background-color: rgba(65, 100, 110, 1);
+  color: white;
+}
+
+.login label {
+  display: block;
+  width: 80px;
+  float: left;
+}
+
+.login input {
+  display: block;
 }

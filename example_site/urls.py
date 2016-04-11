@@ -21,6 +21,7 @@ from django.contrib import admin
 from django.conf import settings
 
 from example_site.home.views import home_page_view
+from django_pam.accounts.views import LoginView, LogoutView
 
 admin.autodiscover()
 
@@ -30,6 +31,10 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'accounts/', include('django_pam.urls')),
     url(r'^$', home_page_view, name='home-page'),
+    url(r'^login/$', LoginView.as_view(template_name='home/login.html'),
+        name='login'),
+    url(r"^logout/(?P<next>[\w\-\:/]+)?$", LogoutView.as_view(
+        template_name='home/logout.html'), name='logout')
     ]
 
 if settings.DEBUG:
