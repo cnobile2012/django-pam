@@ -18,6 +18,7 @@ example_site/media/*/
 db-snapshots/*.sql
 db-snapshots/*.sql.gz
 logs/*.log*
+data/db.sqlite3
 old
 
 # C extensions
