@@ -1,5 +1,38 @@
-<div id="login" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-{% include "django_pam/accounts/_login.html" %}
-  </div>
-</div>
+      <div id="login" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">
+                &times;
+              </button>
+              <h4 class="modal-title">Login</h4>
+            </div>
+            <div class="modal-body">
+{% if form.non_field_errors %}
+              <div class="alert-error">
+                <button type="button" class="close-message">&times;</button>
+                <strong>Error:</strong>
+                {{ form.non_field_errors }}
+              </div>
+{% endif %}
+              <form role="form" method="post" action="">
+                {% csrf_token %}
+                <input name="next" type="hidden" value="{{ next }}" />
+                <div class="form-fields">
+                  {{ form.username.errors }}
+                  <label for="form-username">Username</label>
+                  {{ form.username }}
+                </div>
+                <div class="form-fields">
+                  {{ form.password.errors }}
+                  <label for="form-password">Password</label>
+                  {{ form.password }}
+                </div>
+                <button type="submit" class="form-submit">Login</button>
+              </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+          </div>
+        </div>
+      </div>
