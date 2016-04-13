@@ -18,7 +18,8 @@ div.logout {
   margin: 0 auto;
 }
 
-.text-center {
+div.login h2,
+div.logout h2 {
   text-align: center;
 }
 
@@ -31,10 +32,19 @@ div.alert-error {
   border-width: 1px;
 }
 
+div.alert-error span {
+  margin-left: 4px;
+  font-weight: bold;
+}
+
+div.alert-error ul {
+  padding-left: 30px;
+}
+
 button.close-message {
-  margin: 2px;
-  background-color: rgba(245, 208, 208, 0.5);
-  border-color: rgba(250, 200, 200, 1);
+  float: right;
+  background-color: initial;
+  border: none;
 }
 
 div.form-fields,

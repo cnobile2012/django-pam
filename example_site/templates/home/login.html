@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% block script %}
+    {{ form.media }}
     <link rel="stylesheet" href="{% static 'css/common.css' %}">
 {% endblock %}
 {% block content %}{% include "django_pam/accounts/_login.html" %}{% endblock %}

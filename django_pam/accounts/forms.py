@@ -75,3 +75,4 @@ class GeneralAuthenticationForm(AuthenticationForm):
         css = {
             'all': ('django_pam/css/auth.css',)
             }
+        js = ('django_pam/js/auth.js',)
