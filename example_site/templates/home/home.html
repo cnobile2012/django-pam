@@ -8,8 +8,8 @@
 {% endif %}
         <ul>
           <li>
-            With the original django-pam CSS.
-            <ul class="with-dedicated">
+            With the django-pam CSS.
+            <ul class="with-django-pam-css">
 {% if not user.is_authenticated %}
               <li><a href="{% url 'django-pam:login' %}">Login</a></li>
 {% else %}
@@ -21,7 +21,7 @@
           </li>
           <li>
             With modified CSS.
-            <ul class="with-modal">
+            <ul class="with-modified-css">
 {% if not user.is_authenticated %}
               <li><a href="{% url 'login' %}">Login</a></li>
 {% else %}
@@ -29,6 +29,15 @@
 {% endif %}
             </ul>
           </li>
+          <li>
+            With a modal.
+            <ul class="with-modal">
+{% if not user.is_authenticated %}
+              <li>Login</li>
+{% else %}
+              <li>Logout</li>
+{% endif %}
+            </ul>
         </ul>
       </div>
 {% endblock %}

@@ -35,7 +35,8 @@ div.container {
   font-weight: bold;
 }
 
-.container ul.with-dedicated li,
+.container ul.with-django-pam-css li,
+.container ul.with-modified-css li,
 .container ul.with-modal li {
   display: block;
   margin: 10px auto;
@@ -44,16 +45,24 @@ div.container {
   border: 1px solid rgba(50, 50, 70, 1);
   border-radius: 10px;
   padding-top: 1px;
+  color: rgba(40, 100, 150, 1);
 }
 
-.container ul.with-dedicated li a,
-.container ul.with-modal li a {
+.container ul.with-django-pam-css li a,
+.container ul.with-modified-css li a {
   text-decoration: none;
+  color: rgba(40, 100, 150, 1);
 }
 
-.container ul.dedicated li:hover,
-.container ul.modal li:hover {
-  background-color: rgba(180, 255, 0, 0.5);
+.container ul.with-django-pam-css li a:hover,
+.container ul.with-modified-css li a:hover {
+  color: rgba(50, 50, 70, 1);
+}
+
+.container ul.with-django-pam-css li:hover,
+.container ul.with-modified-css li:hover,
+.container ul.with-modal li:hover {
+  background-color: rgba(40, 100, 150, 0.5);
   color: rgba(50, 50, 70, 1);
 }
 
