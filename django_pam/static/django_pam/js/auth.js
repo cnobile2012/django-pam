@@ -1,5 +1,7 @@
 /*
  * django-pam
+ *
+ * by Carl J. Nobile
  */
 
 "use strict";
@@ -23,4 +25,5 @@ window.onload = function() {
       button[0].attachEvent('click', handler);
     }
   }
-}
+};
+
