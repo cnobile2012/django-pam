@@ -3,7 +3,8 @@
 # django_pam/accounts/views.py
 #
 # I give credit to stefanfoulis at:
-#  https://github.com/stefanfoulis/django-class-based-auth-views/
+# https://github.com/stefanfoulis/django-class-based-auth-views/
+# for the basic idea of the class based login and logout views.
 #
 
 import logging

@@ -1,0 +1,21 @@
+div.form-fields label {
+  width: 86px;
+}
+
+div.form-fields input[type=text] {
+  width: 176px;
+}
+
+div.modal-body {
+  overflow: auto;
+}
+
+div.modal-body hr {
+  width: 111%;
+  margin: 15px -15px;
+  border-top: 1.5px solid rgba(220, 220, 220, 1);
+}
+
+div.form-buttons {
+  float: right;
+}
