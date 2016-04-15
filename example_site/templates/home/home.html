@@ -33,9 +33,9 @@
             With a modal.
             <ul class="with-modal">
 {% if not user.is_authenticated %}
-              <li>Login</li>
+              <li id="modal-login">Login</li>
 {% else %}
-              <li>Logout</li>
+              <li id="modal-logout">Logout</li>
 {% endif %}
             </ul>
         </ul>

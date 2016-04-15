@@ -72,14 +72,49 @@ var _BaseModal = Class.extend({
 });
 
 
-var ModalLogin = _BaseModal.extend({
-  BASE_URL: '',
+var ModalAuthenticate = _BaseModal.extend({
+  BASE_URL: '/',
 
   init: function() {
+    var $login = $('#login');
+    var $logout = $('#logout');
+
+    if($login) {
+      $('#modal-login').on('click', {$login: $login}, this._setupLogin);
+      $('div.form-buttons button[name=ajax-submit]').on('click', {self: this},
+        this._loginRequest);
+    } else if($logout) {
+      $('#modal-logout').on('click', {$login: $login}, this._logoutRequest);
+      $('div.form-buttons button[name=ajax-submit]').on('click', {self: this},
+        this._logoutRequest);
+    }
+  },
+
+  _setupLogin: function(event) {
+    event.data.$login.modal({backdrop: 'static'});
+  },
+
+  _loginRequest: function(event) {
+    var self = event.data.self;
+
+  },
 
 
+
+
+  _logoutRequest: function() {
+    var self = event.data.self;
+    var $logout = event.data.$logout;
+
+    $logout.modal({backdrop: 'static'});
 
   }
-  
 
+
+
+});
+
+
+$(document).ready(function() {
+  new ModalAuthenticate();
 });
