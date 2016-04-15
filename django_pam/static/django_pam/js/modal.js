@@ -32,7 +32,7 @@ var _BaseModal = Class.extend({
       crossDomain: false,
       beforeSend: function(xhr, settings) {
         if (!this._csrfSafeMethod(settings.type)) {
-          xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));
+          xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
         }
       }.bind(this)
     });
@@ -74,39 +74,78 @@ var _BaseModal = Class.extend({
 
 var ModalAuthenticate = _BaseModal.extend({
   BASE_URL: '/',
+  LOGIN_URL: 'accounts/login/',
+  LOGOUT_URL: 'accounts/logout/',
+  LOGIN: '#dp-login',
+  LOGOUT: '#dp-logout',
 
   init: function() {
-    var $login = $('#login');
-    var $logout = $('#logout');
+    let DP_LOGIN;
+    let DP_LOGOUT;
+    let DP_BASE_URL;
+
+    if(DP_LOGIN !== (void 0)) {
+      this.LOGIN = DP_LOGIN;
+    }
+
+    if(DP_LOGOUT !== (void 0)) {
+      this.LOGOUT = DP_LOGOUT;
+    }
+
+    if(DP_BASE_URL !== (void 0)) {
+      this.BASE_URL = DP_BASE_URL;
+    }
+
+    var $login = $(this.LOGIN);
+    var $logout = $(this.LOGOUT);
 
     if($login) {
-      $('#modal-login').on('click', {$login: $login}, this._setupLogin);
-      $('div.form-buttons button[name=ajax-submit]').on('click', {self: this},
-        this._loginRequest);
-    } else if($logout) {
-      $('#modal-logout').on('click', {$login: $login}, this._logoutRequest);
-      $('div.form-buttons button[name=ajax-submit]').on('click', {self: this},
+      let DP_LOGIN_URL;
+
+      if(DP_LOGIN_URL !== (void 0)) {
+        this.LOGIN_URL = DP_LOGIN_URL;
+      }
+
+      $('#modal-login').on('click', function() {
+        $login.modal({backdrop: 'static'});
+      });
+      $('div.modal-footer button[name=ajax-submit]').on('click',
+        {self: this, url: this.BASE_URL + this.LOGIN_URL}, this._loginRequest);
+    }
+
+    if($logout) {
+      $('#modal-logout').on('click', function() {
+        $logout.modal({backdrop: 'static'});
+      });
+      $('div.modal-footer button[name=ajax-submit]').on('click',
+        {self: this, url: this.BASE_URL + this.LOGOUT_URL},
         this._logoutRequest);
     }
   },
 
-  _setupLogin: function(event) {
-    event.data.$login.modal({backdrop: 'static'});
-  },
-
   _loginRequest: function(event) {
     var self = event.data.self;
+    var data = $('div.modal-body form').serializeArray();
+    var options = {
+      url: event.data.url,
+      cache: false,
+      type: 'POST',
+      data: JSON.stringify(data),
+      contentType: 'application/json; charset=utf-8',
+      timeout: 20000, // 20 seconds
+      success: self._loginCB.bind(self),
+    };
+    self._setHeader();
+    $.ajax(options);
+  },
+
+  _loginCB: function() {
+    //var self = event.data.self;
 
   },
 
-
-
-
-  _logoutRequest: function() {
+  _logoutRequest: function(event) {
     var self = event.data.self;
-    var $logout = event.data.$logout;
-
-    $logout.modal({backdrop: 'static'});
 
   }
 

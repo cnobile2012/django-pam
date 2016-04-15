@@ -2,20 +2,7 @@ div.form-fields label {
   width: 30%;
 }
 
-div.form-fields input[type=text] {
+div.form-fields input[type=text],
+div.form-fields input[type=password] {
   width: 66%;
-}
-
-div.modal-body {
-  overflow: auto;
-}
-
-div.modal-body hr {
-  width: 111%;
-  margin: 15px -15px;
-  border-top: 1.5px solid rgba(220, 220, 220, 1);
-}
-
-div.form-buttons {
-  float: right;
 }
