@@ -51,22 +51,27 @@ var _BaseModal = Class.extend({
     // Mimic Django error messages.
     var ul = '<ul class="errorlist"></ul>';
     var li = '<li></li>';
-    var $li = null;
-    var $errorUl = null;
-    var $errorLi = null;
+    var $tag = null, $errorUl = null, $errorLi = null;
+    $('ul.errorlist').remove();
 
     for(var key in data) {
-      $li = $('select[name=' + key +
-        '], input[name=' + key + '], textarea[name=' + key + ']').parent();
+      $tag = $('select[name=' + key + '], input[name=' + key +
+        '], textarea[name=' + key + ']');
       $errorUl = $(ul);
 
-      for(var i = 0; i < data[key].length; i++) {
+      if($tag.prev().prop('tagName') === 'LABEL') {
+        $tag = $tag.prev();
+        $errorUl.insertBefore($tag);
+      } else if($tag.length === 0 && key === '__all__') {
+        $tag = $('div.all-error span');
+        $errorUl.appendTo($tag);
+      }
+
+      for(let i = 0; i < data[key].length; i++) {
         $errorLi = $(li);
         $errorLi.html(data[key][i]);
         $errorLi.appendTo($errorUl);
       }
-
-      $errorUl.appendTo($li);
     }
   }
 });
@@ -134,13 +139,26 @@ var ModalAuthenticate = _BaseModal.extend({
       contentType: 'application/json; charset=utf-8',
       timeout: 20000, // 20 seconds
       success: self._loginCB.bind(self),
+      statusCode: {400: self._loginCB.bind(self)},
     };
     self._setHeader();
     $.ajax(options);
   },
 
-  _loginCB: function() {
-    //var self = event.data.self;
+  _loginCB: function(data, status) {
+    if(status === 'success') {
+
+
+    } else if(data.responseJSON !== (void 0)) {
+      let json = data.responseJSON;
+      this.mimicDjangoErrors(json);
+      $('div.all-error').show();
+    } else {
+      let $div = $('div.all-error');
+      $div.text("Could not contact server.");
+      $div.show();
+    }
+  
 
   },
 

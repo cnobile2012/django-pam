@@ -1,8 +1,42 @@
-div.form-fields label {
-  width: 30%;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-div.form-fields input[type=text],
-div.form-fields input[type=password] {
+div.modal-header div.all-error {
+  margin: 4px 0 -10px 0;
+  background-color: rgba(245, 208, 208, 0.5);
+  color: rgba(50, 50, 70, 1);
+  border-style: solid;
+  border-color: rgba(250, 190, 190, 1);
+  border-width: 1px;
+}
+
+div.modal-header  ul.errorlist {
+  margin: 0 22px;
+  font-size: 80%;
+}
+
+div.modal-header div.all-error span {
+  margin-left: 4px;
+}
+
+div.modal-body ul.errorlist {
+  margin: 0 22px;
+  font-size: 80%;
+  background-color: rgba(245, 208, 208, 0.5);
+  color: rgba(50, 50, 70, 1);
+}
+
+div.modal-body div.form-fields label {
+  display: inline-block;
+  width: 30%;
+  margin: 5px 0;
+  font-weight: 700;
+}
+
+div.modal-body div.form-fields input[type=text],
+div.modal-body div.form-fields input[type=password] {
   width: 66%;
 }
