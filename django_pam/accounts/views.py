@@ -18,10 +18,9 @@ try:
 except ImportError:
     from urllib import parse as urlparse # python3 support
 
-from django.core.exceptions import SuspiciousOperation
+from django.core.urlresolvers import reverse
 from django.contrib.auth import (
     REDIRECT_FIELD_NAME, login, logout, get_user_model)
-from django.contrib.auth.models import Group
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.views.decorators.csrf import csrf_protect
@@ -34,6 +33,7 @@ from django.shortcuts import redirect, resolve_url
 from django.conf import settings
 
 from .forms import GeneralAuthenticationForm
+from .view_mixins import AjaxableResponseMixin
 
 log = logging.getLogger('django_pam.accounts.views')
 
@@ -41,7 +41,7 @@ log = logging.getLogger('django_pam.accounts.views')
 #
 # LoginView
 #
-class LoginView(FormView):
+class LoginView(AjaxableResponseMixin, FormView):
     """
     This is a class based version of django.contrib.auth.views.login.
 
@@ -58,24 +58,46 @@ class LoginView(FormView):
 
     @method_decorator(csrf_protect)
     @method_decorator(never_cache)
-    def dispatch(self, *args, **kwargs):
-        return super(LoginView, self).dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        log.debug("ajax: %s, method: %s, form args: %s, body: %s, args: %s, "
+                  "kwargs: %s", request.is_ajax(), request.method,
+                  request.POST, request.body, args, kwargs)
+        return super(LoginView, self).dispatch(request, *args, **kwargs)
+
+    def get_initail(self):
+        if self.request.is_ajax():
+            data = json.loads(self.request.body.decode('utf-8'))
+            kwargs = {}
+
+            for arg in data:
+                name = arg.get('name')
+                value = arg.get('value')
+
+                if name == self.redirect_field_name:
+                    self.success_url = reverse(value)
+                else:
+                    kwargs[name] = value
+        else:
+            kwargs = self.initial.copy()
+
+        log.debug("kwargs: %s", kwargs)
+        return kwargs
 
     def form_valid(self, form):
         """
-        The user has provided valid credentials (this was checked in
-        AuthenticationForm.is_valid()). So now we can check the test cookie
-        stuff and log him in.
+        The user has provided valid credentials (this was checked in the
+        form's is_valid() method). So now we can check the test cookie stuff
+        and log him in.
         """
-        self.check_and_delete_test_cookie()
         login(self.request, form.get_user())
+        self.check_and_delete_test_cookie()
         return super(LoginView, self).form_valid(form)
 
     def form_invalid(self, form):
         """
-        The user has provided invalid credentials (this was checked in
-        AuthenticationForm.is_valid()). So now we set the test cookie again
-        and re-render the form with errors.
+        The user has provided invalid credentials (this was checked in the
+        form's is_valid() method). So now we set the test cookie again and
+        re-render the form with errors.
         """
         self.set_test_cookie()
         return super(LoginView, self).form_invalid(form)

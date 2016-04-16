@@ -8,8 +8,9 @@ Dynamic Column view mixins.
 """
 __docformat__ = "restructuredtext en"
 
-import logging, json
-from django.http import HttpResponse
+import logging
+
+from django.http import JsonResponse
 
 log = logging.getLogger('dcolumns.common.views')
 
@@ -18,9 +19,8 @@ class JSONResponseMixin(object):
     """
     A mixin that can be used to render a JSON response.
     """
-    response_class = HttpResponse
 
-    def render_to_response(self, context, **response_kwargs):
+    def render_to_json_response(self, context, **response_kwargs):
         """
         Returns a JSON response, transforming 'context' to make the payload.
 
@@ -29,38 +29,23 @@ class JSONResponseMixin(object):
         :param response_kwargs: Response keywords arguments.
         :rtype: See `Django response_class <https://docs.djangoproject.com/en/dev/ref/class-based-views/mixins-simple/#django.views.generic.base.TemplateResponseMixin.response_class>`_.
         """
-        response_kwargs['content_type'] = 'application/json'
-        return self.response_class(self.convert_context_to_json(context),
-                                   **response_kwargs)
+        return JsonResponse(self.get_data(context), **response_kwargs)
 
-    def convert_context_to_json(self, context):
+    def get_data(self, context):
         """
-        Convert the context dictionary into a JSON object
-
-        :param context: A dict of context data.
-        :type context: dict
-        :rtype: A JSON formatted string.
+        Returns an object that will be serialized as JSON by json.dumps().
         """
-        return json.dumps(context)
-
+        # Note: This is *EXTREMELY* naive; in reality, you'll need
+        # to do much more complex handling to ensure that arbitrary
+        # objects -- such as Django model instances or querysets
+        # -- can be serialized as JSON.
+        return context
 
 class AjaxableResponseMixin(object):
     """
     Mixin to add AJAX support to a form. Must be used with an object-based
     FormView (e.g. CreateView)
     """
-    def render_to_json_response(self, context, **response_kwargs):
-        """
-        Renders the context as JSON.
-
-        :param context: A dict of context data.
-        :type context: dict
-        :rtype: See `Django's HttpResponse <https://docs.djangoproject.com/en/dev/ref/request-response/#httpresponse-objects>`_
-        """
-        data = json.dumps(context)
-        #log.debug("data: %s", data)
-        response_kwargs['content_type'] = 'application/json'
-        return HttpResponse(data, **response_kwargs)
 
     def form_invalid(self, form):
         """
@@ -75,7 +60,7 @@ class AjaxableResponseMixin(object):
         response = super(AjaxableResponseMixin, self).form_invalid(form)
 
         if self.request.is_ajax():
-            return self.render_to_json_response(form.errors, status=400)
+            return JsonResponse(form.errors, status=400)
         else:
             return response
 
@@ -95,6 +80,6 @@ class AjaxableResponseMixin(object):
 
         if self.request.is_ajax():
             data = {'pk': self.object.pk}
-            return self.render_to_json_response(data)
+            return JsonResponse(data)
         else:
             return response
