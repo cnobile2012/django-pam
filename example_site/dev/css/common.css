@@ -73,13 +73,18 @@ div.alert-error {
   border-color: rgba(215, 250, 0, 1);
 }
 
-button.close-message {
+div.alert-error button.close-message {
   margin: -2px 4px;
 }
 
-button[type=submit] {
+div.form-fields ul.errorlist {
+  background-color: rgba(215, 250, 0, 0.5);
+  color: rgba(210, 50, 50, 1);
+}
+
+div.login-body button[type=submit],
+div.logout-body button[type=submit] {
   width: 60px;
   background-color: rgba(65, 100, 110, 1);
   color: white;
 }
-

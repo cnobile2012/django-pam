@@ -64,23 +64,26 @@ class LoginView(AjaxableResponseMixin, FormView):
                   request.POST, request.body, args, kwargs)
         return super(LoginView, self).dispatch(request, *args, **kwargs)
 
-    def get_initail(self):
+    def get_form_kwargs(self):
         if self.request.is_ajax():
-            data = json.loads(self.request.body.decode('utf-8'))
+            json_data = json.loads(self.request.body.decode('utf-8'))
             kwargs = {}
+            data = {}
 
-            for arg in data:
+            for arg in json_data:
                 name = arg.get('name')
                 value = arg.get('value')
 
                 if name == self.redirect_field_name:
                     self.success_url = reverse(value)
                 else:
-                    kwargs[name] = value
-        else:
-            kwargs = self.initial.copy()
+                    data[name] = value
 
-        log.debug("kwargs: %s", kwargs)
+            kwargs['data'] = data
+        else:
+            kwargs = super(LoginView, self).get_form_kwargs()
+
+        log.debug("kwargs: %s, success_url: %s", kwargs, self.success_url)
         return kwargs
 
     def form_valid(self, form):
@@ -89,7 +92,8 @@ class LoginView(AjaxableResponseMixin, FormView):
         form's is_valid() method). So now we can check the test cookie stuff
         and log him in.
         """
-        login(self.request, form.get_user())
+        self.object = form.get_user()
+        login(self.request, self.object)
         self.check_and_delete_test_cookie()
         return super(LoginView, self).form_valid(form)
 
@@ -101,6 +105,12 @@ class LoginView(AjaxableResponseMixin, FormView):
         """
         self.set_test_cookie()
         return super(LoginView, self).form_invalid(form)
+
+    def get_ajax_context_data(self, **kwargs):
+        kwargs.update({'username': self.object.get_username(),
+                       'full_name': self.object.get_full_name(),
+                       self.redirect_field_name: self.get_success_url()})
+        return super(LoginView, self).get_ajax_context_data(**kwargs)
 
     def get_success_url(self):
         if self.success_url:

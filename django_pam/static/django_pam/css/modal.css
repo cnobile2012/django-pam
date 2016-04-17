@@ -4,6 +4,11 @@
   box-sizing: border-box;
 }
 
+div#dp-logout div.modal-header,
+div#dp-logout div.modal-footer {
+  border: none;
+}
+
 div.modal-header div.all-error {
   margin: 4px 0 -10px 0;
   background-color: rgba(245, 208, 208, 0.5);
@@ -13,13 +18,17 @@ div.modal-header div.all-error {
   border-width: 1px;
 }
 
-div.modal-header  ul.errorlist {
+div.modal-header ul.errorlist {
   margin: 0 22px;
   font-size: 80%;
 }
 
 div.modal-header div.all-error span {
   margin-left: 4px;
+}
+
+div#dp-logout div.modal-body {
+  padding: 0;
 }
 
 div.modal-body ul.errorlist {
@@ -39,4 +48,8 @@ div.modal-body div.form-fields label {
 div.modal-body div.form-fields input[type=text],
 div.modal-body div.form-fields input[type=password] {
   width: 66%;
+}
+
+div.modal-footer button {
+  width: 60px;
 }

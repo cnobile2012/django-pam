@@ -32,7 +32,7 @@ class GeneralAuthenticationForm(AuthenticationForm):
 
                 self.confirm_login_allowed(self.user_cache)
 
-        if not username or not password or not self.user_cache:
+        if not (username and password and self.user_cache):
             raise forms.ValidationError(
                 self.error_messages['invalid_login'],
                 code='invalid_login',

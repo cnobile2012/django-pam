@@ -79,7 +79,11 @@ class AjaxableResponseMixin(object):
         response = super(AjaxableResponseMixin, self).form_valid(form)
 
         if self.request.is_ajax():
-            data = {'pk': self.object.pk}
-            return JsonResponse(data)
+            kwargs = {}
+            return JsonResponse(self.get_ajax_context_data(**kwargs))
         else:
             return response
+
+    def get_ajax_context_data(self, **kwargs):
+        kwargs.update({'pk': self.object.pk})
+        return kwargs

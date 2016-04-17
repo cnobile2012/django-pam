@@ -114,7 +114,7 @@ var ModalAuthenticate = _BaseModal.extend({
       $('#modal-login').on('click', function() {
         $login.modal({backdrop: 'static'});
       });
-      $('div.modal-footer button[name=ajax-submit]').on('click',
+      $('div.modal-footer button[name=login-submit]').on('click',
         {self: this, url: this.BASE_URL + this.LOGIN_URL}, this._loginRequest);
     }
 
@@ -122,9 +122,9 @@ var ModalAuthenticate = _BaseModal.extend({
       $('#modal-logout').on('click', function() {
         $logout.modal({backdrop: 'static'});
       });
-      $('div.modal-footer button[name=ajax-submit]').on('click',
-        {self: this, url: this.BASE_URL + this.LOGOUT_URL},
-        this._logoutRequest);
+      $('div.modal-footer button[name=logout-submit]').on('click',
+          {self: this, url: this.BASE_URL + this.LOGOUT_URL},
+          this._logoutRequest);
     }
   },
 
@@ -147,19 +147,15 @@ var ModalAuthenticate = _BaseModal.extend({
 
   _loginCB: function(data, status) {
     if(status === 'success') {
-
-
+      document.location.href = data.next;
     } else if(data.responseJSON !== (void 0)) {
-      let json = data.responseJSON;
-      this.mimicDjangoErrors(json);
+      this.mimicDjangoErrors(data.responseJSON);
       $('div.all-error').show();
     } else {
       let $div = $('div.all-error');
       $div.text("Could not contact server.");
       $div.show();
     }
-  
-
   },
 
   _logoutRequest: function(event) {
