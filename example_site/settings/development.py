@@ -17,6 +17,15 @@ DATABASES = {
         }
     }
 
+# Add to the MIDDLEWARE_CLASSES here.
+MIDDLEWARE_CLASSES.append('debug_toolbar.middleware.DebugToolbarMiddleware')
+
+# Add to the INSTALLED_APPS here.
+INSTALLED_APPS.append('debug_toolbar')
+
+# Django Debug Toolbar
+INTERNAL_IPS = ('127.0.0.1',)
+
 # Setup Logging
 LOG_ENV = 'development'
 EXAMPLES_LOG_FILE = '{}/{}-examples.log'.format(LOG_DIR, LOG_ENV)

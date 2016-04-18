@@ -1,3 +1,5 @@
 # Development pip packages.
 
 -r base.txt
+
+django-debug-toolbar
