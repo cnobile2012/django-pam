@@ -3,3 +3,10 @@
 -r base.txt
 
 django-debug-toolbar
+
+# Documentation
+Sphinx
+
+# Test coverage
+coverage
+django_nose
