@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# dcolumn/common/view_mixins.py
+# django_pam/accounts/view_mixins.py
 #
 
 """
@@ -12,7 +12,7 @@ import logging
 
 from django.http import JsonResponse
 
-log = logging.getLogger('dcolumns.common.views')
+log = logging.getLogger('django_pam.accounts.views')
 
 
 class JSONResponseMixin(object):
@@ -80,10 +80,10 @@ class AjaxableResponseMixin(object):
 
         if self.request.is_ajax():
             kwargs = {}
-            return JsonResponse(self.get_ajax_context_data(**kwargs))
+            return JsonResponse(self.get_data(**kwargs))
         else:
             return response
 
-    def get_ajax_context_data(self, **kwargs):
+    def get_data(self, **kwargs):
         kwargs.update({'pk': self.object.pk})
         return kwargs

@@ -29,8 +29,8 @@ admin.autodiscover()
 urlpatterns = [
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'accounts/', include('django_pam.urls')),
     url(r'^$', home_page_view, name='home-page'),
+    url(r'^django-pam/', include('django_pam.urls')),
     url(r'^login/$', LoginView.as_view(template_name='home/login.html'),
         name='login'),
     url(r"^logout/(?P<next>[\w\-\:/]+)?$", LogoutView.as_view(

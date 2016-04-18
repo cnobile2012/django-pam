@@ -23,6 +23,7 @@ from django.contrib.auth import (
     REDIRECT_FIELD_NAME, login, logout, get_user_model)
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext, ugettext_lazy as _
+from django.utils.encoding import force_text
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.cache import never_cache
 from django.views.generic import TemplateView
@@ -33,7 +34,7 @@ from django.shortcuts import redirect, resolve_url
 from django.conf import settings
 
 from .forms import GeneralAuthenticationForm
-from .view_mixins import AjaxableResponseMixin
+from .view_mixins import JSONResponseMixin, AjaxableResponseMixin
 
 log = logging.getLogger('django_pam.accounts.views')
 
@@ -59,9 +60,6 @@ class LoginView(AjaxableResponseMixin, FormView):
     @method_decorator(csrf_protect)
     @method_decorator(never_cache)
     def dispatch(self, request, *args, **kwargs):
-        log.debug("ajax: %s, method: %s, form args: %s, body: %s, args: %s, "
-                  "kwargs: %s", request.is_ajax(), request.method,
-                  request.POST, request.body, args, kwargs)
         return super(LoginView, self).dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
@@ -83,7 +81,6 @@ class LoginView(AjaxableResponseMixin, FormView):
         else:
             kwargs = super(LoginView, self).get_form_kwargs()
 
-        log.debug("kwargs: %s, success_url: %s", kwargs, self.success_url)
         return kwargs
 
     def form_valid(self, form):
@@ -106,11 +103,11 @@ class LoginView(AjaxableResponseMixin, FormView):
         self.set_test_cookie()
         return super(LoginView, self).form_invalid(form)
 
-    def get_ajax_context_data(self, **kwargs):
+    def get_data(self, **kwargs):
         kwargs.update({'username': self.object.get_username(),
                        'full_name': self.object.get_full_name(),
                        self.redirect_field_name: self.get_success_url()})
-        return super(LoginView, self).get_ajax_context_data(**kwargs)
+        return super(LoginView, self).get_data(**kwargs)
 
     def get_success_url(self):
         if self.success_url:
@@ -148,70 +145,79 @@ class LoginView(AjaxableResponseMixin, FormView):
 
 
 #
-# RedirectMixin
-#
-class RedirectMixin(object):
-
-    def default_redirect(self, **kwargs):
-        """
-        Evaluates a redirect url by consulting the kwargs or session.
-        """
-        log.debug("kwargs: %s", kwargs)
-        redirect_to = kwargs.get(self.redirect_field_name, '/')
-
-        if not redirect_to:
-            # Try the session if available
-            if hasattr(self.request, "session"):
-                session_key_value = kwargs.get("session_key_value",
-                                               "redirect_to")
-                redirect_to = self.request.session.get(session_key_value)
-
-        return redirect_to
-
-
-#
 # LogoutView
 #
-class LogoutView(RedirectMixin, TemplateView):
+class LogoutView(JSONResponseMixin, TemplateView):
     template_name = "django_pam/accounts/logout.html"
     redirect_field_name = REDIRECT_FIELD_NAME
+    success_url = settings.LOGIN_URL
 
     def get(self, request, *args, **kwargs):
         log.debug("request: %s, args: %s, kwargs: %s", request, args, kwargs)
+        next_page = request.GET.get(self.redirect_field_name, '')
+        kwargs[self.redirect_field_name] = next_page
 
         if not request.user.is_authenticated():
-            result = redirect(self.get_redirect_url(*args, **kwargs))
+            response = redirect(self.get_success_url(*args, **kwargs))
         else:
             context = self.get_context_data(**kwargs)
-            result = self.render_to_response(context)
+            response = self.render_to_response(context)
 
-        return result
+        return response
 
     def post(self, request, *args, **kwargs):
         log.debug("request: %s, args: %s, kwargs: %s", request, args, kwargs)
+        next_page = request.POST.get(self.redirect_field_name, '')
+        kwargs[self.redirect_field_name] = next_page
+        self.success_url = next_page
 
         if request.user.is_authenticated():
             logout(request)
 
-        return redirect(self.get_redirect_url(*args, **kwargs))
+        if self.request.is_ajax():
+            response = self.render_to_json_response({})
+        else:
+            response = redirect(self.get_success_url())
+
+        return response
+
+    def get_data(self, context):
+        if self.request.is_ajax():
+            json_data = json.loads(self.request.body.decode('utf-8'))
+            log.debug("json_data: %s", json_data)
+
+            for arg in json_data:
+                name = arg.get('name')
+                value = arg.get('value')
+
+                if name == self.redirect_field_name:
+                    context[name] = reverse(value)
+                else:
+                    context[name] = value
+        else:
+            url = context.get(self.redirect_field_name, settings.LOGIN_URL)
+            self.success_url = reverse(url)
+
+        log.debug("context: %s, success_url: %s", context, self.success_url)
+        return context
 
     def get_context_data(self, **kwargs):
-        log.debug("kwargs: %s", kwargs)
         context = super(LogoutView, self).get_context_data(**kwargs)
+        log.debug("kwargs: %s, context: %s", kwargs, context)
         context.update({
             self.redirect_field_name: kwargs.get(self.redirect_field_name),
             })
         return context
 
-    def get_redirect_url(self, fallback_url=None, *args, **kwargs):
-        if fallback_url is None:
-            fallback_url = settings.LOGIN_URL
-
-        next = kwargs.get(self.redirect_field_name)
-
-        if next:
-            kwargs[self.redirect_field_name] = next
+    def get_success_url(self):
+        """
+        Returns the supplied success URL.
+        """
+        if self.success_url:
+            # Forcing possible reverse_lazy evaluation
+            url = force_text(self.success_url)
         else:
-            kwargs[self.redirect_field_name] = fallback_url
+            raise ImproperlyConfigured(
+                "No URL to redirect to. Provide a success_url.")
 
-        return self.default_redirect(**kwargs)
+        return url

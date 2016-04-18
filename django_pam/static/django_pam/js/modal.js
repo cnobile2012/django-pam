@@ -79,8 +79,8 @@ var _BaseModal = Class.extend({
 
 var ModalAuthenticate = _BaseModal.extend({
   BASE_URL: '/',
-  LOGIN_URL: 'accounts/login/',
-  LOGOUT_URL: 'accounts/logout/',
+  LOGIN_URL: 'django-pam/login/',
+  LOGOUT_URL: 'django-pam/logout/',
   LOGIN: '#dp-login',
   LOGOUT: '#dp-logout',
 
@@ -115,20 +115,26 @@ var ModalAuthenticate = _BaseModal.extend({
         $login.modal({backdrop: 'static'});
       });
       $('div.modal-footer button[name=login-submit]').on('click',
-        {self: this, url: this.BASE_URL + this.LOGIN_URL}, this._loginRequest);
+        {self: this, url: this.BASE_URL + this.LOGIN_URL}, this._authRequest);
     }
 
     if($logout) {
+      let DP_LOGOUT_URL;
+
+      if(DP_LOGOUT_URL !== (void 0)) {
+        this.LOGOUT_URL = DP_LOGOUT_URL;
+      }
+
       $('#modal-logout').on('click', function() {
         $logout.modal({backdrop: 'static'});
       });
       $('div.modal-footer button[name=logout-submit]').on('click',
           {self: this, url: this.BASE_URL + this.LOGOUT_URL},
-          this._logoutRequest);
+          this._authRequest);
     }
   },
 
-  _loginRequest: function(event) {
+  _authRequest: function(event) {
     var self = event.data.self;
     var data = $('div.modal-body form').serializeArray();
     var options = {
@@ -138,14 +144,14 @@ var ModalAuthenticate = _BaseModal.extend({
       data: JSON.stringify(data),
       contentType: 'application/json; charset=utf-8',
       timeout: 20000, // 20 seconds
-      success: self._loginCB.bind(self),
-      statusCode: {400: self._loginCB.bind(self)},
+      success: self._authCB.bind(self),
+      statusCode: {400: self._authCB.bind(self)},
     };
     self._setHeader();
     $.ajax(options);
   },
 
-  _loginCB: function(data, status) {
+  _authCB: function(data, status) {
     if(status === 'success') {
       document.location.href = data.next;
     } else if(data.responseJSON !== (void 0)) {
@@ -156,15 +162,7 @@ var ModalAuthenticate = _BaseModal.extend({
       $div.text("Could not contact server.");
       $div.show();
     }
-  },
-
-  _logoutRequest: function(event) {
-    var self = event.data.self;
-
   }
-
-
-
 });
 
 
