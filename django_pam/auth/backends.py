@@ -5,6 +5,7 @@
 
 import logging
 import types
+import six
 import pam as pam_base
 
 from django.contrib.auth import get_user_model
@@ -45,7 +46,7 @@ class PAMBackend(ModelBackend):
                     username=username)
             except UserModel.DoesNotExist:
                 user = UserModel.objects.create_user(
-                    username, email=None, **extra_fields)
+                    username, email=email, **extra_fields)
 
         return user
 
@@ -60,14 +61,15 @@ class PAMBackend(ModelBackend):
         UserModel = get_user_model()
         obj = None
 
-        if isinstance(user, (int, long)) or user.isdigit():
+        if user is not None and (isinstance(user, (int, long)) or
+                                 user.isdigit()):
             query = models.Q(pk=user)
-        elif isinstance(user, types.StringTypes):
+        elif isinstance(user, six.string_types):
             query = models.Q(username=user) | models.Q(email=user)
         else:
             raise TypeError(_("The user argument type should be either an "
-                              "integer (pk) or a string (username), found "
-                              "type {}.").format(type(user)))
+                              "integer (valid pk) or a string (username or "
+                              "email), found type {}.").format(type(user)))
 
         try:
             obj = UserModel._default_manager.get(query)
