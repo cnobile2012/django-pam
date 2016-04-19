@@ -6,36 +6,16 @@
 import six
 import sys
 import getpass
-import readline
 
-from django.contrib.auth import get_user_model
-from django.test import TestCase
+from ..backends import PAMBackend
 
-from django_pam.auth.backends import PAMBackend
+from .base_test import BaseDjangoPAM
 
 
-class TestPAMBackend(TestCase):
+class TestPAMBackend(BaseDjangoPAM):
 
     def __init__(self, name):
         super(TestPAMBackend, self).__init__(name)
-
-    def _prompt(self, need_email=False):
-        temp_username = getpass.getuser()
-        sys.stderr.write("Username ({}): ".format(temp_username))
-        username = six.moves.input() # Prompt goes to stdout which is off.
-
-        if not username:
-            username = temp_username
-
-        password = getpass.getpass()
-
-        if need_email:
-            sys.stderr.write("Email: ")
-            email = six.moves.input() # Prompt goes to stdout which is off.
-        else:
-            email = None
-
-        return username, password, email
 
     def setUp(self):
         self.pam = PAMBackend()
