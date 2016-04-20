@@ -135,7 +135,7 @@ STATICFILES_DIRS = (
 # when DEBUG=False. See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
 LOG_DIR = os.path.abspath(os.path.join(BASE_DIR, '..', 'logs'))
-not os.path.isdir(LOG_DIR) and os.mkdir(LOG_DIR, 0775)
+not os.path.isdir(LOG_DIR) and os.mkdir(LOG_DIR, 0o0775)
 
 LOGGING = {
     'version': 1,

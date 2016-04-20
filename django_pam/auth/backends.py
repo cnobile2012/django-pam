@@ -61,7 +61,7 @@ class PAMBackend(ModelBackend):
         UserModel = get_user_model()
         obj = None
 
-        if user is not None and (isinstance(user, (int, long)) or
+        if user is not None and (isinstance(user, six.integer_types) or
                                  user.isdigit()):
             query = models.Q(pk=user)
         elif isinstance(user, six.string_types):

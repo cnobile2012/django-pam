@@ -48,4 +48,3 @@ class BaseDjangoPAM(TestCase):
                 email = None
 
         return username, password, email
-
