@@ -45,7 +45,7 @@ class PAMBackend(ModelBackend):
                 user = UserModel._default_manager.get_by_natural_key(
                     username=username)
             except UserModel.DoesNotExist:
-                user = UserModel.objects.create_user(
+                user = UserModel._default_manager.create_user(
                     username, email=email, **extra_fields)
 
         return user
