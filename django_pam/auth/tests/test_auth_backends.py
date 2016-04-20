@@ -3,10 +3,6 @@
 # django_pam/auth/tests/test_auth_backends.py
 #
 
-import six
-import sys
-import getpass
-
 from ..backends import PAMBackend
 
 from .base_test import BaseDjangoPAM

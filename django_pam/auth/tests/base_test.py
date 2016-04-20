@@ -4,7 +4,10 @@
 #
 
 import os
+import sys
+import six
 from io import open
+import getpass
 
 from django.test import TestCase
 
