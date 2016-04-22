@@ -3,11 +3,14 @@
 # django_pam/accounts/forms.py
 #
 
+import logging
 import inspect
 
 from django import forms
 from django.contrib.auth import get_user_model, get_backends
 from django.contrib.auth.forms import AuthenticationForm
+
+log = logging.getLogger('django_pam.accounts.forms')
 
 
 class GeneralAuthenticationForm(AuthenticationForm):
@@ -15,6 +18,11 @@ class GeneralAuthenticationForm(AuthenticationForm):
     Authentication form
     """
     email = forms.EmailField(required=False)
+
+    def __init__(self, request=None, *args, **kwargs):
+        #log.debug("request: %s, args: %s, kwargs: %s", request, args, kwargs)
+        super(GeneralAuthenticationForm, self).__init__(
+            request=request, *args, **kwargs)
 
     def clean(self):
         username = self.cleaned_data.get('username')
@@ -27,8 +35,8 @@ class GeneralAuthenticationForm(AuthenticationForm):
 
             if self.user_cache:
                 if email:
-                    self.user_cache = get_user_model().objects.update(
-                        username, email=email)
+                    self.user_cache.email = email
+                    self.user_cache.save()
 
                 self.confirm_login_allowed(self.user_cache)
 
