@@ -75,7 +75,8 @@ div.login-body button[type=submit] {
 div.login-body button[type=submit],
 div.logout-body button[type=submit] {
   display: block;
-  margin: 0 auto;
+  width: 50%;
+  margin: 10px auto;
   background-color: rgba(190, 170, 110, 1);
   color: white;
 }

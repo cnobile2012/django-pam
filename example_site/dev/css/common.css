@@ -84,7 +84,6 @@ div.form-fields ul.errorlist {
 
 div.login-body button[type=submit],
 div.logout-body button[type=submit] {
-  width: 60px;
   background-color: rgba(65, 100, 110, 1);
   color: white;
 }

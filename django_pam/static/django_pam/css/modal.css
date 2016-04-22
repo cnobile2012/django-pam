@@ -51,5 +51,6 @@ div.modal-body div.form-fields input[type=password] {
 }
 
 div.modal-footer button {
-  width: 60px;
+  width: 100%;
+  font-size: 125%;
 }
