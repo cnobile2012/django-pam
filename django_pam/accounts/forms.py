@@ -8,21 +8,21 @@ import inspect
 
 from django import forms
 from django.contrib.auth import get_user_model, get_backends
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm as _AuthenticationForm
 
 log = logging.getLogger('django_pam.accounts.forms')
 
 
-class GeneralAuthenticationForm(AuthenticationForm):
+class AuthenticationForm(_AuthenticationForm):
     """
     Authentication form
     """
     email = forms.EmailField(required=False)
 
-    def __init__(self, request=None, *args, **kwargs):
-        #log.debug("request: %s, args: %s, kwargs: %s", request, args, kwargs)
-        super(GeneralAuthenticationForm, self).__init__(
-            request=request, *args, **kwargs)
+    ## def __init__(self, request=None, *args, **kwargs):
+    ##     log.debug("request: %s, args: %s, kwargs: %s", request, args, kwargs)
+    ##     super(AuthenticationForm, self).__init__(
+    ##         request=request, *args, **kwargs)
 
     def clean(self):
         username = self.cleaned_data.get('username')

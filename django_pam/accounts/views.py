@@ -33,7 +33,7 @@ from django.views.generic.detail import SingleObjectMixin
 from django.shortcuts import redirect, resolve_url
 from django.conf import settings
 
-from .forms import GeneralAuthenticationForm
+from .forms import AuthenticationForm
 from .view_mixins import JSONResponseMixin, AjaxableResponseMixin
 
 log = logging.getLogger('django_pam.accounts.views')
@@ -53,7 +53,7 @@ class LoginView(AjaxableResponseMixin, FormView):
             success_url='/my/custom/success/url/),
             name='login'),
     """
-    form_class = GeneralAuthenticationForm
+    form_class = AuthenticationForm
     redirect_field_name = REDIRECT_FIELD_NAME
     template_name = 'django_pam/accounts/login.html'
 

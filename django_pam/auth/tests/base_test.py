@@ -6,10 +6,14 @@
 import os
 import sys
 import six
-from io import open
+import types
 import getpass
 
+from io import open
+from collections import OrderedDict
+
 from django.test import TestCase
+from django.utils.translation import ugettext
 
 
 class BaseDjangoPAM(TestCase):
@@ -48,3 +52,27 @@ class BaseDjangoPAM(TestCase):
                 email = None
 
         return username, password, email
+
+    def _clean_data(self, data):
+        if data is not None:
+            if isinstance(data, (list, tuple,)):
+                data = self.__clean_value(data)
+            else:
+                for key in data:
+                    data[key] = self.__clean_value(data.get(key))
+
+        return data
+
+    def __clean_value(self, value):
+        if isinstance(value, (list, tuple,)):
+            value = [self.__clean_value(item) for item in value]
+        elif isinstance(value, (dict, OrderedDict,)):
+            for key in value:
+                value[key] = self.__clean_value(value.get(key))
+        elif (isinstance(value, (int, long, bool, types.TypeType,)) or
+              value is None):
+            pass
+        else:
+            value = ugettext(value)
+
+        return value
