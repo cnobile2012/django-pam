@@ -1,21 +1,18 @@
 # -*- coding: utf-8 -*-
 #
-# django_pam/auth/tests/test_auth_backends.py
+# django_pam/accounts/tests/test_accounts_forms.py
 #
 
 import six
 
 from django.test import RequestFactory
 from django.core.exceptions import ValidationError
-from django.core.urlresolvers import reverse
 from django.contrib.auth.models import AnonymousUser
 from django.http import QueryDict
 
 from django_pam.auth.tests.base_test import BaseDjangoPAM
 
 from ..forms import AuthenticationForm
-
-#from .base_test import BaseDjangoPAM
 
 
 class TestAuthenticationForm(BaseDjangoPAM):
