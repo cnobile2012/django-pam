@@ -3,6 +3,7 @@
 # django_pam/accounts/tests/test_accounts_forms.py
 #
 
+import json
 import six
 
 from django.test import Client
@@ -33,11 +34,130 @@ class TestLoginView(BaseDjangoPAM):
         msg = "response status: {}, should be 200".format(response.status_code)
         self.assertEquals(response.status_code, 200, msg)
         content = response.content.decode('utf-8')
+        msg = "content: {}".format(content)
         self.assertTrue('csrfmiddlewaretoken' in content, msg)
         self.assertTrue('username' in content, msg)
         self.assertTrue('password' in content, msg)
 
+    def test_post_login_form_valid(self):
+        """
+        Test that a valid form login returns a redirect properly.
+        """
+        #self.skipTest("Temporarily skipped")
+        # Get user's credentials.
+        username, password, email = self._prompt(need_email=True)
+        # Setup request
+        url = reverse('django-pam:login')
+        data = {'username': username, 'password': password, 'email': email}
+        response = self.client.post(url, data=data)
+        msg = "response status: {}, should be 302".format(response.status_code)
+        self.assertEquals(response.status_code, 302, msg)
+        # Redirect
+        response = self.client.get(response.url)
+        msg = "response status: {}, should be 200".format(response.status_code)
+        self.assertEquals(response.status_code, 200, msg)
+        content = response.content.decode('utf-8')
+        msg = "content: {}".format(content)
+        self.assertTrue('you are Authenticated' in content, msg)
+        self.assertEqual(content.count('?next=home-page'), 2, msg)
 
+    def test_post_login_form_invalid(self):
+        """
+        Test that an invalid form login returns a redirect properly.
+        """
+        #self.skipTest("Temporarily skipped")
+        # Get user's credentials.
+        username = password = email = ''
+        # Setup request and test
+        url = reverse('django-pam:login')
+        data = {'username': username, 'password': password, 'email': email}
+        response = self.client.post(url, data=data)
+        msg = "response status: {}, should be 200".format(response.status_code)
+        self.assertEquals(response.status_code, 200, msg)
+        self.assertTrue(self._has_error(response))
+        tests = {'__all__': "Please enter a correct",
+                 'username': 'This field is required.',
+                 'password': 'This field is required.'}
+        self._test_errors(response, tests=tests)
+        # Check with invalid username and password.
+        username = 'InvalidUsername'
+        password = 'InvalidPassword'
+        email = 'junk'
+        data = {'username': username, 'password': password, 'email': email}
+        response = self.client.post(url, data=data)
+        msg = "response status: {}, should be 200".format(response.status_code)
+        self.assertEquals(response.status_code, 200, msg)
+        self.assertTrue(self._has_error(response))
+        tests = {'__all__': "Please enter a correct",
+                 'email': "Enter a valid email address."}
+        self._test_errors(response, tests=tests)
+
+    def test_post_login_ajax_valid(self):
+        """
+        Test that a valid AJAX login returns a redirect properly.
+        """
+        #self.skipTest("Temporarily skipped")
+        # Get user's credentials.
+        username, password, email = self._prompt(need_email=True)
+        # Setup request
+        url = reverse('django-pam:login')
+        data = json.dumps([
+            {'name': 'username', 'value': username},
+            {'name': 'password', 'value': password},
+            {'name': 'email', 'value': email}
+            ])
+        response = self.client.post(url, content_type='application/json',
+                                    HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+                                    data=data)
+        self.assertFalse(self._has_error(response))
+        # JavaScript does the redirect, so a 200 OK is valid here.
+        msg = "response status: {}, should be 200".format(response.status_code)
+        self.assertEquals(response.status_code, 200, msg)
+        content = json.loads(response.content.decode('utf-8'))
+        msg = "content: {}".format(content)
+        self.assertTrue(content.get('full_name', '') == '', msg)
+        self.assertTrue(content.get('username', '') == username, msg)
+        self.assertTrue(content.get('next', '') == '/', msg)
+
+    def test_post_login_ajax_invalid(self):
+        """
+        Test that an invalid AJAX login returns a redirect properly.
+        """
+        #self.skipTest("Temporarily skipped")
+        # Get user's credentials.
+        username = password = email = ''
+        # Setup request
+        url = reverse('django-pam:login')
+        data = json.dumps([
+            {'name': 'username', 'value': username},
+            {'name': 'password', 'value': password},
+            {'name': 'email', 'value': email}
+            ])
+        response = self.client.post(url, content_type='application/json',
+                                    HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+                                    data=data)
+        self.assertFalse(self._has_error(response))
+        tests = {'__all__': "Please enter a correct",
+                 'username': 'This field is required.',
+                 'password': 'This field is required.'}
+        self._test_errors(response, tests=tests)
+        # Check with invalid username and password.
+        username = 'InvalidUsername'
+        password = 'InvalidPassword'
+        email = 'junk'
+        data = json.dumps([
+            {'name': 'username', 'value': username},
+            {'name': 'password', 'value': password},
+            {'name': 'email', 'value': email}
+            ])
+        response = self.client.post(url, content_type='application/json',
+                                    HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+                                    data=data)
+        msg = "response status: {}, should be 400".format(response.status_code)
+        self.assertEquals(response.status_code, 400, msg)
+        tests = {'__all__': "Please enter a correct",
+                 'email': "Enter a valid email address."}
+        self._test_errors(response, tests=tests)
 
 
 

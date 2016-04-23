@@ -6,6 +6,7 @@
 import os
 import sys
 import six
+import json
 import types
 import getpass
 
@@ -76,3 +77,43 @@ class BaseDjangoPAM(TestCase):
             value = ugettext(value)
 
         return value
+
+    def _has_error(self, response):
+        result = False
+
+        if hasattr(response, 'context_data'):
+            if response.context_data.get('form').errors:
+                result = True
+
+        return result
+
+    def _test_errors(self, response, tests={}):
+        if hasattr(response, 'context_data'):
+            errors = dict(response.context_data.get('form').errors)
+
+            for key, value in tests.items():
+                err_msg = errors.pop(key, None)
+                self.assertTrue(err_msg, "Could not find key: {}".format(key))
+                err_msg = err_msg.as_text()
+                msg = "For key '{}' value '{}' not found in '{}'".format(
+                    key, value, err_msg)
+                self.assertTrue(value in err_msg, msg)
+        elif hasattr(response, 'content'):
+            errors = json.loads(response.content.decode('utf-8'))
+
+            for key, value in tests.items():
+                err_msg = errors.pop(key, None)
+                self.assertTrue(err_msg, "Could not find key: {}".format(key))
+                msg = "For key '{}' value '{}' not found in '{}'".format(
+                    key, value, err_msg)
+
+                if isinstance(err_msg, (list, tuple)):
+                    err_msg = err_msg[0]
+
+                self.assertTrue(value in err_msg, msg)
+        else:
+            msg = "No context_data"
+            self.assertTrue(False, msg)
+
+        msg = "Unaccounted for errors: {}".format(errors)
+        self.assertFalse(len(errors) != 0 and True or False, msg)
