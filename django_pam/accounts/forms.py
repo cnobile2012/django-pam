@@ -17,12 +17,15 @@ class AuthenticationForm(_AuthenticationForm):
     """
     Authentication form
     """
-    email = forms.EmailField(required=False)
+    email = forms.EmailField(required=False, label_suffix='')
 
-    ## def __init__(self, request=None, *args, **kwargs):
-    ##     log.debug("request: %s, args: %s, kwargs: %s", request, args, kwargs)
-    ##     super(AuthenticationForm, self).__init__(
-    ##         request=request, *args, **kwargs)
+    def __init__(self, request=None, *args, **kwargs):
+        log.debug("request: %s, args: %s, kwargs: %s, dir(self): %s",
+                  request, args, kwargs, dir(self))
+        self.base_fields['username'].label_suffix = ''
+        self.base_fields['password'].label_suffix = ''
+        super(AuthenticationForm, self).__init__(
+            request=request, *args, **kwargs)
 
     def clean(self):
         username = self.cleaned_data.get('username')

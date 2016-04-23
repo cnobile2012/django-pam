@@ -75,6 +75,11 @@ div.alert-error {
 
 div.alert-error button.close-message {
   margin: -2px 4px;
+  padding: 0;
+}
+
+div.form-fields {
+  width: 90%;
 }
 
 div.form-fields ul.errorlist {

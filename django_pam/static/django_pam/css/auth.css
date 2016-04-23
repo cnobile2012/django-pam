@@ -58,6 +58,7 @@ div.alert-error button.close-message {
   float: right;
   background-color: initial;
   border: none;
+  padding: 0 4px;
 }
 
 div.form-fields ul.errorlist {
@@ -69,13 +70,14 @@ div.form-fields ul.errorlist {
 
 div.form-fields,
 div.login-body button[type=submit] {
-  margin: 10px 0 5px 5px;
+  margin: 10px auto 5px auto;
+  width: 80%;
 }
 
 div.login-body button[type=submit],
 div.logout-body button[type=submit] {
   display: block;
-  width: 50%;
+  width: 70%;
   margin: 10px auto;
   background-color: rgba(190, 170, 110, 1);
   color: white;
