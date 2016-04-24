@@ -6,6 +6,7 @@ django-debug-toolbar
 
 # Documentation
 Sphinx
+sphinx_rtd_theme
 
 # Test coverage
 coverage

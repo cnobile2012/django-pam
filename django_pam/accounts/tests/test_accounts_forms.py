@@ -28,8 +28,10 @@ class TestAuthenticationForm(BaseDjangoPAM):
         """
         Test that the form created a user.
 
-        Form constructor signature:
-        __init__(self, request=None, *args, **kwargs)
+        Form constructor signature::
+
+          __init__(self, request=None, *args, **kwargs)
+
         """
         #self.skipTest("Temporarily skipped")
         # Get user's credentials.

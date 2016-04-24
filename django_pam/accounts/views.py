@@ -64,12 +64,13 @@ class LoginView(AjaxableResponseMixin, FormView):
 
     def get_form_kwargs(self):
         """
-        Incoming AJAX data structure from an HTML <form> tag:
+        Incoming AJAX data structure from an HTML <form> tag::
 
-        [{'name': 'username', 'value': '<username>'},
-         {'name': 'password', 'value': '<password>'},
-         {'name': 'next', 'value': '<redirect URI>'}
-        ]
+          [{'name': 'username', 'value': '<username>'},
+           {'name': 'password', 'value': '<password>'},
+           {'name': 'next', 'value': '<redirect URI>'}
+          ]
+
         """
         if self.request.is_ajax():
             json_data = json.loads(self.request.body.decode('utf-8'))
