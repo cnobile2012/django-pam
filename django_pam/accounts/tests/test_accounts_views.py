@@ -160,4 +160,72 @@ class TestLoginView(BaseDjangoPAM):
         self._test_errors(response, tests=tests)
 
 
+class TestLogoutView(BaseDjangoPAM):
+
+    def __init__(self, name):
+        super(TestLogoutView, self).__init__(name)
+        self.client = None
+
+    def setUp(self):
+        self.client = Client()
+
+    def _login_form(self):
+        # Get user's credentials.
+        username, password, email = self._prompt(need_email=True)
+        # Setup request
+        url = reverse('django-pam:login')
+        data = {'username': username, 'password': password, 'email': email}
+        response = self.client.post(url, data=data)
+        msg = "response status: {}, should be 302".format(response.status_code)
+        self.assertEquals(response.status_code, 302, msg)
+
+    def _login_ajax(self):
+        username, password, email = self._prompt(need_email=True)
+        # Setup request
+        url = reverse('django-pam:login')
+        data = json.dumps([
+            {'name': 'username', 'value': username},
+            {'name': 'password', 'value': password},
+            {'name': 'email', 'value': email}
+            ])
+        response = self.client.post(url, content_type='application/json',
+                                    HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+                                    data=data)
+        # JavaScript does the redirect, so a 200 OK is valid here.
+        msg = "response status: {}, should be 200".format(response.status_code)
+        self.assertEquals(response.status_code, 200, msg)
+
+    def test_get_logout_screen(self):
+        """
+        Test that the logout screen returns properly.
+        """
+        #self.skipTest("Temporarily skipped")
+        # Test that user is not logged in.
+        url = reverse('django-pam:logout') + '?next=home-page'
+        response = self.client.get(url)
+        msg = "response status: {}, should be 302".format(response.status_code)
+        self.assertEquals(response.status_code, 302, msg)
+        # Create user
+        self._login_form()
+        url = reverse('django-pam:logout') + '?next=home-page'
+        response = self.client.get(url)
+        msg = "response status: {}, should be 200".format(response.status_code)
+        self.assertEquals(response.status_code, 200, msg)
+        content = response.content.decode('utf-8')
+        msg = "content: {}".format(content)
+        self.assertTrue('csrfmiddlewaretoken' in content, msg)
+        self.assertTrue('next' in content, msg)
+
+    def test_post_logout_form(self):
+        """
+        Test that a valid form logout returns a redirect properly.
+        """
+        self.skipTest("Temporarily skipped")
+        # Create user
+        self._login_form()
+        # Setup request
+        
+
+
+
 

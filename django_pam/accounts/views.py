@@ -166,7 +166,7 @@ class LogoutView(JSONResponseMixin, TemplateView):
         kwargs[self.redirect_field_name] = next_page
 
         if not request.user.is_authenticated():
-            response = redirect(self.get_success_url(*args, **kwargs))
+            response = redirect(self.get_success_url())
         else:
             context = self.get_context_data(**kwargs)
             response = self.render_to_response(context)
