@@ -64,7 +64,7 @@ class LoginView(AjaxableResponseMixin, FormView):
 
     def get_form_kwargs(self):
         """
-        Incoming data structure from an HTML <form> tag:
+        Incoming AJAX data structure from an HTML <form> tag:
 
         [{'name': 'username', 'value': '<username>'},
          {'name': 'password', 'value': '<password>'},
@@ -174,6 +174,11 @@ class LogoutView(JSONResponseMixin, TemplateView):
         return response
 
     def post(self, request, *args, **kwargs):
+        """
+        Incoming AJAX data structure from an HTML <form> tag:
+
+        [{'name': 'next', 'value': '<redirect URI>'}]
+        """
         log.debug("request: %s, args: %s, kwargs: %s", request, args, kwargs)
         next_page = request.POST.get(self.redirect_field_name, '')
         kwargs[self.redirect_field_name] = next_page

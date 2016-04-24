@@ -191,6 +191,7 @@ class TestLogoutView(BaseDjangoPAM):
         response = self.client.post(url, content_type='application/json',
                                     HTTP_X_REQUESTED_WITH='XMLHttpRequest',
                                     data=data)
+        self.assertFalse(self._has_error(response))
         # JavaScript does the redirect, so a 200 OK is valid here.
         msg = "response status: {}, should be 200".format(response.status_code)
         self.assertEquals(response.status_code, 200, msg)
@@ -220,12 +221,37 @@ class TestLogoutView(BaseDjangoPAM):
         """
         Test that a valid form logout returns a redirect properly.
         """
-        self.skipTest("Temporarily skipped")
+        #self.skipTest("Temporarily skipped")
         # Create user
         self._login_form()
         # Setup request
-        
+        url = reverse('django-pam:logout')
+        data = {'next': 'home-page'}
+        response = self.client.post(url, data=data)
+        msg = "response status: {}, should be 302".format(response.status_code)
+        self.assertEquals(response.status_code, 302, msg)
+        # Redirect
+        response = self.client.get(response.url)
+        msg = "response status: {}, should be 200".format(response.status_code)
+        self.assertEquals(response.status_code, 200, msg)
+        content = response.content.decode('utf-8')
+        msg = "content: {}".format(content)
+        self.assertTrue('Welcome, Please Login' in content, msg)
 
+    def test_post_logout_ajax(self):
+        """
 
-
-
+        """
+        #self.skipTest("Temporarily skipped")
+        # Create user
+        self._login_ajax()
+        # Setup request
+        url = reverse('django-pam:logout')
+        data = json.dumps([{'value': 'next', 'value': 'home-page'},])
+        response = self.client.post(url, content_type='application/json',
+                                    HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+                                    data=data)
+        self.assertFalse(self._has_error(response))
+        # JavaScript does the redirect, so a 200 OK is valid here.
+        msg = "response status: {}, should be 200".format(response.status_code)
+        self.assertEquals(response.status_code, 200, msg)
