@@ -19,6 +19,7 @@ db-snapshots/*.sql
 db-snapshots/*.sql.gz
 logs/*.log*
 data/db.sqlite3
+htmlcov/*
 old
 
 # C extensions
