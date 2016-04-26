@@ -4,7 +4,6 @@
 
 PREFIX		= $(shell pwd)
 PACKAGE_DIR	= $(shell echo $${PWD\#\#*/})
-APACHE_DIR	= $(PREFIX)/apache
 DOCS_DIR	= $(PREFIX)/docs
 TODAY		= $(shell date +"%Y-%m-%d_%H%M")
 
@@ -18,11 +17,15 @@ tar	: clean
           --exclude="example_site/static" $(PACKAGE_DIR))
 
 .PHONY	: coverage
-coverage: clean
+coverage: clobber
 	coverage erase
 	coverage run ./manage.py test
 	coverage report
 	coverage html
+
+.PHONY	: sphinx
+sphinx	: clean
+	(cd $(DOCS_DIR); make html)
 
 .PHONY	: build
 build	: clean
@@ -44,5 +47,7 @@ clean	:
 
 .PHONY	: clobber
 clobber	: clean
-	@rm -rf dist build *.egg-info htmlcov
+	@rm -rf dist build *.egg-info
+	@rm -rf $(DOCS_DIR)/htmlcov
+	@rm -rf $(DOCS_DIR)/build
 #	@(cd $(DOCS_DIR); make clobber)
