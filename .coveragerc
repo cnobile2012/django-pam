@@ -8,6 +8,8 @@ omit =
 
 [report]
 show_missing = True
+skip_covered = True
+precision = 2
 
 # Regexes for lines to exclude from consideration
 exclude_lines =
@@ -16,3 +18,7 @@ exclude_lines =
 
     # Don't complain about missing debug-only code:
     if log\.is*
+
+[html]
+title = Django PAM Coverage Report
+directory = docs/htmlcov
