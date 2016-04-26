@@ -1,2 +1,18 @@
 [run]
-omit = ../*migrations*, *urls*
+source = django_pam
+#branch = True
+omit =
+     ../*migrations*
+     *urls*
+     *tests*
+
+[report]
+show_missing = True
+
+# Regexes for lines to exclude from consideration
+exclude_lines =
+    # Have to re-enable the standard pragma
+    pragma: no cover
+
+    # Don't complain about missing debug-only code:
+    if log\.is*

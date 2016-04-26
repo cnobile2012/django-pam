@@ -10,4 +10,3 @@ sphinx_rtd_theme
 
 # Test coverage
 coverage
-django_nose

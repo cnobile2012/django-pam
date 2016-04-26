@@ -22,19 +22,9 @@ MIDDLEWARE_CLASSES.append('debug_toolbar.middleware.DebugToolbarMiddleware')
 
 # Add to the INSTALLED_APPS here.
 INSTALLED_APPS.append('debug_toolbar')
-INSTALLED_APPS.append('django_nose')
 
 # Django Debug Toolbar
 INTERNAL_IPS = ('127.0.0.1',)
-
-# Use nose to run all tests
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-
-NOSE_ARGS = [
-    '--with-coverage',
-    '--cover-package=django_pam',
-    '--cover-erase',
-    ]
 
 # Setup Logging
 LOG_ENV = 'development'
