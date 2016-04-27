@@ -29,9 +29,9 @@ class JSONResponseMixin(object):
         :param response_kwargs: Response keywords arguments.
         :rtype: See `Django response_class <https://docs.djangoproject.com/en/dev/ref/class-based-views/mixins-simple/#django.views.generic.base.TemplateResponseMixin.response_class>`_.
         """
-        return JsonResponse(self.get_data(context), **response_kwargs)
+        return JsonResponse(self.get_data(**context), **response_kwargs)
 
-    def get_data(self, context):
+    def get_data(self, **context):
         """
         Returns an object that will be serialized as JSON by json.dumps().
         """
@@ -79,11 +79,11 @@ class AjaxableResponseMixin(object):
         response = super(AjaxableResponseMixin, self).form_valid(form)
 
         if self.request.is_ajax():
-            kwargs = {}
-            return JsonResponse(self.get_data(**kwargs))
+            context = {}
+            return JsonResponse(self.get_data(**context))
         else:
             return response
 
-    def get_data(self, **kwargs):
-        kwargs.update({'pk': self.object.pk})
-        return kwargs
+    def get_data(self, **context):
+        context.update({'pk': self.object.pk})
+        return context

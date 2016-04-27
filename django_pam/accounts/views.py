@@ -112,11 +112,11 @@ class LoginView(AjaxableResponseMixin, FormView):
         self.set_test_cookie()
         return super(LoginView, self).form_invalid(form)
 
-    def get_data(self, **kwargs):
-        kwargs.update({'username': self.object.get_username(),
-                       'full_name': self.object.get_full_name(),
-                       self.redirect_field_name: self.get_success_url()})
-        return super(LoginView, self).get_data(**kwargs)
+    def get_data(self, **context):
+        context.update({'username': self.object.get_username(),
+                        'full_name': self.object.get_full_name(),
+                        self.redirect_field_name: self.get_success_url()})
+        return super(LoginView, self).get_data(**context)
 
     def get_success_url(self):
         if self.success_url:
@@ -195,7 +195,9 @@ class LogoutView(JSONResponseMixin, TemplateView):
 
         return response
 
-    def get_data(self, context):
+    def get_data(self, **context):
+        context = super(LogoutView, self).get_data(**context)
+
         if self.request.is_ajax():
             json_data = json.loads(self.request.body.decode('utf-8'))
             log.debug("json_data: %s", json_data)
