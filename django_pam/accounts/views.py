@@ -2,21 +2,12 @@
 #
 # django_pam/accounts/views.py
 #
-# I give credit to stefanfoulis at:
-# https://github.com/stefanfoulis/django-class-based-auth-views/
-# for the basic idea of the class based login and logout views.
-#
 
 import logging
 import functools
 import smtplib
 import socket
 import json
-
-try:
-    import urlparse
-except ImportError:
-    from urllib import parse as urlparse # python3 support
 
 from django.core.urlresolvers import reverse
 from django.contrib.auth import (
@@ -44,13 +35,14 @@ log = logging.getLogger('django_pam.accounts.views')
 #
 class LoginView(AjaxableResponseMixin, FormView):
     """
-    This is a class based version of django.contrib.auth.views.login.
+    A class version of django.contrib.auth.views.login.
 
     Usage:
       in urls.py:
         url(r'^login/$', LoginView.as_view(
-            form_class=MyCustomAuthFormClass,
-            success_url='/my/custom/success/url/),
+            form_class=MyAuthenticationForm,
+            success_url='/my/success/url/),
+            redirect_field_name='my-redirect-field-name'
             name='login'),
     """
     form_class = AuthenticationForm
@@ -95,24 +87,14 @@ class LoginView(AjaxableResponseMixin, FormView):
     def form_valid(self, form):
         """
         The user has provided valid credentials (this was checked in the
-        form's is_valid() method). So now we can check the test cookie stuff
-        and log him in.
+        form's is_valid() method).
         """
         self.object = form.get_user()
         login(self.request, self.object)
-        self.check_and_delete_test_cookie()
         return super(LoginView, self).form_valid(form)
 
-    def form_invalid(self, form):
-        """
-        The user has provided invalid credentials (this was checked in the
-        form's is_valid() method). So now we set the test cookie again and
-        re-render the form with errors.
-        """
-        self.set_test_cookie()
-        return super(LoginView, self).form_invalid(form)
-
     def get_data(self, **context):
+        # Called in form_valid in AjaxableResponseMixin.
         context.update({'username': self.object.get_username(),
                         'full_name': self.object.get_full_name(),
                         self.redirect_field_name: self.get_success_url()})
@@ -124,33 +106,10 @@ class LoginView(AjaxableResponseMixin, FormView):
         else:
             redirect_to = self.request.GET.get(self.redirect_field_name, '')
 
-        netloc = urlparse.urlparse(redirect_to)[1]
-
         if not redirect_to:
-            redirect_to = resolve_url(settings.LOGIN_REDIRECT_URL)
-        # Security check -- don't allow redirection to a different host.
-        elif netloc and netloc != self.request.get_host():
             redirect_to = resolve_url(settings.LOGIN_REDIRECT_URL)
 
         return redirect_to
-
-    def set_test_cookie(self):
-        self.request.session.set_test_cookie()
-
-    def check_and_delete_test_cookie(self):
-        if self.request.session.test_cookie_worked():
-            self.request.session.delete_test_cookie()
-            return True
-
-        return False
-
-    def get(self, request, *args, **kwargs):
-        """
-        Same as django.views.generic.edit.ProcessFormView.get(), but adds test
-        cookie stuff
-        """
-        self.set_test_cookie()
-        return super(LoginView, self).get(request, *args, **kwargs)
 
 
 #

@@ -73,3 +73,22 @@ class TestAuthenticationForm(BaseDjangoPAM):
         # Check that we have a password and __all__ error messages.
         self.assertTrue('password' in form.errors.as_data(), msg)
         self.assertTrue('__all__' in form.errors.as_data(), msg)
+
+    def test_invalid_credentials(self):
+        """
+        Test for invalid credentials.
+        """
+        #self.skipTest("Temporarily skipped")
+        # Get user's credentials.
+        username, password, email = "somebody", "password", "bad@email.net"
+        request = self.factory.get('django-pam:login')
+        request.user = AnonymousUser()
+        kwargs = {}
+        data = kwargs.setdefault('data', QueryDict(mutable=True))
+        data.appendlist('username', username)
+        data.appendlist('password', password)
+        data.appendlist('email', email)
+        form = AuthenticationForm(**kwargs)
+        msg = "kwargs: {}, errors: {}".format(kwargs, form.errors.as_data())
+        self.assertFalse(form.is_valid(), msg)
+        self.assertTrue('__all__' in form.errors.as_data(), msg)

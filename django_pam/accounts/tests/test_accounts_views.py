@@ -61,6 +61,28 @@ class TestLoginView(BaseDjangoPAM):
         self.assertTrue('you are Authenticated' in content, msg)
         self.assertEqual(content.count('?next=home-page'), 2, msg)
 
+    def test_post_login_form_invalid_redirection(self):
+        """
+        Test that redirection will not take you off site.
+        """
+        #self.skipTest("Temporarily skipped")
+        # Get user's credentials.
+        username, password, email = self._prompt(need_email=True)
+        # Setup request
+        url = reverse('django-pam:login')
+        data = {'username': username, 'password': password, 'email': email}
+        response = self.client.post(url, data=data)
+        msg = "response status: {}, should be 302".format(response.status_code)
+        self.assertEquals(response.status_code, 302, msg)
+        # Redirect to bad location
+        off_site_url = "http://someplace.else.com/bad-page/"
+        response = self.client.get(off_site_url)
+        msg = "response status: {}, should be 404".format(response.status_code)
+        self.assertEquals(response.status_code, 404, msg)
+        content = response.content.decode('utf-8')
+        msg = "content: {}".format(content)
+        self.assertTrue('The requested URL /bad-page/' in content, msg)
+
     def test_post_login_form_invalid(self):
         """
         Test that an invalid form login returns a redirect properly.
@@ -104,7 +126,7 @@ class TestLoginView(BaseDjangoPAM):
         data = json.dumps([
             {'name': 'username', 'value': username},
             {'name': 'password', 'value': password},
-            {'name': 'email', 'value': email}
+            {'name': 'email', 'value': email},
             ])
         response = self.client.post(url, content_type='application/json',
                                     HTTP_X_REQUESTED_WITH='XMLHttpRequest',
@@ -131,7 +153,7 @@ class TestLoginView(BaseDjangoPAM):
         data = json.dumps([
             {'name': 'username', 'value': username},
             {'name': 'password', 'value': password},
-            {'name': 'email', 'value': email}
+            {'name': 'email', 'value': email},
             ])
         response = self.client.post(url, content_type='application/json',
                                     HTTP_X_REQUESTED_WITH='XMLHttpRequest',
@@ -186,7 +208,8 @@ class TestLogoutView(BaseDjangoPAM):
         data = json.dumps([
             {'name': 'username', 'value': username},
             {'name': 'password', 'value': password},
-            {'name': 'email', 'value': email}
+            {'name': 'email', 'value': email},
+            {'name': 'next', 'value': 'home-page'},
             ])
         response = self.client.post(url, content_type='application/json',
                                     HTTP_X_REQUESTED_WITH='XMLHttpRequest',
@@ -240,7 +263,7 @@ class TestLogoutView(BaseDjangoPAM):
 
     def test_post_logout_ajax(self):
         """
-
+        Test that a valid ajax logout returns properly.
         """
         #self.skipTest("Temporarily skipped")
         # Create user
