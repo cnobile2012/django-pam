@@ -2,6 +2,10 @@
 #
 # django_pam/auth/backends.py
 #
+"""
+Django PAM views.
+"""
+__docformat__ = "restructuredtext en"
 
 import logging
 import types
@@ -17,6 +21,9 @@ log = logging.getLogger('django_pam.auth.backends')
 
 
 class PAMBackend(ModelBackend):
+    """
+    An implementation of a PAM backend authentication module.
+    """
     _pam = pam_base.pam()
 
     def authenticate(self, username=None, password=None, **extra_fields):

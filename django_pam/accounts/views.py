@@ -38,12 +38,13 @@ class LoginView(AjaxableResponseMixin, FormView):
     """
     A class version of django.contrib.auth.views.login.
 
-    Usage:
+    Usage::
+
         url(r'^login/$', LoginView.as_view(
             form_class=MyAuthenticationForm,
             success_url='/my/success/url/),
             redirect_field_name='my-redirect-field-name'
-            name='login'),
+            ), name='login'),
     """
     form_class = AuthenticationForm
     redirect_field_name = REDIRECT_FIELD_NAME
@@ -52,6 +53,14 @@ class LoginView(AjaxableResponseMixin, FormView):
     @method_decorator(csrf_protect)
     @method_decorator(never_cache)
     def dispatch(self, request, *args, **kwargs):
+        """
+        Dispatches the request to the correct HTTP handler method.
+
+        :param request: The Django request object.
+        :param args: Positional arguments.
+        :param kwargs: Keyword arguments.
+        :rtype: The proper handler.
+        """
         return super(LoginView, self).dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
@@ -63,6 +72,7 @@ class LoginView(AjaxableResponseMixin, FormView):
            {'name': 'next', 'value': '<redirect URI>'}
           ]
 
+        :rtype: dict
         """
         if self.request.is_ajax():
             json_data = json.loads(self.request.body.decode('utf-8'))
@@ -88,12 +98,23 @@ class LoginView(AjaxableResponseMixin, FormView):
         """
         The user has provided valid credentials (this was checked in the
         form's is_valid() method).
+
+        :param form: A Django form object.
+        :type form: Django Form
+        :rtype: Result of ``AjaxableResponseMixin.form_valid``.
         """
         self.object = form.get_user()
         login(self.request, self.object)
         return super(LoginView, self).form_valid(form)
 
     def get_data(self, **context):
+        """
+        Add to the JSON context.
+
+        :param context: A json response context.
+        :type context: dict
+        :rtype: dict
+        """
         # Called in form_valid in AjaxableResponseMixin.
         context.update({'username': self.object.get_username(),
                         'full_name': self.object.get_full_name(),
@@ -101,6 +122,11 @@ class LoginView(AjaxableResponseMixin, FormView):
         return super(LoginView, self).get_data(**context)
 
     def get_success_url(self):
+        """
+        Returns a url used for redirection.
+
+        :rtype: str
+        """
         if self.success_url:
             redirect_to = self.success_url
         else:
@@ -116,11 +142,31 @@ class LoginView(AjaxableResponseMixin, FormView):
 # LogoutView
 #
 class LogoutView(JSONResponseMixin, TemplateView):
+    """
+    A class version of django.contrib.auth.views.logout.
+
+    Usage::
+
+        url(r'^logout/$', LogoutView.as_view(
+            template_name='my_template.html',
+            success_url='/my/success/url/),
+            redirect_field_name='my-redirect-field-name'
+            ), name='logout')
+    """
     template_name = "django_pam/accounts/logout.html"
     redirect_field_name = REDIRECT_FIELD_NAME
     success_url = settings.LOGIN_URL
 
     def get(self, request, *args, **kwargs):
+        """
+        A GET method handler.
+
+        :param request: The Django request object.
+        :param args: Positional arguments.
+        :param kwargs: Keyword arguments.
+        :type kwargs: dict
+        :rtype: A response object.
+        """
         log.debug("request: %s, args: %s, kwargs: %s", request, args, kwargs)
 
         if not request.user.is_authenticated():
@@ -135,9 +181,19 @@ class LogoutView(JSONResponseMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         """
-        Incoming AJAX data structure from an HTML <form> tag:
+        A POST method handler.
 
-        [{'name': 'next', 'value': '<redirect URI>'}]
+        .. note::
+
+          Incoming AJAX data structure from an HTML <form> tag::
+
+            [{'name': 'next', 'value': '<redirect URI>'}]
+
+        :param request: The Django request object.
+        :param args: Positional arguments.
+        :param kwargs: Keyword arguments.
+        :type kwargs: dict
+        :rtype: A response object.
         """
         log.debug("request: %s, args: %s, kwargs: %s", request, args, kwargs)
         next_page = request.POST.get(self.redirect_field_name, '')
@@ -155,6 +211,13 @@ class LogoutView(JSONResponseMixin, TemplateView):
         return response
 
     def get_data(self, **context):
+        """
+        Add to the JSON context.
+
+        :param context: A json response context.
+        :type context: dict
+        :rtype: dict
+        """
         # Called in JSONResponseMixin.
         context = super(LogoutView, self).get_data(**context)
         json_data = json.loads(self.request.body.decode('utf-8'))
@@ -173,6 +236,14 @@ class LogoutView(JSONResponseMixin, TemplateView):
         return context
 
     def get_context_data(self, **kwargs):
+        """
+        Add to the template context.
+
+        :param kwargs: Keyword arguments.
+        :type kwargs: dict
+        :type kwargs: dict
+        :rtype: dict
+        """
         context = super(LogoutView, self).get_context_data(**kwargs)
         log.debug("kwargs: %s, context: %s", kwargs, context)
         context.update({
@@ -183,6 +254,8 @@ class LogoutView(JSONResponseMixin, TemplateView):
     def get_success_url(self):
         """
         Returns the supplied success URL.
+
+        :rtype: str
         """
         if self.success_url:
             # Forcing possible reverse_lazy evaluation

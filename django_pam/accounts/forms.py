@@ -2,6 +2,10 @@
 #
 # django_pam/accounts/forms.py
 #
+"""
+Django PAM forms.
+"""
+__docformat__ = "restructuredtext en"
 
 import logging
 import inspect
@@ -23,7 +27,7 @@ class AuthenticationForm(_AuthenticationForm):
         if log.isEnabledFor(logging.DEBUG):
             debug = kwargs.copy()
             data = dict([(k, 'Has Password' if 'password' in k and v else v)
-                         for k,v in debug.get('data', {}).items()])
+                         for k, v in debug.get('data', {}).items()])
             debug['data'] = data
             log.debug("request: %s, args: %s, kwargs: %s", request, args, debug)
 
@@ -33,6 +37,9 @@ class AuthenticationForm(_AuthenticationForm):
             request=request, *args, **kwargs)
 
     def clean(self):
+        """
+        Does the authentication and saves the email if exists.
+        """
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
         email = self.cleaned_data.get('email')
