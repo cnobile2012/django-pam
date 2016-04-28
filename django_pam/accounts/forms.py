@@ -7,7 +7,7 @@ import logging
 import inspect
 
 from django import forms
-from django.contrib.auth import get_user_model, get_backends
+from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm as _AuthenticationForm
 
 log = logging.getLogger('django_pam.accounts.forms')
@@ -38,8 +38,7 @@ class AuthenticationForm(_AuthenticationForm):
         email = self.cleaned_data.get('email')
 
         if username and password:
-            self.user_cache = self.authenticate(username=username,
-                                                password=password)
+            self.user_cache = authenticate(username=username, password=password)
 
             if self.user_cache:
                 if email:
@@ -56,36 +55,6 @@ class AuthenticationForm(_AuthenticationForm):
                 )
 
         return self.cleaned_data
-
-    def authenticate(self, **credentials):
-        """
-        If the given credentials are valid, return a User object.
-        """
-        user = None
-
-        for backend in get_backends():
-            try:
-                inspect.getcallargs(backend.authenticate, **credentials)
-            except TypeError:
-                # This backend doesn't accept these credentials as arguments.
-                # Try the next one.
-                continue
-
-            try:
-                user = backend.authenticate(**credentials)
-            except PermissionDenied:
-                # This backend says to stop in our tracks - this user should
-                # not be allowed in at all. (user is None)
-                break
-            else:
-                if user:
-                    # Annotate the user object with the path of the backend.
-                    # (user is a valid object)
-                    user.backend = "{}.{}".format(backend.__module__,
-                                                  backend.__class__.__name__)
-                    break
-
-        return user
 
     class Media:
         css = {
