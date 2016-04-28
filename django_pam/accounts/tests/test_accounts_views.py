@@ -9,6 +9,7 @@ import six
 from django.test import Client
 
 from django.core.urlresolvers import reverse
+from django.core.exceptions import ImproperlyConfigured
 
 from django_pam.auth.tests.base_test import BaseDjangoPAM
 
@@ -32,7 +33,7 @@ class TestLoginView(BaseDjangoPAM):
         url = reverse('django-pam:login')
         response = self.client.get(url)
         msg = "response status: {}, should be 200".format(response.status_code)
-        self.assertEquals(response.status_code, 200, msg)
+        self.assertEqual(response.status_code, 200, msg)
         content = response.content.decode('utf-8')
         msg = "content: {}".format(content)
         self.assertTrue('csrfmiddlewaretoken' in content, msg)
@@ -51,11 +52,11 @@ class TestLoginView(BaseDjangoPAM):
         data = {'username': username, 'password': password, 'email': email}
         response = self.client.post(url, data=data)
         msg = "response status: {}, should be 302".format(response.status_code)
-        self.assertEquals(response.status_code, 302, msg)
+        self.assertEqual(response.status_code, 302, msg)
         # Redirect
         response = self.client.get(response.url)
         msg = "response status: {}, should be 200".format(response.status_code)
-        self.assertEquals(response.status_code, 200, msg)
+        self.assertEqual(response.status_code, 200, msg)
         content = response.content.decode('utf-8')
         msg = "content: {}".format(content)
         self.assertTrue('you are Authenticated' in content, msg)
@@ -73,12 +74,12 @@ class TestLoginView(BaseDjangoPAM):
         data = {'username': username, 'password': password, 'email': email}
         response = self.client.post(url, data=data)
         msg = "response status: {}, should be 302".format(response.status_code)
-        self.assertEquals(response.status_code, 302, msg)
+        self.assertEqual(response.status_code, 302, msg)
         # Redirect to bad location
         off_site_url = "http://someplace.else.com/bad-page/"
         response = self.client.get(off_site_url)
         msg = "response status: {}, should be 404".format(response.status_code)
-        self.assertEquals(response.status_code, 404, msg)
+        self.assertEqual(response.status_code, 404, msg)
         content = response.content.decode('utf-8')
         msg = "content: {}".format(content)
         self.assertTrue('The requested URL /bad-page/' in content, msg)
@@ -95,7 +96,7 @@ class TestLoginView(BaseDjangoPAM):
         data = {'username': username, 'password': password, 'email': email}
         response = self.client.post(url, data=data)
         msg = "response status: {}, should be 200".format(response.status_code)
-        self.assertEquals(response.status_code, 200, msg)
+        self.assertEqual(response.status_code, 200, msg)
         self.assertTrue(self._has_error(response))
         tests = {'__all__': "Please enter a correct",
                  'username': 'This field is required.',
@@ -108,7 +109,7 @@ class TestLoginView(BaseDjangoPAM):
         data = {'username': username, 'password': password, 'email': email}
         response = self.client.post(url, data=data)
         msg = "response status: {}, should be 200".format(response.status_code)
-        self.assertEquals(response.status_code, 200, msg)
+        self.assertEqual(response.status_code, 200, msg)
         self.assertTrue(self._has_error(response))
         tests = {'__all__': "Please enter a correct",
                  'email': "Enter a valid email address."}
@@ -134,7 +135,7 @@ class TestLoginView(BaseDjangoPAM):
         self.assertFalse(self._has_error(response))
         # JavaScript does the redirect, so a 200 OK is valid here.
         msg = "response status: {}, should be 200".format(response.status_code)
-        self.assertEquals(response.status_code, 200, msg)
+        self.assertEqual(response.status_code, 200, msg)
         content = json.loads(response.content.decode('utf-8'))
         msg = "content: {}".format(content)
         self.assertTrue(content.get('full_name', '') == '', msg)
@@ -176,7 +177,7 @@ class TestLoginView(BaseDjangoPAM):
                                     HTTP_X_REQUESTED_WITH='XMLHttpRequest',
                                     data=data)
         msg = "response status: {}, should be 400".format(response.status_code)
-        self.assertEquals(response.status_code, 400, msg)
+        self.assertEqual(response.status_code, 400, msg)
         tests = {'__all__': "Please enter a correct",
                  'email': "Enter a valid email address."}
         self._test_errors(response, tests=tests)
@@ -199,7 +200,7 @@ class TestLogoutView(BaseDjangoPAM):
         data = {'username': username, 'password': password, 'email': email}
         response = self.client.post(url, data=data)
         msg = "response status: {}, should be 302".format(response.status_code)
-        self.assertEquals(response.status_code, 302, msg)
+        self.assertEqual(response.status_code, 302, msg)
 
     def _login_ajax(self):
         username, password, email = self._prompt(need_email=True)
@@ -217,7 +218,7 @@ class TestLogoutView(BaseDjangoPAM):
         self.assertFalse(self._has_error(response))
         # JavaScript does the redirect, so a 200 OK is valid here.
         msg = "response status: {}, should be 200".format(response.status_code)
-        self.assertEquals(response.status_code, 200, msg)
+        self.assertEqual(response.status_code, 200, msg)
 
     def test_get_logout_screen(self):
         """
@@ -228,13 +229,13 @@ class TestLogoutView(BaseDjangoPAM):
         url = reverse('django-pam:logout') + '?next=home-page'
         response = self.client.get(url)
         msg = "response status: {}, should be 302".format(response.status_code)
-        self.assertEquals(response.status_code, 302, msg)
+        self.assertEqual(response.status_code, 302, msg)
         # Create user
         self._login_form()
         url = reverse('django-pam:logout') + '?next=home-page'
         response = self.client.get(url)
         msg = "response status: {}, should be 200".format(response.status_code)
-        self.assertEquals(response.status_code, 200, msg)
+        self.assertEqual(response.status_code, 200, msg)
         content = response.content.decode('utf-8')
         msg = "content: {}".format(content)
         self.assertTrue('csrfmiddlewaretoken' in content, msg)
@@ -252,14 +253,27 @@ class TestLogoutView(BaseDjangoPAM):
         data = {'next': 'home-page'}
         response = self.client.post(url, data=data)
         msg = "response status: {}, should be 302".format(response.status_code)
-        self.assertEquals(response.status_code, 302, msg)
+        self.assertEqual(response.status_code, 302, msg)
         # Redirect
         response = self.client.get(response.url)
         msg = "response status: {}, should be 200".format(response.status_code)
-        self.assertEquals(response.status_code, 200, msg)
+        self.assertEqual(response.status_code, 200, msg)
         content = response.content.decode('utf-8')
         msg = "content: {}".format(content)
         self.assertTrue('Welcome, Please Login' in content, msg)
+
+    def test_post_logout_form_invalid(self):
+        """
+        Test that if the success_url is not set an exception is raised.
+        """
+        #self.skipTest("Temporarily skipped")
+        # Create user
+        self._login_form()
+        # Setup request
+        url = reverse('django-pam:logout')
+        data = {'next': ''}
+        with self.assertRaises(ImproperlyConfigured) as cm:
+            response = self.client.post(url, data=data)
 
     def test_post_logout_ajax(self):
         """
@@ -270,11 +284,20 @@ class TestLogoutView(BaseDjangoPAM):
         self._login_ajax()
         # Setup request
         url = reverse('django-pam:logout')
-        data = json.dumps([{'value': 'next', 'value': 'home-page'},])
+        value0 = {'name': 'next', 'value': 'home-page'}
+        value1 = {'name': 'user', 'value': 'realuser'}
+        data = json.dumps([value0, value1])
         response = self.client.post(url, content_type='application/json',
                                     HTTP_X_REQUESTED_WITH='XMLHttpRequest',
                                     data=data)
         self.assertFalse(self._has_error(response))
         # JavaScript does the redirect, so a 200 OK is valid here.
         msg = "response status: {}, should be 200".format(response.status_code)
-        self.assertEquals(response.status_code, 200, msg)
+        self.assertEqual(response.status_code, 200, msg)
+        content = json.loads(response.content.decode('utf-8'))
+        redirect_uri = reverse(value0.get('value'))
+        user = value1.get('value')
+        msg = "content: {}, redirect_uri: {}, user: {}".format(
+            content, redirect_uri, user)
+        self.assertEqual(redirect_uri, content.get('next'), msg)
+        self.assertEqual(user, content.get('user'), msg)

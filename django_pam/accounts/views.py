@@ -10,6 +10,7 @@ import socket
 import json
 
 from django.core.urlresolvers import reverse
+from django.core.exceptions import ImproperlyConfigured
 from django.contrib.auth import (
     REDIRECT_FIELD_NAME, login, logout, get_user_model)
 from django.utils.decorators import method_decorator
@@ -38,7 +39,6 @@ class LoginView(AjaxableResponseMixin, FormView):
     A class version of django.contrib.auth.views.login.
 
     Usage:
-      in urls.py:
         url(r'^login/$', LoginView.as_view(
             form_class=MyAuthenticationForm,
             success_url='/my/success/url/),
@@ -122,12 +122,12 @@ class LogoutView(JSONResponseMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         log.debug("request: %s, args: %s, kwargs: %s", request, args, kwargs)
-        next_page = request.GET.get(self.redirect_field_name, '')
-        kwargs[self.redirect_field_name] = next_page
 
         if not request.user.is_authenticated():
             response = redirect(self.get_success_url())
         else:
+            next_page = request.GET.get(self.redirect_field_name, '')
+            kwargs[self.redirect_field_name] = next_page
             context = self.get_context_data(**kwargs)
             response = self.render_to_response(context)
 
@@ -155,23 +155,19 @@ class LogoutView(JSONResponseMixin, TemplateView):
         return response
 
     def get_data(self, **context):
+        # Called in JSONResponseMixin.
         context = super(LogoutView, self).get_data(**context)
+        json_data = json.loads(self.request.body.decode('utf-8'))
+        log.debug("json_data: %s", json_data)
 
-        if self.request.is_ajax():
-            json_data = json.loads(self.request.body.decode('utf-8'))
-            log.debug("json_data: %s", json_data)
+        for arg in json_data:
+            name = arg.get('name')
+            value = arg.get('value')
 
-            for arg in json_data:
-                name = arg.get('name')
-                value = arg.get('value')
-
-                if name == self.redirect_field_name:
-                    context[name] = reverse(value)
-                else:
-                    context[name] = value
-        else:
-            url = context.get(self.redirect_field_name, settings.LOGIN_URL)
-            self.success_url = reverse(url)
+            if name == self.redirect_field_name:
+                context[name] = reverse(value)
+            else:
+                context[name] = value
 
         log.debug("context: %s, success_url: %s", context, self.success_url)
         return context
@@ -193,6 +189,6 @@ class LogoutView(JSONResponseMixin, TemplateView):
             url = force_text(self.success_url)
         else:
             raise ImproperlyConfigured(
-                "No URL to redirect to. Provide a success_url.")
+                _("No URL to redirect to. Provide a success_url."))
 
         return url
