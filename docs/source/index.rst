@@ -6,7 +6,14 @@
 Welcome to Django PAM's documentation!
 ======================================
 
-Contents:
+This is a simple backend that uses the *python-pam* package found at
+`python-pam <https://github.com/FirefighterBlu3/python-pam>`_. Django
+PAM can be used in an SSO (Single Sign On) environment or just on a
+single box where you want to log into a Django app with the UNIX
+login.
+
+Contents
+--------
 
 .. toctree::
    :maxdepth: 2
@@ -16,8 +23,8 @@ Contents:
    overview
    modules
 
-Indices and tables
-==================
+Indices and Tables
+------------------
 
 * :ref:`genindex`
 * :ref:`modindex`
