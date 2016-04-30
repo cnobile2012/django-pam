@@ -50,4 +50,3 @@ clobber	: clean
 	@rm -rf dist build *.egg-info
 	@rm -rf $(DOCS_DIR)/htmlcov
 	@rm -rf $(DOCS_DIR)/build
-#	@(cd $(DOCS_DIR); make clobber)

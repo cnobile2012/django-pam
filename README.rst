@@ -19,16 +19,38 @@ A Django PAM authentication backend implementation.
 The MIT License (MIT)
 
 Overview
-========
+--------
 
-This is a simple backend that uses the
+This is a simple authentication backend that uses the
 `python-pam <https://github.com/FirefighterBlu3/python-pam>`_
 package. Django PAM can be used in an SSO (Single Sign On) environment
 or just with a single box where you want to log into a Django app with
 your UNIX login.
 
-Direction I hope to take this project.
-======================================
+Provides
+--------
 
- 1. A Django authentication backend plugin.
- 2. Login and Logout views.
+1. PAM Authentication Backend
+
+2. Login and Logout Views
+
+3. Templates for both standard and modal authentication.
+
+4. Supporting JavaScript and CSS.
+
+Quick Start
+-----------
+
+  INSTALLED_APPS = [
+      ...
+      'django_pam',
+  ]
+
+  AUTHENTICATION_BACKENDS = [
+      'django_pam.auth.backends.PAMBackend',
+      'django.contrib.auth.backends.ModelBackend',
+  ]
+
+Complete Documentation can be found at
+`Read the Docs <https://readthedocs.org/>`_  at:
+`Django PAM <https://readthedocs.org/projects/django-pam>`_

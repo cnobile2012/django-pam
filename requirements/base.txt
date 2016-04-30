@@ -1,6 +1,5 @@
 # Base pip packages.
 
 Django
-ipython
 docutils
 python-pam
