@@ -55,7 +55,7 @@ class PAMBackend(ModelBackend):
 
     def get_user(self, user_data):
         """
-        Get the user by either the ``username`` or the ``pk``.
+        Get the user by either the ``username``, ``email``, or the ``pk``.
 
         :param user_data: The username, email or pk.
         :type user: str or int

@@ -9,7 +9,6 @@ import smtplib
 import socket
 import json
 
-from django.core.urlresolvers import reverse
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib.auth import (
     REDIRECT_FIELD_NAME, login, logout, get_user_model)
@@ -42,13 +41,15 @@ class LoginView(AjaxableResponseMixin, FormView):
 
         url(r'^login/$', LoginView.as_view(
             form_class=MyAuthenticationForm,
-            success_url='/my/success/url/),
-            redirect_field_name='my-redirect-field-name'
+            success_url='/my/success/url/',
+            redirect_field_name='my-redirect-field-name',
+            template_name='your_template.html'
             ), name='login'),
     """
     form_class = AuthenticationForm
     redirect_field_name = REDIRECT_FIELD_NAME
     template_name = 'django_pam/accounts/login.html'
+    success_url = ''
 
     @method_decorator(csrf_protect)
     @method_decorator(never_cache)
@@ -84,7 +85,7 @@ class LoginView(AjaxableResponseMixin, FormView):
                 value = arg.get('value')
 
                 if name == self.redirect_field_name:
-                    self.success_url = reverse(value)
+                    self.success_url = resolve_url(value)
                 else:
                     data[name] = value
 
@@ -228,7 +229,7 @@ class LogoutView(JSONResponseMixin, TemplateView):
             value = arg.get('value')
 
             if name == self.redirect_field_name:
-                context[name] = reverse(value)
+                context[name] = resolve_url(value)
             else:
                 context[name] = value
 

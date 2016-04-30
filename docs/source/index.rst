@@ -13,6 +13,7 @@ Contents:
 
    installation
    configuration
+   overview
    modules
 
 Indices and tables

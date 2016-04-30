@@ -1,8 +1,8 @@
 Configuration
 *************
 
-Installing the Backend
-======================
+Installing the Backend Authenticator
+====================================
 
 You will need to add Django PAM to your ``INSTALLED_APPS``::
 
@@ -26,17 +26,17 @@ Next you will need to add the Django PAM backend to the
   logged in through the ``ModelBackend``, assuming  both username's
   and password's are not the same.
 
-Using the Django PAM Login and Logout HTML
-==========================================
+Using the Django PAM Login and Logout Templates
+===============================================
 
 Use as is
 ---------
 
-Add the statement below to one of your ``urls.py`` files::
+Add the statement below to your ``urls.py`` files::
 
   url(r'^django-pam/', include('django_pam.urls')),
 
-Then put the HTML below in your HTML template::
+Then put the HTML below in your template::
 
   <a href="{% url 'django-pam:login' %}">Login</a>
   <a href="{% url 'django-pam:logout' %}?next={{ next }}">Logout</a>
@@ -44,7 +44,7 @@ Then put the HTML below in your HTML template::
 Use Modified CSS
 ----------------
 
-Add the statements below to one of your ``urls.py`` files::
+Add the statements below to your ``urls.py`` files::
 
   url(r'^login/$', LoginView.as_view(template_name='home/login.html'),
       name='login'),
@@ -91,7 +91,7 @@ Using the Django PAM Login and Logout Modals
 Using the modals require a little more work, but it's still not to
 difficult.
 
-In the ``base.html`` head include::
+In your ``base.html`` head include::
 
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
         type="text/css" media="all" rel="stylesheet" />
@@ -105,7 +105,7 @@ In the ``base.html`` head include::
   <script src="{% static 'django_pam/js/inheritance.js' %}"></script>
   <script src="{% static 'django_pam/js/modal.js' %}"></script>
 
-At the bottom of the ``base.html`` template include this line just
+At the bottom of your ``base.html`` template include this line just
 before the ``</html>`` tag::
 
   {% block modals %}{% endblock %}
