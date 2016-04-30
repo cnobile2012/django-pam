@@ -48,8 +48,7 @@ You will need to add Django PAM to your ``INSTALLED_APPS``::
       'django_pam',
   ]
 
-Next you will need to add the Django PAM backend to the
- ``AUTHENTICATION_BACKENDS``::
+Next you will need to add the Django PAM backend to the ``AUTHENTICATION_BACKENDS``::
 
   AUTHENTICATION_BACKENDS = [
       'django_pam.auth.backends.PAMBackend',
