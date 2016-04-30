@@ -1,15 +1,9 @@
 django_pam.auth package
 =======================
 
-Subpackages
------------
-
 .. toctree::
 
     django_pam.auth.tests
-
-Submodules
-----------
 
 django_pam.auth.backends module
 -------------------------------
@@ -20,8 +14,8 @@ django_pam.auth.backends module
     :show-inheritance:
 
 
-Module contents
----------------
+.. Module contents
+   ---------------
 
 .. automodule:: django_pam.auth
     :members:

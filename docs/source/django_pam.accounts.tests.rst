@@ -1,9 +1,6 @@
 django_pam.accounts.tests package
 =================================
 
-Submodules
-----------
-
 django_pam.accounts.tests.test_accounts_forms module
 ----------------------------------------------------
 
@@ -21,8 +18,8 @@ django_pam.accounts.tests.test_accounts_views module
     :show-inheritance:
 
 
-Module contents
----------------
+.. Module contents
+   ---------------
 
 .. automodule:: django_pam.accounts.tests
     :members:

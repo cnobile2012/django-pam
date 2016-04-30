@@ -1,16 +1,10 @@
 django_pam package
 ==================
 
-Subpackages
------------
-
 .. toctree::
 
     django_pam.accounts
     django_pam.auth
-
-Submodules
-----------
 
 django_pam.urls module
 ----------------------
@@ -21,8 +15,8 @@ django_pam.urls module
     :show-inheritance:
 
 
-Module contents
----------------
+.. Module contents
+   ---------------
 
 .. automodule:: django_pam
     :members:

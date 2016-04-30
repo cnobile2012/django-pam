@@ -55,7 +55,7 @@ This view is written to work with either a template *POST* or a
 
 .. rubric:: Footnotes
 
-.. [#f1] See source :py:meth:`django_pam.auth.backends.PAMBackend.authenticate`
-.. [#f2] See source :py:meth:`django_pam.auth.backends.PAMBackend.get_user`
-.. [#f3] See source :py:class:`django_pam.accounts.views.LoginView`
-.. [#f4] See source :py:class:`django_pam.accounts.views.LogoutView`
+.. [#f1] See source docs :py:meth:`django_pam.auth.backends.PAMBackend.authenticate`
+.. [#f2] See source docs :py:meth:`django_pam.auth.backends.PAMBackend.get_user`
+.. [#f3] See source docs :py:class:`django_pam.accounts.views.LoginView`
+.. [#f4] See source docs :py:class:`django_pam.accounts.views.LogoutView`

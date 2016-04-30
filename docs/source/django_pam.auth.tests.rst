@@ -1,9 +1,6 @@
 django_pam.auth.tests package
 =============================
 
-Submodules
-----------
-
 django_pam.auth.tests.base_test module
 --------------------------------------
 
@@ -21,8 +18,8 @@ django_pam.auth.tests.test_auth_backends module
     :show-inheritance:
 
 
-Module contents
----------------
+.. Module contents
+   ---------------
 
 .. automodule:: django_pam.auth.tests
     :members:

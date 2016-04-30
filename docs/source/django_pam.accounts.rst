@@ -1,15 +1,9 @@
 django_pam.accounts package
 ===========================
 
-Subpackages
------------
-
 .. toctree::
 
     django_pam.accounts.tests
-
-Submodules
-----------
 
 django_pam.accounts.forms module
 --------------------------------
@@ -43,9 +37,8 @@ django_pam.accounts.views module
     :undoc-members:
     :show-inheritance:
 
-
-Module contents
----------------
+.. Module contents
+   ---------------
 
 .. automodule:: django_pam.accounts
     :members:
