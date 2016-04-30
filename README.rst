@@ -6,12 +6,12 @@ Django PAM
    :target: https://pypi.python.org/pypi/django-pam
    :alt: PyPI Version
 
-.. image:: http://img.shields.io/travis/cnobile/django-pam/master.svg
-   :target: http://travis-ci.org/cnobile/django-pam
+.. image:: http://img.shields.io/travis/cnobile2012/django-pam/master.svg
+   :target: http://travis-ci.org/cnobile2012/django-pam
    :alt: Build Status
 
-.. image:: http://img.shields.io/coveralls/cnobile/django-pam/master.svg
-   :target: https://coveralls.io/r/cnobile/django-pam
+.. image:: http://img.shields.io/coveralls/cnobile2012/django-pam/master.svg
+   :target: https://coveralls.io/r/cnobile2012/django-pam
    :alt: Test Coverage
 
 A Django PAM authentication backend implementation.
@@ -25,7 +25,7 @@ This is a simple backend that uses the
 `python-pam <https://github.com/FirefighterBlu3/python-pam>`_
 package. Django PAM can be used in an SSO (Single Sign On) environment
 or just with a single box where you want to log into a Django app with
-the UNIX login.
+your UNIX login.
 
 Direction I hope to take with this project.
 ===========================================
