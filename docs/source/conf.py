@@ -15,13 +15,14 @@
 import sys
 import os
 import django
+import datetime
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath(os.path.join('..', '..')))
-sys.path.insert(0, os.path.abspath('_ext'))
-os.environ['DJANGO_SETTINGS_MODULE'] = 'example_site.settings'
+#sys.path.insert(0, os.path.abspath('_ext'))
+os.environ['DJANGO_SETTINGS_MODULE'] = 'example_site.settings.stage'
 django.setup()
 
 # -- General configuration ------------------------------------------------
@@ -38,11 +39,11 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
-#    'edit_on_github',
-]
+    #'edit_on_github',
+    ]
 
-edit_on_github_project = 'cnobile2012/django_pam'
-edit_on_github_branch = 'master'
+#edit_on_github_project = 'cnobile2012/django-pam'
+#edit_on_github_branch = 'master'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -60,7 +61,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Django PAM'
-copyright = u'2016, Carl J. Nobile'
+copyright = u'{:d}, Carl J. Nobile'.format(datetime.datetime.now().year)
 author = u'Carl J. Nobile'
 
 # The version info for the project you're documenting, acts as replacement for
