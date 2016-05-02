@@ -2,6 +2,13 @@
 #
 # django_pam/accounts/urls.py
 #
+"""
+Django PAM accounta/urls.py
+
+
+"""
+__docformat__ = "restructuredtext en"
+
 
 from django.conf.urls import url
 from django.views.generic import TemplateView

@@ -2,6 +2,11 @@
 #
 # django_pam/accounts/views.py
 #
+"""
+Django PAM views.py
+"""
+__docformat__ = "restructuredtext en"
+
 
 import logging
 import functools
