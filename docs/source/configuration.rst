@@ -29,8 +29,8 @@ Next you will need to add the Django PAM backend to the
 Using the Django PAM Login and Logout Templates
 ===============================================
 
-Use as is
----------
+Use as is with Django PAM CSS
+-----------------------------
 
 Add the statement below to your ``urls.py`` files::
 
@@ -38,6 +38,7 @@ Add the statement below to your ``urls.py`` files::
 
 Then put the HTML below in your template::
 
+  {% load staticfiles %}
   <a href="{% url 'django-pam:login' %}">Login</a>
   <a href="{% url 'django-pam:logout' %}?next={{ next }}">Logout</a>
 
@@ -63,6 +64,10 @@ Login::
   {% endblock %}
   {% block content %}{% include "django_pam/accounts/_login.html" %}{% endblock %}
 
+The stanza above includes the Django PAM CSS and JavaScript code
+through the form. Then the overriding CSS is included. The JavaScript
+code, that's included from the form, is not dependent on any toolkit.
+
 Logout::
 
   {% extends "your_base.html" %}
@@ -73,17 +78,14 @@ Logout::
   {% endblock %}
   {% block content %}{% include "django_pam/accounts/_logout.html" %}{% endblock %}
 
+There is no form for logout so the CSS from Django PAM and the
+overriding CSS need to be included the normal way.
+
 Then use something like the HTML below in your HTML template::
 
+  {% load staticfiles %}
   <a href="{% url 'login' %}">Login</a>
   <a href="{% url 'logout' %}?next={{ next }}">Logout</a>
-
-The first stanza above includes the Django PAM CSS and JavaScript code
-through the form. The JavaScript code is not dependent on any
-toolkit. Then the overriding CSS is included.
-
-There is no form for logout so the Django PAM and the overriding CSS
-need to be included the normal way.
 
 Using the Django PAM Login and Logout Modals
 ============================================
@@ -125,3 +127,9 @@ template::
   The JavaScript for the modals is written in ES6 which is supported
   in most of the newer browsers. See:
   `ECMAScript 6 <https://github.com/lukehoban/es6features>`_.
+
+  Use `Babel <https://babeljs.io/>`_ or `Traceur
+  <https://github.com/google/traceur-compiler>`_ if you wish to
+  `Transpile
+  <https://en.wikipedia.org/wiki/Source-to-source_compiler>`_  my
+  JavaScript code.
