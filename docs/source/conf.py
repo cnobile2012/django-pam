@@ -14,9 +14,10 @@
 
 import sys
 import os
+import datetime
+
 import django
 from django.conf import settings
-import datetime
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -47,12 +48,7 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
     'sphinx.ext.viewcode',
-    #'sphinx.ext.githubpages',
-    #'edit_on_github',
     ]
-
-#edit_on_github_project = 'cnobile2012/django-pam'
-#edit_on_github_branch = 'master'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

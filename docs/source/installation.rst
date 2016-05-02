@@ -5,6 +5,8 @@ The easiest way to install the Django PAM package is with pip::
 
   $ pip install django-pam
 
+  This project is not in pip yet.
+
 You can also install with GitHub. This is useful if you need to see
 Django PAM running in a real environment::
 
