@@ -10,6 +10,7 @@ sphinx_rtd_theme
 
 # Test coverage
 coverage
+python-coveralls
 
 # CLI
 ipython
