@@ -4,10 +4,7 @@
 *#*#
 .DS_Store
 *.txt
-!base.txt
-!development.txt
-!production.txt
-!staging.txt
+!requirements/*.txt
 *.pdf
 docs/api
 docs/htmlcov

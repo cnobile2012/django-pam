@@ -1,7 +1,6 @@
 language: python
 
 python:
-  - "2.6"
   - "2.7"
   - "3.2"
   - "3.3"
@@ -11,13 +10,13 @@ python:
   - "nightly" # currently points to 3.6-dev
 
 # command to install dependencies
-install: "pip install -r requirements/development.txt"
+install: "pip install -r requirements/travis.txt"
 
 sudo: required
 
 # command to run tests
 script:
-  - (cd example_site/settings/; ln -s development.py local.py)
+  - (cd example_site/settings/; ln -s stage.py local.py)
   - python manage.py migrate
   - make coverage
 
