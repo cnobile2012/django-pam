@@ -34,6 +34,10 @@ class JSONResponseMixin(object):
     def get_data(self, **context):
         """
         Returns an object that will be serialized as JSON by json.dumps().
+
+        :param context: Context added to the JSON response.
+        :type context: dict
+        :rtype: dict -- Updated context
         """
         # Note: This is *EXTREMELY* naive; in reality, you'll need
         # to do much more complex handling to ensure that arbitrary
@@ -79,11 +83,17 @@ class AjaxableResponseMixin(object):
         response = super(AjaxableResponseMixin, self).form_valid(form)
 
         if self.request.is_ajax():
-            context = {}
-            return JsonResponse(self.get_data(**context))
+            return JsonResponse(self.get_data(**{}))
         else:
             return response
 
     def get_data(self, **context):
+        """
+        Returns an object that will be serialized as JSON by json.dumps().
+
+        :param context: Context added to the JSON response.
+        :type context: dict
+        :rtype: dict -- Updated context
+        """
         context.update({'pk': self.object.pk})
         return context
