@@ -8,6 +8,9 @@ BASE_DIR	= $(shell echo $${PWD\#\#*/})
 PACKAGE_DIR	= $(BASE_DIR)-$(VERSION)
 DOCS_DIR	= $(PREFIX)/docs
 TODAY		= $(shell date +"%Y-%m-%d_%H%M")
+RM_REGEX	= '(^.*.pyc$$)|(^.*.wsgic$$)|(^.*~$$)|(.*\#$$)|(^.*,cover$$)'
+RM_CMD		= find $(PREFIX) -regextype posix-egrep -regex $(RM_REGEX) \
+                  -exec rm {} \;
 
 #----------------------------------------------------------------------
 all	: tar
@@ -45,7 +48,7 @@ upload-test: clobber
 
 .PHONY	: clean
 clean	:
-	$(shell cleanDirs.sh clean)
+	$(shell $(RM_CMD))
 
 .PHONY	: clobber
 clobber	: clean
