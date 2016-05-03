@@ -13,10 +13,13 @@ python:
 # command to install dependencies
 install: "pip install -r requirements/development.txt"
 
-# command to run tests
-script: make coverage
-
 sudo: required
+
+# command to run tests
+script:
+  - (cd example_site/settings/; ln -s development.py local.py)
+  - python manage.py migrate
+  - make coverage
 
 after_success:
   coveralls
