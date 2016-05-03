@@ -1,5 +1,16 @@
-import os, sys
+import os, sys, re
 from setuptools import setup, find_packages
+
+def version():
+    regex = r'^(?m){}[\s]*=[\s]*(?P<ver>\d*)$'
+
+    with open(os.path.join(os.path.dirname(__file__), 'include.mk')) as f:
+        ver = f.read()
+
+    major = re.search(regex.format('MAJORVERSION'), ver).group('ver')
+    minor = re.search(regex.format('MINORVERSION'), ver).group('ver')
+    patch = re.search(regex.format('PATCHLEVEL'), ver).group('ver')
+    return "{}.{}.{}".format(major, minor, patch)
 
 with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
     README = readme.read()
@@ -9,8 +20,8 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-pam',
-    version='1.0.0',
-    packages=find_packages(include=['django_pam',]),
+    version=version(),
+    packages=['django_pam', 'django_pam.auth', 'django_pam.accounts',],
     include_package_data=True,
     license='MIT',
     description=('Django PAM can be used in an SSO (Single Sign On) '
