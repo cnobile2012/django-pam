@@ -13,6 +13,7 @@ import getpass
 from io import open
 from collections import OrderedDict
 
+from django.conf import settings
 from django.test import TestCase
 from django.utils.translation import ugettext
 
@@ -24,7 +25,7 @@ class BaseDjangoPAM(TestCase):
         super(BaseDjangoPAM, self).__init__(name)
 
     def _prompt(self, need_email=False):
-        home = os.path.join(os.getenv('HOME'), self._CONFIG)
+        home = os.path.join(settings.BASE_DIR, '..', self._CONFIG)
         fields = ('username', 'password', 'email',)
         lines = {}
 

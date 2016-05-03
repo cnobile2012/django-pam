@@ -2,8 +2,6 @@ language: python
 
 python:
   - "2.7"
-  - "3.2"
-  - "3.3"
   - "3.4"
   - "3.5"
   - "3.5-dev" # 3.5 development branch
@@ -14,9 +12,12 @@ install: "pip install -r requirements/travis.txt"
 
 sudo: required
 
+before_script:
+  - echo -e "travis\npassword\nemail@someplace.org" > .django_pam
+
 # command to run tests
 script:
-  - (cd example_site/settings/; ln -s stage.py local.py)
+  - (cd example_site/settings/; ln -s travis.py local.py)
   - python manage.py migrate
   - make coverage
 

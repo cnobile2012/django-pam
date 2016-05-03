@@ -10,6 +10,7 @@ docs/api
 docs/htmlcov
 #!docs/*.pdf
 .~lock.*
+.django_pam
 local.py
 example_site/static/*/
 example_site/media/*/

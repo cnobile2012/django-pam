@@ -22,7 +22,7 @@ EMAIL_HOST_PASSWORD = ''
 EMAIL_REPLY_TO = 'donotreply@'
 
 # Logging
-LOG_ENV = 'stage'
+LOG_ENV = 'travis'
 EXAMPLES_LOG_FILE = '{}/{}-examples.log'.format(LOG_DIR, LOG_ENV)
 DJANGO_PAM_LOG_FILE = '{}/{}-django-pam.log'.format(LOG_DIR, LOG_ENV)
 
@@ -31,6 +31,6 @@ LOGGING.get('handlers', {}).get(
 LOGGING.get('handlers', {}).get(
     'django_pam_file', {})['filename'] = DJANGO_PAM_LOG_FILE
 
-LOGGING.get('loggers', {}).get('django.request', {})['level'] = 'INFO'
-LOGGING.get('loggers', {}).get('examples', {})['level'] = 'INFO'
-LOGGING.get('loggers', {}).get('django_pam', {})['level'] = 'INFO'
+LOGGING.get('loggers', {}).get('django.request', {})['level'] = 'DEBUG'
+LOGGING.get('loggers', {}).get('examples', {})['level'] = 'DEBUG'
+LOGGING.get('loggers', {}).get('django_pam', {})['level'] = 'DEBUG'
