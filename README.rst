@@ -6,14 +6,6 @@ Django PAM
    :target: https://pypi.python.org/pypi/django-pam
    :alt: PyPI Version
 
-.. image:: http://img.shields.io/travis/cnobile2012/django-pam/master.svg
-   :target: http://travis-ci.org/cnobile2012/django-pam
-   :alt: Build Status
-
-.. image:: http://img.shields.io/coveralls/cnobile2012/django-pam/master.svg
-   :target: https://coveralls.io/r/cnobile2012/django-pam
-   :alt: Test Coverage
-
 A Django PAM authentication backend implementation.
 
 The MIT License (MIT)
