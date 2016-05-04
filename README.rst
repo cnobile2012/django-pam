@@ -55,6 +55,6 @@ Next you will need to add the Django PAM backend to the ``AUTHENTICATION_BACKEND
       'django.contrib.auth.backends.ModelBackend',
   ]
 
-Complete Documentation can be found at
+Complete Documentation can be found on
 `Read the Docs <https://readthedocs.org/>`_ at:
 `Django PAM <http://django-pam.readthedocs.io/en/latest/>`_
