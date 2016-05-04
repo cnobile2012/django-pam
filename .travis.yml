@@ -13,13 +13,19 @@ install: "pip install -r requirements/travis.txt"
 sudo: required
 
 before_script:
-  - echo -e "travis\npassword\nemail@someplace.org" > .django_pam
+  - PW=$(openssl rand -base64 32)
+  - sudo useradd guest -p $(perl -e 'print crypt($PW, "salt"),"\n"') -m
+  - echo -e "guest\n$PW\nemail@someplace.org" > .django_pam
 
 # command to run tests
 script:
   - (cd example_site/settings/; ln -s travis.py local.py)
   - python manage.py migrate
   - make coverage
+
+after_script:
+  - sudo userdel -r guest
+  - unset PW
 
 after_success:
   coveralls
