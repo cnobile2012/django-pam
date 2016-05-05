@@ -12,9 +12,14 @@ install: "pip install -r requirements/travis.txt"
 
 sudo: required
 
+#env:
+#  global:
+#    - PW=$(openssl rand -base64 32)
+
 before_script:
   - PW=$(openssl rand -base64 32)
-  - sudo useradd guest -p $(perl -e 'print crypt($PW, "salt"),"\n"') -m
+  - sudo sudo usermod -a -G shadow travis
+  - sudo useradd guest -p $(perl -e 'print crypt($PW, "salt"),"\n"') -m -s /bin/bash
   - echo -e "guest\n$PW\nemail@someplace.org" > .django_pam
 
 # command to run tests
@@ -26,6 +31,7 @@ script:
 after_script:
   - sudo userdel -r guest
   - unset PW
+  - sudo gpasswd -d travis shadow
 
 after_success:
   coveralls
