@@ -60,7 +60,7 @@ TEMPLATES = [
      'DIRS': [
          os.path.join(BASE_DIR, 'templates'),
          ],
-     'APP_DIRS': True,
+     'APP_DIRS': True, # If no loaders
      'OPTIONS': {
          'context_processors': [
              'django.template.context_processors.debug',
@@ -70,6 +70,10 @@ TEMPLATES = [
              'django.contrib.messages.context_processors.messages',
              ],
          'debug': DEBUG,
+         #'loaders': [
+         #    'django.template.loaders.filesystem.Loader',
+         #    'django.template.loaders.app_directories.Loader',
+         #    ]
          },
      },
     ]
@@ -119,6 +123,7 @@ SITE_URL = '/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
+STATIC_ROOT = BASE_DIR + SITE_URL + 'static/'
 
 STATIC_URL = SITE_URL + 'static/'
 

@@ -14,3 +14,6 @@ python-coveralls
 
 # CLI
 ipython
+
+# mod_wsgi
+mod_wsgi
