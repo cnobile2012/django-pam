@@ -21,10 +21,15 @@ Next you will need to add the Django PAM backend to the
 
 .. note::
 
-  If you use your UNIX account username you will be logged in through
-  the ``PAMBackend`` backend. If you use the Django username you will
-  logged in through the ``ModelBackend``, assuming  both username's
-  and password's are not the same.
+  1. The user that runs the application needs to be a member of the
+     ``/etc/shadow`` file group. This is necessary so the user can
+     authenticate other users.
+       ``sudo usermod -a -G shadow <user>``
+
+  2. If you use your UNIX account username you will be logged in through
+     the ``PAMBackend`` backend. If you use the Django username you will
+     be logged in through the ``ModelBackend``, assuming  both usernames
+     and passwords are not the same.
 
 Using the Django PAM Login and Logout Templates
 ===============================================

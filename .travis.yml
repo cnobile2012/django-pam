@@ -17,8 +17,8 @@ sudo: required
 #    - PW=$(openssl rand -base64 32)
 
 before_script:
-  - PW=$(openssl rand -base64 32)
   - sudo sudo usermod -a -G shadow travis
+  - PW=$(openssl rand -base64 32)
   - sudo useradd guest -p $(perl -e 'print crypt($PW, "salt"),"\n"') -m -s /bin/bash
   - echo -e "guest\n$PW\nemail@someplace.org" > .django_pam
 
