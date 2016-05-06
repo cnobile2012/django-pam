@@ -47,6 +47,13 @@ Next you will need to add the Django PAM backend to the ``AUTHENTICATION_BACKEND
       'django.contrib.auth.backends.ModelBackend',
   ]
 
+.. note::
+
+  The user that runs the application needs to be a member of the
+  ``/etc/shadow`` file group. This is necessary so the user can
+  authenticate other users.
+    ``sudo usermod -a -G shadow <user>``
+
 Complete Documentation can be found on
 `Read the Docs <https://readthedocs.org/>`_ at:
 `Django PAM <http://django-pam.readthedocs.io/en/latest/>`_
