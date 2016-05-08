@@ -176,8 +176,8 @@ class TestLoginView(BaseDjangoPAM):
         response = self.client.post(url, content_type='application/json',
                                     HTTP_X_REQUESTED_WITH='XMLHttpRequest',
                                     data=data)
-        msg = "response status: {}, should be 400".format(response.status_code)
-        self.assertEqual(response.status_code, 400, msg)
+        msg = "response status: {}, should be 422".format(response.status_code)
+        self.assertEqual(response.status_code, 422, msg)
         tests = {'__all__': "Please enter a correct",
                  'email': "Enter a valid email address."}
         self._test_errors(response, tests=tests)

@@ -64,7 +64,7 @@ class AjaxableResponseMixin(object):
         response = super(AjaxableResponseMixin, self).form_invalid(form)
 
         if self.request.is_ajax():
-            return JsonResponse(form.errors, status=400)
+            return JsonResponse(form.errors, status=422)
         else:
             return response
 

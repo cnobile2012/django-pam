@@ -115,7 +115,8 @@ var ModalAuthenticate = _BaseModal.extend({
         $login.modal({backdrop: 'static'});
       });
       $('div.modal-footer button[name=login-submit]').on('click',
-        {self: this, url: this.BASE_URL + this.LOGIN_URL}, this._authRequest);
+        {self: this, url: this.BASE_URL + this.LOGIN_URL, name: "login"},
+        this._authRequest);
     }
 
     if($logout) {
@@ -129,14 +130,15 @@ var ModalAuthenticate = _BaseModal.extend({
         $logout.modal({backdrop: 'static'});
       });
       $('div.modal-footer button[name=logout-submit]').on('click',
-          {self: this, url: this.BASE_URL + this.LOGOUT_URL},
+        {self: this, url: this.BASE_URL + this.LOGOUT_URL, name: "logout"},
           this._authRequest);
     }
   },
 
   _authRequest: function(event) {
     var self = event.data.self;
-    var data = $('div.modal-body form').serializeArray();
+    var name = event.data.name;
+    var data = $('div.modal-body form[name=' + name + ']').serializeArray();
     var options = {
       url: event.data.url,
       cache: false,
@@ -145,7 +147,7 @@ var ModalAuthenticate = _BaseModal.extend({
       contentType: 'application/json; charset=utf-8',
       timeout: 20000, // 20 seconds
       success: self._authCB.bind(self),
-      statusCode: {400: self._authCB.bind(self)},
+      statusCode: {422: self._authCB.bind(self)},
     };
     self._setHeader();
     $.ajax(options);
