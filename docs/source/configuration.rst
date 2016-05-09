@@ -38,7 +38,7 @@ Using the Django PAM Login and Logout Templates
 Use as is with Django PAM CSS
 -----------------------------
 
-Add the statement below to your ``urls.py`` files::
+Add the statement below to your ``urls.py`` file::
 
   url(r'^django-pam/', include('django_pam.urls')),
 
@@ -51,12 +51,12 @@ Then put the HTML below in your template::
 Use Modified CSS
 ----------------
 
-Add the statements below to your ``urls.py`` files::
+Add the statements below to your ``urls.py`` file::
 
-  url(r'^login/$', LoginView.as_view(template_name='home/login.html'),
+  url(r'^login/$', LoginView.as_view(template_name='<your template dir>/login.html'),
       name='login'),
   url(r"^logout/(?P<next>[\w\-\:/]+)?$", LogoutView.as_view(
-      template_name='home/logout.html'), name='logout'),
+      template_name='<your template dir>/logout.html'), name='logout'),
 
 Create ``login.html`` and ``logout.html`` templates.
 
@@ -71,7 +71,7 @@ Login::
   {% block content %}{% include "django_pam/accounts/_login.html" %}{% endblock %}
 
 The stanza above includes the Django PAM CSS and JavaScript code
-through the form. Then the overriding CSS is included. The JavaScript
+through the form. Then your overriding CSS is included. The JavaScript
 code, that's included from the form, is not dependent on any toolkit.
 
 Logout::
@@ -84,7 +84,7 @@ Logout::
   {% endblock %}
   {% block content %}{% include "django_pam/accounts/_logout.html" %}{% endblock %}
 
-There is no form for logout so the CSS from Django PAM and the
+There is no form for logout so the CSS from Django PAM and your
 overriding CSS need to be included the normal way.
 
 Then use something like the HTML below in your HTML template::
