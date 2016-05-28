@@ -9,13 +9,13 @@ __docformat__ = "restructuredtext en"
 
 import logging
 import types
-import six
 import pam as pam_base
 
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.backends import ModelBackend
+from django.utils import six
 
 log = logging.getLogger('django_pam.auth.backends')
 

@@ -3,8 +3,7 @@
 # django_pam/accounts/tests/test_accounts_forms.py
 #
 
-import six
-
+from django.utils import six
 from django.test import RequestFactory
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AnonymousUser

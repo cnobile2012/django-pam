@@ -4,10 +4,9 @@
 #
 
 import json
-import six
 
 from django.test import Client
-
+from django.utils import six
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ImproperlyConfigured
 
