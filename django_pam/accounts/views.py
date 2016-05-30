@@ -9,9 +9,6 @@ __docformat__ = "restructuredtext en"
 
 
 import logging
-import functools
-import smtplib
-import socket
 import json
 
 from django.core.exceptions import ImproperlyConfigured
@@ -24,8 +21,6 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.cache import never_cache
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
-from django.views.generic.list import BaseListView
-from django.views.generic.detail import SingleObjectMixin
 from django.shortcuts import redirect, resolve_url
 from django.conf import settings
 

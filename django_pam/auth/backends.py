@@ -3,7 +3,7 @@
 # django_pam/auth/backends.py
 #
 """
-Django PAM views.
+Django PAM backend.
 """
 __docformat__ = "restructuredtext en"
 
@@ -37,6 +37,7 @@ class PAMBackend(ModelBackend):
         :type password: str
         :param extra_fields: Additonal keyword options of any editable field
                              in the user model.
+        :type extra_fields: dict
         :rtype: The Django user object.
         """
         log.debug("username: %s, extra_fields: %s", username, extra_fields)
