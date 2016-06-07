@@ -138,6 +138,17 @@ class LoginView(AjaxableResponseMixin, FormView):
 
         return redirect_to
 
+    def get_context_data(self, **context):
+        """
+        Get any extra context for GET methods.
+
+        :param context: Context for GET methods.
+        :type context: dict
+        :rtype: dict
+        """
+        context[self.redirect_field_name] = self.get_success_url()
+        return context
+
 
 #
 # LogoutView
