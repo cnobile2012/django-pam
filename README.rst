@@ -6,6 +6,10 @@ Django PAM
    :target: https://pypi.python.org/pypi/django-pam
    :alt: PyPI Version
 
+.. image:: https://img.shields.io/pypi/dm/django-pam.svg
+   :target: https://pypi.python.org/pypi/django-pam
+   :alt: PyPI Downloads
+
 A Django PAM authentication backend implementation.
 
 The MIT License (MIT)
