@@ -45,6 +45,8 @@ class PAMBackend(ModelBackend):
         user = None
 
         if self._pam.authenticate(username, password):
+            # delete "request" if exists in extra_fields
+            extra_fields.pop("request", None)
             try:
                 user = UserModel._default_manager.get_by_natural_key(
                     username=username)
