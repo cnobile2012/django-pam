@@ -147,7 +147,7 @@ class LoginView(AjaxableResponseMixin, FormView):
         :rtype: dict
         """
         context[self.redirect_field_name] = self.get_success_url()
-        return context
+        return super(LoginView, self).get_context_data(**context)
 
 
 #
