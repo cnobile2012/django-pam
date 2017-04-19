@@ -16,4 +16,4 @@ python-coveralls
 ipython
 
 # mod_wsgi
-mod_wsgi
+#mod_wsgi
