@@ -16,6 +16,7 @@ Contents
    installation
    configuration
    overview
+   testing
    modules
 
 Indices and Tables
