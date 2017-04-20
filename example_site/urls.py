@@ -38,9 +38,13 @@ urlpatterns = [
     ]
 
 if settings.DEBUG:
+    # Static media files.
+    import debug_toolbar
+
     urlpatterns += [
     url(r'^dev/(?P<path>.*)$', serve,
         {'document_root': settings.STATIC_URL, 'show_indexes': True}),
+    url(r'^__debug__/', include(debug_toolbar.urls)),
     ]
 else:
     urlpatterns += [
