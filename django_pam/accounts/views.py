@@ -181,7 +181,7 @@ class LogoutView(JSONResponseMixin, TemplateView):
         """
         log.debug("request: %s, args: %s, kwargs: %s", request, args, kwargs)
 
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             response = redirect(self.get_success_url())
         else:
             next_page = request.GET.get(self.redirect_field_name, '')
@@ -212,7 +212,7 @@ class LogoutView(JSONResponseMixin, TemplateView):
         kwargs[self.redirect_field_name] = next_page
         self.success_url = next_page
 
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             logout(request)
 
         if self.request.is_ajax():

@@ -11,6 +11,7 @@ __docformat__ = "restructuredtext en"
 from django.conf.urls import include, url
 
 
+app_name = 'django-pam'
 urlpatterns = [
-    url(r'^', include('django_pam.accounts.urls', namespace='django-pam')),
+    url(r'^', include('django_pam.accounts.urls')),
     ]
