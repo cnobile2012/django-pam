@@ -22,8 +22,8 @@ tar	: clean
 	@(cd ..; tar -czvf $(PACKAGE_DIR).tar.gz --exclude=".git" \
           --exclude="example_site/static" $(BASE_DIR))
 
-.PHONY	: coverage
-coverage: clobber
+.PHONY	: tests
+tests	: clobber
 	coverage erase
 	coverage run ./manage.py test
 	coverage report
@@ -48,6 +48,7 @@ upload-test: clobber
 	python setup.py sdist
 	python setup.py bdist_wheel --universal
 	twine upload --repository testpypi dist/*
+#	twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
 .PHONY  : install-dev
 install-dev:

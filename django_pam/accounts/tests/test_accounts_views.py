@@ -5,10 +5,10 @@
 
 import json
 
-from django.test import Client
-from django.utils import six
-from django.core.urlresolvers import reverse
 from django.core.exceptions import ImproperlyConfigured
+from django.test import Client
+from django.urls import reverse
+from django.utils import six
 
 from django_pam.auth.tests.base_test import BaseDjangoPAM
 

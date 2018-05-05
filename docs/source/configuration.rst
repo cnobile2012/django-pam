@@ -38,7 +38,11 @@ Using the Django PAM Login and Logout Templates
 Use as is with Django PAM CSS
 -----------------------------
 
-Add the statement below to your ``urls.py`` file::
+Add the statement below to ``urlpatterns`` in your ``urls.py`` file::
+
+  re_path(r'^django-pam/', include('django_pam.urls')),
+
+  or if still using Django < 2.0
 
   url(r'^django-pam/', include('django_pam.urls')),
 
