@@ -11,6 +11,7 @@ TODAY		= $(shell date +"%Y-%m-%d_%H%M")
 RM_REGEX	= '(^.*.pyc$$)|(^.*.wsgic$$)|(^.*~$$)|(.*\#$$)|(^.*,cover$$)'
 RM_CMD		= find $(PREFIX) -regextype posix-egrep -regex $(RM_REGEX) \
                   -exec rm {} \;
+PIP_ARGS	=
 
 #----------------------------------------------------------------------
 all	: tar
@@ -40,9 +41,14 @@ build	: clean
 upload	: clobber
 	python setup.py sdist upload -r pypi
 
-.PHONY	: 
+.PHONY	:
 upload-test: clobber
 	python setup.py sdist upload -r pypitest
+
+.PHONY  : install-dev
+install-dev:
+	pip install $(PIP_ARGS) -r requirements/development.txt
+
 
 #----------------------------------------------------------------------
 

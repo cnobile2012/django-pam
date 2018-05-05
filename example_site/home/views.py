@@ -9,7 +9,7 @@ from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth import REDIRECT_FIELD_NAME
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 log = logging.getLogger('example.home.views')
 

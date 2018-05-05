@@ -7,18 +7,19 @@ TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
 
 
 # Database
-# https://docs.djangoproject.com/en/1.9/ref/settings/#databases
+# https://docs.djangoproject.com/en/<version>/ref/settings/#databases
+DATA_DIR = os.path.abspath(os.path.join(BASE_DIR, '..', 'data'))
+not os.path.isdir(DATA_DIR) and os.mkdir(DATA_DIR, 0o0775)
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.abspath(os.path.join(
-            BASE_DIR, '..', 'data', 'db.sqlite3')),
+        'NAME': os.path.abspath(os.path.join(DATA_DIR, 'db.sqlite3')),
         }
     }
 
-# Add to the MIDDLEWARE_CLASSES here.
-MIDDLEWARE_CLASSES.append('debug_toolbar.middleware.DebugToolbarMiddleware')
+# Add to the MIDDLEWARE here.
+MIDDLEWARE.insert(1, 'debug_toolbar.middleware.DebugToolbarMiddleware')
 
 # Add to the INSTALLED_APPS here.
 INSTALLED_APPS.append('debug_toolbar')

@@ -14,5 +14,5 @@ Django PAM running in a real environment::
 
   Be aware that the pip requirements in the GitHub repository are not
   frozen. This may cause Django PAM to break if dependencies are used
-  that are much newer than what I used. If this happens, please put a
-  issue in my GitHub account to let me know.
+  that are much newer than what I used. If this happens, please put
+  an issue in my GitHub account to let me know.

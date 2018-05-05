@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+#
+# example_site/urls.py
+#
+
 """
 django_pam URL Configuration
 
@@ -14,8 +19,13 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
+__docformat__ = "restructuredtext en"
 
-from django.conf.urls import include, url
+try:
+    from django.urls import include, re_path
+except:
+    from django.conf.urls import include, url as re_path
+
 from django.views.static import serve
 from django.contrib import admin
 from django.conf import settings
@@ -27,13 +37,13 @@ admin.autodiscover()
 
 
 urlpatterns = [
-    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    url(r'^admin/', admin.site.urls),
-    url(r'^$', home_page_view, name='home-page'),
-    url(r'^django-pam/', include('django_pam.urls')),
-    url(r'^login/$', LoginView.as_view(template_name='home/login.html'),
+    re_path(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    re_path(r'^admin/', admin.site.urls),
+    re_path(r'^$', home_page_view, name='home-page'),
+    re_path(r'^django-pam/', include('django_pam.urls')),
+    re_path(r'^login/$', LoginView.as_view(template_name='home/login.html'),
         name='login'),
-    url(r"^logout/(?P<next>[\w\-\:/]+)?$", LogoutView.as_view(
+    re_path(r"^logout/(?P<next>[\w\-\:/]+)?$", LogoutView.as_view(
         template_name='home/logout.html'), name='logout')
     ]
 
@@ -42,12 +52,12 @@ if settings.DEBUG:
     import debug_toolbar
 
     urlpatterns += [
-    url(r'^dev/(?P<path>.*)$', serve,
-        {'document_root': settings.STATIC_URL, 'show_indexes': True}),
-    url(r'^__debug__/', include(debug_toolbar.urls)),
-    ]
+        re_path(r'^dev/(?P<path>.*)$', serve,
+            {'document_root': settings.STATIC_URL, 'show_indexes': True}),
+        re_path(r'^__debug__/', include(debug_toolbar.urls)),
+        ]
 else:
     urlpatterns += [
-    url(r'^static/(?P<path>.*)$', serve,
-        {'document_root': settings.STATIC_URL, 'show_indexes': True}),
-    ]
+        re_path(r'^static/(?P<path>.*)$', serve,
+            {'document_root': settings.STATIC_URL, 'show_indexes': True}),
+        ]
