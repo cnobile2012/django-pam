@@ -29,7 +29,7 @@ LoginView [#f3]_
 
 Usage::
 
-  url(r'^login/$', LoginView.as_view(
+  re_path(r'^login/$', LoginView.as_view(
       form_class=MyAuthenticationForm,
       success_url='/my/success/url/',
       redirect_field_name='my-redirect-field-name',
@@ -44,7 +44,7 @@ LogoutView [#f4]_
 
 Usage::
 
-  url(r'^logout/$', LogoutView.as_view(
+  re_path(r'^logout/$', LogoutView.as_view(
       template_name='my_template.html',
       success_url='/my/success/url/),
       redirect_field_name='my-redirect-field-name'
