@@ -42,10 +42,6 @@ Add the statement below to ``urlpatterns`` in your ``urls.py`` file::
 
   re_path(r'^django-pam/', include('django_pam.urls')),
 
-  or if still using Django < 2.0
-
-  url(r'^django-pam/', include('django_pam.urls')),
-
 Then put the HTML below in your template::
 
   {% load staticfiles %}
@@ -55,11 +51,11 @@ Then put the HTML below in your template::
 Use Modified CSS
 ----------------
 
-Add the statements below to your ``urls.py`` file::
+Add the statements below to ``urlpatterns`` in your ``urls.py`` file::
 
-  url(r'^login/$', LoginView.as_view(template_name='<your template dir>/login.html'),
+  re_path(r'^login/$', LoginView.as_view(template_name='<your template dir>/login.html'),
       name='login'),
-  url(r"^logout/(?P<next>[\w\-\:/]+)?$", LogoutView.as_view(
+  re_path(r"^logout/(?P<next>[\w\-\:/]+)?$", LogoutView.as_view(
       template_name='<your template dir>/logout.html'), name='logout'),
 
 Create ``login.html`` and ``logout.html`` templates.
