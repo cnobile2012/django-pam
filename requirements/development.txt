@@ -11,9 +11,8 @@ sphinx_rtd_theme
 # Test coverage
 coverage
 wheel
+twine
 
 # CLI
 ipython
 
-# mod_wsgi
-#mod_wsgi

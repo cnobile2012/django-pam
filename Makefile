@@ -39,11 +39,15 @@ build	: clean
 
 .PHONY	: upload
 upload	: clobber
-	python setup.py sdist upload -r pypi
+	python setup.py sdist
+	python setup.py bdist_wheel --universal
+	twine upload --repository pypi dist/*
 
 .PHONY	:
 upload-test: clobber
-	python setup.py sdist upload -r pypitest
+	python setup.py sdist
+	python setup.py bdist_wheel --universal
+	twine upload --repository testpypi dist/*
 
 .PHONY  : install-dev
 install-dev:
