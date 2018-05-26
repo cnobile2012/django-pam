@@ -44,9 +44,9 @@ class PAMBackend(ModelBackend):
         log.debug("username: %s, extra_fields: %s", username, extra_fields)
         UserModel = get_user_model()
         user = None
-        service = extra_fields.get('service', 'login')
-        encoding = extra_fields.get('encoding', 'utf-8')
-        resetcreds = extra_fields.get('resetcreds', True)
+        service = extra_fields.pop('service', 'login')
+        encoding = extra_fields.pop('encoding', 'utf-8')
+        resetcreds = extra_fields.pop('resetcreds', True)
 
         if self._pam.authenticate(username, password, service=service,
                                   encoding=encoding, resetcreds=resetcreds):
