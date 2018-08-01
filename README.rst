@@ -2,13 +2,17 @@
 Django PAM
 ==========
 
-.. image:: http://img.shields.io/pypi/pyversions/django-pam.svg
+.. image:: http://img.shields.io/pypi/v/django-pam.svg
    :target: https://pypi.python.org/pypi/django-pam
    :alt: PyPI Version
 
 .. image:: http://img.shields.io/pypi/wheel/django-pam.svg
    :target: https://pypi.python.org/pypi/django-pam
    :alt: PyPI Wheel
+
+.. image:: http://img.shields.io/pypi/pyversions/django-pam.svg
+   :target: https://pypi.python.org/pypi/django-pam
+   :alt: Python Versions
 
 .. image:: http://img.shields.io/pypi/l/django-pam.svg
    :target: https://pypi.python.org/pypi/django-pam
