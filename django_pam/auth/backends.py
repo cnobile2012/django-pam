@@ -36,15 +36,20 @@ class PAMBackend(ModelBackend):
         :param password: The users password. This is a manditory field.
         :type password: str
         :param extra_fields: Additonal keyword options of any editable field
-                             in the user model.
+                             in the user model or arguments in the PAM
+                             `authenticate` method.
         :type extra_fields: dict
         :rtype: The Django user object.
         """
         log.debug("username: %s, extra_fields: %s", username, extra_fields)
         UserModel = get_user_model()
         user = None
+        service = extra_fields.pop('service', 'login')
+        encoding = extra_fields.pop('encoding', 'utf-8')
+        resetcreds = extra_fields.pop('resetcreds', True)
 
-        if self._pam.authenticate(username, password, service=service):
+        if self._pam.authenticate(username, password, service=service,
+                                  encoding=encoding, resetcreds=resetcreds):
             try:
                 user = UserModel._default_manager.get_by_natural_key(
                     username=username)
