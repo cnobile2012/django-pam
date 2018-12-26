@@ -26,7 +26,7 @@ class PAMBackend(ModelBackend):
     """
     _pam = pam_base.pam()
 
-    def authenticate(self, username=None, password=None, service='login', **extra_fields):
+    def authenticate(self, request=None, username=None, password=None, service='login', **extra_fields):
         """
         Authenticate using PAM then get the account if it exists else create
         a new account.
