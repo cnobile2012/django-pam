@@ -13,6 +13,7 @@ import pam as pam_base
 
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.http import HttpRequest
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.backends import ModelBackend
 from django.utils import six
@@ -26,10 +27,16 @@ class PAMBackend(ModelBackend):
     """
     _pam = pam_base.pam()
 
-    def authenticate(self, username=None, password=None, **extra_fields):
+    def authenticate(self, request, username=None, password=None,
+                     **extra_fields):
         """
         Authenticate using PAM then get the account if it exists else create
         a new account.
+
+        .. note::
+          The keyword arguments 'service', 'encoding', and 'resetcreds'
+          can also be passed and will be pulled off the 'extra_fields'
+          kwargs.
 
         :param username: The users username. This is a manditory field.
         :type username: str
@@ -39,14 +46,19 @@ class PAMBackend(ModelBackend):
                              in the user model or arguments in the PAM
                              `authenticate` method.
         :type extra_fields: dict
-        :rtype: The Django user object.
+        :rtype: The Django user object or `None` if it fails.
         """
-        log.debug("username: %s, extra_fields: %s", username, extra_fields)
+        assert request is None or isinstance(request, HttpRequest), (
+            "The 'request' positonal argument should be either None or an "
+            "HttpRequest object.")
         UserModel = get_user_model()
         user = None
         service = extra_fields.pop('service', 'login')
         encoding = extra_fields.pop('encoding', 'utf-8')
         resetcreds = extra_fields.pop('resetcreds', True)
+        log.debug("request: %s, username: %s, service: %s, encoding: %s, "
+                  "resetcreds: %s, extra_fields: %s", request, username,
+                  service, encoding, resetcreds, extra_fields)
 
         if self._pam.authenticate(username, password, service=service,
                                   encoding=encoding, resetcreds=resetcreds):
@@ -73,8 +85,8 @@ class PAMBackend(ModelBackend):
         obj = None
 
         if user_data is not None and (
-            isinstance(user_data, six.integer_types) or
-            user_data.isdigit()):
+            isinstance(user_data, six.integer_types)
+            or user_data.isdigit()):
             query = models.Q(pk=user_data)
         elif isinstance(user_data, six.string_types):
             query = models.Q(username=user_data) | models.Q(email=user_data)

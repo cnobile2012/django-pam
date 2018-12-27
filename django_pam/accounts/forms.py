@@ -29,7 +29,8 @@ class AuthenticationForm(_AuthenticationForm):
             data = dict([(k, 'Has Password' if 'password' in k and v else v)
                          for k, v in debug.get('data', {}).items()])
             debug['data'] = data
-            log.debug("request: %s, args: %s, kwargs: %s", request, args, debug)
+            log.debug("request: %s, args: %s, kwargs: %s",
+                      request, args, debug)
 
         self.base_fields['username'].label_suffix = ''
         self.base_fields['password'].label_suffix = ''
@@ -45,7 +46,8 @@ class AuthenticationForm(_AuthenticationForm):
         email = self.cleaned_data.get('email')
 
         if username and password:
-            self.user_cache = authenticate(username=username, password=password)
+            self.user_cache = authenticate(
+                self.request, username=username, password=password)
 
             if self.user_cache:
                 if email:

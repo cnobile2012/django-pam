@@ -26,11 +26,54 @@ class TestPAMBackend(BaseDjangoPAM):
         # Get user's credentials.
         username, password, email = self._prompt()
         # Test auth
-        user = self.pam.authenticate(username=username, password=password)
+        user = self.pam.authenticate(
+            None, username=username, password=password)
         msg = "username: {}, user object: {}".format(username, user)
-        self.assertTrue(user, msg)
+        self.assertEqual(user.username, username, msg)
 
-    def test_authenticate_fail(self):
+    def test_authenticate_pass_service(self):
+        """
+        Test that authenticate method works properly with 'service'
+        passed in.
+        """
+        #self.skipTest("Temporarily skipped")
+        # Get user's credentials.
+        username, password, email = self._prompt()
+        # Test auth
+        user = self.pam.authenticate(
+            None, username=username, password=password, service='passwd')
+        msg = "username: {}, user object: {}".format(username, user)
+        self.assertEqual(user.username, username, msg)
+
+    def test_authenticate_pass_encoding(self):
+        """
+        Test that authenticate method works properly with 'encoding'
+        passed in.
+        """
+        #self.skipTest("Temporarily skipped")
+        # Get user's credentials.
+        username, password, email = self._prompt()
+        # Test auth
+        user = self.pam.authenticate(
+            None, username=username, password=password, encoding='ascii')
+        msg = "username: {}, user object: {}".format(username, user)
+        self.assertEqual(user.username, username, msg)
+
+    def test_authenticate_pass_resetcreds(self):
+        """
+        Test that authenticate method works properly with 'resetcreds'
+        passed in.
+        """
+        #self.skipTest("Temporarily skipped")
+        # Get user's credentials.
+        username, password, email = self._prompt()
+        # Test auth
+        user = self.pam.authenticate(
+            None, username=username, password=password, resetcreds=False)
+        msg = "username: {}, user object: {}".format(username, user)
+        self.assertEqual(user.username, username, msg)
+
+    def test_authenticate_fail_invalid(self):
         """
         Test that authenticate fails with invalid credentials.
         """
@@ -38,9 +81,29 @@ class TestPAMBackend(BaseDjangoPAM):
         # Get user's credentials.
         username, password, email = "username", "password", "email"
         # Test auth
-        user = self.pam.authenticate(username=username, password=password)
+        user = self.pam.authenticate(
+            None, username=username, password=password)
         msg = "username: {}, user object: {}".format(username, user)
-        self.assertFalse(user, msg)
+        self.assertIsNone(user, msg)
+
+    def test_authenticate_fail_invalid_request(self):
+        """
+        Test that authenticate fails with invalid request.
+        """
+        #self.skipTest("Temporarily skipped")
+        # Get user's credentials.
+        username, password, email = "username", "password", "email"
+        # Test auth
+        with self.assertRaises(AssertionError) as cm:
+            user = self.pam.authenticate(
+                '', username=username, password=password)
+
+        error = str(cm.exception)
+        message = ("The 'request' positonal argument should be either None "
+                   "or an HttpRequest object.")
+        msg = "username: {}, error msg: {}, should be {}".format(
+            username, error, message)
+        self.assertEqual(error, message, msg)
 
     def test_get_user_valid(self):
         """
@@ -50,25 +113,25 @@ class TestPAMBackend(BaseDjangoPAM):
         # Get user's credentials.
         username, password, email = self._prompt(need_email=True)
         # Create user
-        user = self.pam.authenticate(username=username, password=password,
-                                     email=email)
+        user = self.pam.authenticate(
+            None, username=username, password=password, email=email)
         msg = "username: {}, user object: {}".format(username, user)
-        self.assertTrue(user, msg)
+        self.assertEqual(user.username, username, msg)
         # Test get_user with username
         user = self.pam.get_user(username)
         pk = user.pk
         msg = "username: {}, user: {}, email: {}".format(username, user, email)
-        self.assertEqual(username, user.username, msg)
+        self.assertEqual(user.username, username, msg)
         # Test get_user with email
         user = self.pam.get_user(email)
-        self.assertEqual(email, user.email, msg)
+        self.assertEqual(user.email, email, msg)
         # Test user with PK
         user = self.pam.get_user(pk)
         msg = "User PK: {}, obj PK: {}, email: {}".format(pk, user.pk, email)
-        self.assertEqual(pk, user.pk, msg)
+        self.assertEqual(user.pk, pk, msg)
         # Test with a string representing an integer.
         user = self.pam.get_user(str(pk))
-        self.assertEqual(pk, user.pk, msg)
+        self.assertEqual(user.pk, pk, msg)
         # Test that the exception gets raised
         with self.assertRaises(TypeError) as cm:
             self.pam.get_user(None)
@@ -83,4 +146,4 @@ class TestPAMBackend(BaseDjangoPAM):
         pk = 99999
         user = self.pam.get_user(pk)
         msg = "pk: {}, user: {}".format(pk, user)
-        self.assertFalse(user, msg)
+        self.assertIsNone(user, msg)
