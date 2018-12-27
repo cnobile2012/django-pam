@@ -43,7 +43,7 @@ upload	: clobber
 	python setup.py bdist_wheel --universal
 	twine upload --repository pypi dist/*
 
-.PHONY	:
+.PHONY	: upload-test
 upload-test: clobber
 	python setup.py sdist
 	python setup.py bdist_wheel --universal
