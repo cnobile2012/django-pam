@@ -13,7 +13,6 @@ import pam as pam_base
 
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.http import HttpRequest
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.backends import ModelBackend
 from django.utils import six

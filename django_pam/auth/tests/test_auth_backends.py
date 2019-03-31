@@ -86,25 +86,6 @@ class TestPAMBackend(BaseDjangoPAM):
         msg = "username: {}, user object: {}".format(username, user)
         self.assertIsNone(user, msg)
 
-    def test_authenticate_fail_invalid_request(self):
-        """
-        Test that authenticate fails with invalid request.
-        """
-        #self.skipTest("Temporarily skipped")
-        # Get user's credentials.
-        username, password, email = "username", "password", "email"
-        # Test auth
-        with self.assertRaises(AssertionError) as cm:
-            user = self.pam.authenticate(
-                '', username=username, password=password)
-
-        error = str(cm.exception)
-        message = ("The 'request' positonal argument should be either None "
-                   "or an HttpRequest object.")
-        msg = "username: {}, error msg: {}, should be {}".format(
-            username, error, message)
-        self.assertEqual(error, message, msg)
-
     def test_get_user_valid(self):
         """
         Test that the ``PAMBackend.authenticate()`` method works properly.
