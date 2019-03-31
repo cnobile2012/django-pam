@@ -48,9 +48,6 @@ class PAMBackend(ModelBackend):
         :type extra_fields: dict
         :rtype: The Django user object or `None` if it fails.
         """
-        assert request is None or isinstance(request, HttpRequest), (
-            "The 'request' positonal argument should be either None or an "
-            "HttpRequest object.")
         UserModel = get_user_model()
         user = None
         service = extra_fields.pop('service', 'login')
