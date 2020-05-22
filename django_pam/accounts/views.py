@@ -208,7 +208,7 @@ class LogoutView(JSONResponseMixin, TemplateView):
         :rtype: A response object.
         """
         log.debug("request: %s, args: %s, kwargs: %s", request, args, kwargs)
-        next_page = request.POST.get(self.redirect_field_name, '')
+        next_page = request.POST.get(self.redirect_field_name, self.success_url)
         kwargs[self.redirect_field_name] = next_page
         self.success_url = next_page
 
