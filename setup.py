@@ -10,12 +10,14 @@ def version():
     major = re.search(regex.format('MAJORVERSION'), ver).group('ver')
     minor = re.search(regex.format('MINORVERSION'), ver).group('ver')
     patch = re.search(regex.format('PATCHLEVEL'), ver).group('ver')
-    return "{}.{}.{}".format(major, minor, patch)
+    # Look for a tag indicating a pre-release candidate. ex. rc1
+    env_value = os.environ.get('TEST_TAG', '')
+    return "{}.{}.{}{}".format(major, minor, patch, env_value)
 
 with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
     README = readme.read()
 
-# allow setup.py to be run from any path
+# Allow setup.py to be run from any path.
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
@@ -35,8 +37,8 @@ setup(
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',
-        'Framework :: Django :: 1.11',
         'Framework :: Django :: 2.0',
+        'Framework :: Django :: 3.0',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
@@ -44,7 +46,6 @@ setup(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Topic :: Software Development :: Build Tools',

@@ -5,7 +5,8 @@ include include.mk
 
 PREFIX		= $(shell pwd)
 BASE_DIR	= $(shell echo $${PWD\#\#*/})
-PACKAGE_DIR	= $(BASE_DIR)-$(VERSION)
+TEST_TAG	=
+PACKAGE_DIR	= $(BASE_DIR)-$(VERSION)$(TEST_TAG)
 DOCS_DIR	= $(PREFIX)/docs
 TODAY		= $(shell date +"%Y-%m-%d_%H%M")
 RM_REGEX	= '(^.*.pyc$$)|(^.*.wsgic$$)|(^.*~$$)|(.*\#$$)|(^.*,cover$$)'
@@ -44,8 +45,15 @@ upload	: clobber
 	twine upload --repository pypi dist/*
 
 .PHONY	: upload-test
+# To add a pre-release candidate such as 'rc0' to a test package name because
+# pypi doesn't allow more than one package with a given name do this:
+#
+# make upload-test TEST_TAG=rc1
+#
+# The tagball would then be names django-pam-2.0.0rc1.tar.gz
+#
 upload-test: clobber
-	python setup.py sdist
+	python setup.py sdist -- $(TEST_TAG)
 	python setup.py bdist_wheel --universal
 	twine upload --repository testpypi dist/*
 

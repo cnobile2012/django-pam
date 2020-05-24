@@ -29,14 +29,21 @@ You will need to logout of your account then log back in again, this means out
 of any GUI that you may be in.
 
 After logged back in tests will run correctly, however, you will need to enter
-the username and password multiple times. This will get old fast.
+the username and password multiple times, but this will get old fast, so do
+the following.
 
 Creating a `.django_pam` File
 =============================
 
 Create a `.django_pam` file in the same directory as `manage.py`. On separate
 lines put `guest` (the username), the password you chose for it, and then a
-fake email address.
+fake email address. Like this:
+
+.. code-block:: bash
+
+   <username>
+   <password>
+   <username>@somesite.com
 
 With this file in-place the test will no longer prompt for the username and
 password and will run all the tests with no prompts.
