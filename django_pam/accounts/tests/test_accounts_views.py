@@ -8,7 +8,6 @@ import json
 from django.core.exceptions import ImproperlyConfigured
 from django.test import Client
 from django.urls import reverse
-from django.utils import six
 
 from django_pam.auth.tests.base_test import BaseDjangoPAM
 
@@ -81,7 +80,7 @@ class TestLoginView(BaseDjangoPAM):
         self.assertEqual(response.status_code, 404, msg)
         content = response.content.decode('utf-8')
         msg = "content: {}".format(content)
-        self.assertTrue('The requested URL /bad-page/' in content, msg)
+        self.assertTrue('was not found on this server.' in content, msg)
 
     def test_post_login_form_invalid(self):
         """

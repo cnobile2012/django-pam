@@ -31,6 +31,8 @@ package. Django PAM can be used in an SSO (Single Sign On) environment
 or just with a single box where you want to log into a Django app with
 your UNIX login.
 
+Updated for Django 3.x.
+
 Provides
 --------
 

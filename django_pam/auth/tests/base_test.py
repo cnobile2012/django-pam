@@ -8,11 +8,11 @@ import sys
 import json
 import types
 import getpass
+import six
 
 from io import open
 from collections import OrderedDict
 
-from django.utils import six
 from django.conf import settings
 from django.test import TestCase
 from django.utils.translation import ugettext
