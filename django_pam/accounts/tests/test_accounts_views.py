@@ -270,8 +270,13 @@ class TestLogoutView(BaseDjangoPAM):
         # Setup request
         url = reverse('django-pam:logout')
         data = {'next': ''}
+
         with self.assertRaises(ImproperlyConfigured) as cm:
             response = self.client.post(url, data=data)
+
+        message = str(cm.exception)
+        msg = "Exception message: {}".format(message)
+        self.assertTrue("No URL to redirect to." in message, msg)
 
     def test_post_logout_ajax(self):
         """
