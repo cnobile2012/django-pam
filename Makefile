@@ -34,7 +34,16 @@ tests	: clobber
 sphinx	: clean
 	(cd $(DOCS_DIR); make html)
 
+# To add a pre-release candidate such as 'rc1' to a test package name an
+# environment variable needs to be set that setup.py can read.
+#
+# make build TEST_TAG=rc1
+# make upload-test TEST_TAG=rc1
+#
+# The tarball would then be named dcolumn-2.0.0rc1.tar.gz
+#
 .PHONY	: build
+build	: export PR_TAG=$(TEST_TAG)
 build	: clean
 	python setup.py sdist
 
@@ -45,15 +54,7 @@ upload	: clobber
 	twine upload --repository pypi dist/*
 
 .PHONY	: upload-test
-# To add a pre-release candidate such as 'rc0' to a test package name because
-# pypi doesn't allow more than one package with a given name do this:
-#
-# make upload-test TEST_TAG=rc1
-#
-# The tagball would then be names django-pam-2.0.0rc1.tar.gz
-#
-upload-test: clobber
-	python setup.py sdist -- $(TEST_TAG)
+upload-test: clobber build
 	python setup.py bdist_wheel --universal
 	twine upload --repository testpypi dist/*
 
