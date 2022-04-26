@@ -45,6 +45,10 @@ class JSONResponseMixin(object):
         # -- can be serialized as JSON.
         return context
 
+    def is_ajax(self):
+        return self.request.headers.get('x-requested-with') == 'XMLHttpRequest'
+
+
 class AjaxableResponseMixin(object):
     """
     Mixin to add AJAX support to a form. Must be used with an object-based
@@ -63,7 +67,7 @@ class AjaxableResponseMixin(object):
         """
         response = super(AjaxableResponseMixin, self).form_invalid(form)
 
-        if self.request.is_ajax():
+        if self.is_ajax():
             return JsonResponse(form.errors, status=422)
         else:
             return response
@@ -82,7 +86,7 @@ class AjaxableResponseMixin(object):
         # call form.save() for example).
         response = super(AjaxableResponseMixin, self).form_valid(form)
 
-        if self.request.is_ajax():
+        if self.is_ajax():
             return JsonResponse(self.get_data(**{}))
         else:
             return response
@@ -97,3 +101,6 @@ class AjaxableResponseMixin(object):
         """
         context.update({'pk': self.object.pk})
         return context
+
+    def is_ajax(self):
+        return self.request.headers.get('x-requested-with') == 'XMLHttpRequest'

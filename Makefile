@@ -3,6 +3,7 @@
 #
 include include.mk
 
+TODAY		= $(shell date +"%Y-%m-%dT%H:%M:%S.%N%:z")
 PREFIX		= $(shell pwd)
 BASE_DIR	= $(shell echo $${PWD\#\#*/})
 TEST_TAG	=
@@ -29,6 +30,7 @@ tests	: clobber
 	coverage run ./manage.py test
 	coverage report
 	coverage html
+	@echo $(TODAY)
 
 .PHONY	: sphinx
 sphinx	: clean

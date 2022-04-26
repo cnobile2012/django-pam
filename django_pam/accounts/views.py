@@ -15,8 +15,8 @@ from django.core.exceptions import ImproperlyConfigured
 from django.contrib.auth import (
     REDIRECT_FIELD_NAME, login, logout, get_user_model)
 from django.utils.decorators import method_decorator
-from django.utils.translation import ugettext, ugettext_lazy as _
-from django.utils.encoding import force_text
+from django.utils.translation import gettext_lazy as _
+from django.utils.encoding import force_str
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.cache import never_cache
 from django.views.generic import TemplateView
@@ -75,7 +75,7 @@ class LoginView(AjaxableResponseMixin, FormView):
 
         :rtype: dict
         """
-        if self.request.is_ajax():
+        if self.is_ajax():
             json_data = json.loads(self.request.body.decode('utf-8'))
             kwargs = {}
             data = {}
@@ -215,7 +215,7 @@ class LogoutView(JSONResponseMixin, TemplateView):
         if request.user.is_authenticated:
             logout(request)
 
-        if self.request.is_ajax():
+        if self.is_ajax():
             response = self.render_to_json_response({})
         else:
             response = redirect(self.get_success_url())
@@ -271,7 +271,7 @@ class LogoutView(JSONResponseMixin, TemplateView):
         """
         if self.success_url:
             # Forcing possible reverse_lazy evaluation
-            url = force_text(self.success_url)
+            url = force_str(self.success_url)
         else:
             raise ImproperlyConfigured(
                 _("No URL to redirect to. Provide a success_url."))

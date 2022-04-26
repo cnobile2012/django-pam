@@ -15,7 +15,7 @@ from collections import OrderedDict
 
 from django.conf import settings
 from django.test import TestCase
-from django.utils.translation import ugettext
+from django.utils.translation import gettext
 
 
 class BaseDjangoPAM(TestCase):
@@ -75,7 +75,7 @@ class BaseDjangoPAM(TestCase):
               value is None):
             pass
         else:
-            value = ugettext(value)
+            value = gettext(value)
 
         return value
 

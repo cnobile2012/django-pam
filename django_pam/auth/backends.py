@@ -14,7 +14,7 @@ import pam as pam_base
 
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.backends import ModelBackend
 
 log = logging.getLogger('django_pam.auth.backends')
