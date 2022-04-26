@@ -15,7 +15,7 @@ from django.http import JsonResponse
 log = logging.getLogger('django_pam.accounts.views')
 
 
-class JSONResponseMixin(object):
+class JSONResponseMixin:
     """
     A mixin that can be used to render a JSON response.
     """
@@ -49,7 +49,7 @@ class JSONResponseMixin(object):
         return self.request.headers.get('x-requested-with') == 'XMLHttpRequest'
 
 
-class AjaxableResponseMixin(object):
+class AjaxableResponseMixin:
     """
     Mixin to add AJAX support to a form. Must be used with an object-based
     FormView (e.g. CreateView)
