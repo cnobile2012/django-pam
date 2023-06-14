@@ -6,7 +6,7 @@ from setuptools import setup
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 def version():
-    regex = r'^(?m){}[\s]*=[\s]*(?P<ver>\d*)$'
+    regex = r'(?m)(^{}[\s]*=[\s]*(?P<ver>\d*)$)'
 
     with open(os.path.join(os.path.dirname(__file__), 'include.mk')) as f:
         ver = f.read()

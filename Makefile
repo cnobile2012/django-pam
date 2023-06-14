@@ -49,12 +49,14 @@ build	: export PR_TAG=$(TEST_TAG)
 build	: clean
 	python setup.py sdist
 
+# https://pypi.org
 .PHONY	: upload
 upload	: clobber
 	python setup.py sdist
 	python setup.py bdist_wheel --universal
 	twine upload --repository pypi dist/*
 
+# https://test.pypi.org
 .PHONY	: upload-test
 upload-test: clobber build
 	python setup.py bdist_wheel --universal
