@@ -31,7 +31,7 @@ package. Django PAM can be used in an SSO (Single Sign On) environment
 or just with a single box where you want to log into a Django app with
 your UNIX login.
 
-Updated for Django 4.x and Python 3.9.
+Updated for Django 4.2.x and Python 3.11.
 
 Python 2.x has been depricated. If you need a version of Django PAM use
 version 2.0.1.
