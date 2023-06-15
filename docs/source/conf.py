@@ -37,7 +37,7 @@ settings.configure(
 django.setup()
 
 def version_info():
-    regex = r'^(?m){}[\s]*=[\s]*(?P<ver>\d*)$'
+    regex = r'(?m)(^{}[\s]*=[\s]*(?P<ver>\d*)$)'
     filepath = os.path.join('..', '..', 'include.mk')
 
     with open(os.path.join(os.path.dirname(__file__), filepath)) as f:
