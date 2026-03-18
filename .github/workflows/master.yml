@@ -33,14 +33,14 @@ jobs:
     - name: Lint with flake8
       run: |
         # Stop the build if there are Python syntax errors but, not undefined
-        # names errors F821 and F822. This really applies only to the
-        # badidatetime/datetime.py module, but there seems to be no way to
-        # ignore undefined names on just this module.
+        # names errors F821 and F822.
         flake8 --ignore=F821,F822 . --count --select=E9,F7,F63,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is
         # 127 chars wide, but Python is 80 characters.
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with Django test and with shadow group access.
       run: |
+        SETTINGS=example_site/settings
         sudo usermod -a -G shadow $USER
+        ln -s $SETTINGS/development.py $SETTINGS/local.py
         sg shadow -c "make tests"
