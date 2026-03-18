@@ -28,10 +28,10 @@ jobs:
 
           # Create the .django_pam file in repo root
           cat <<EOF > .django_pam
-guest
-zS3IKI!*%yfk
-guest@example.com
-EOF
+          guest
+          zS3IKI!*%yfk
+          guest@example.com
+          EOF
 
           (cd example_site/settings
           ln -s development.py local.py
