@@ -36,6 +36,6 @@ jobs:
           (cd example_site/settings
           ln -s development.py local.py
           ls -la local.py)
-          sudo -u $USER make tests
+          sudo -u $USER env "PATH=$pythonLocation/bin:$PATH" make tests
       - name: Upload coverage report to Coveralls
         uses: coverallsapp/github-action@v2

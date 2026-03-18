@@ -55,4 +55,4 @@ jobs:
           echo "PATH=$PATH"
           which python
           which coverage
-          sudo -u $USER make tests
+          sudo -u $USER env "PATH=$pythonLocation/bin:$PATH" make tests
