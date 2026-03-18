@@ -41,7 +41,6 @@ jobs:
       - name: Test with Django test and with shadow group access.
         run: |
           sudo usermod -a -G shadow $USER
-          newgrp shadow
 
           # Create the .django_pam file in repo root
           cat <<EOF > .django_pam
@@ -50,8 +49,7 @@ jobs:
           guest@example.com
           EOF
 
-          cat .django_pam
           (cd example_site/settings
           ln -s development.py local.py
           ls -la local.py)
-          make tests
+          sudo -E -u $USER make tests
