@@ -44,4 +44,6 @@ jobs:
           sudo usermod -a -G shadow $USER
           ln -s $SETTINGS/development.py $SETTINGS/local.py
           ls -la $SETTINGS/local.py
-          sudo -E make tests
+          newgrp shadow << EOF
+          make tests
+          EOF

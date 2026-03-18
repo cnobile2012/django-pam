@@ -32,12 +32,23 @@ tar	: clobber
 	@(cd ..; tar -czvf $(PACKAGE_DIR).tar.gz --exclude=".git" \
           --exclude="__pycache__" --exclude="example_site/static" $(BASE_DIR))
 
+# Run all tests
+# $ make tests
+#
+# Run all tests in a specific test file.
+# $ make tests TEST_PATH=tests.test_bases.py
+#
+# Run all tests in a specific test file and class.
+# $ make tests TEST_PATH=tests.test_bases.py.TestBases
+#
+# Run just one test in a specific test file and class.
+# $ make tests TEST_PATH=tests.test_bases.py.TestBases.test_version
 .PHONY	: tests
 tests	: clobber
-	coverage erase
-	coverage run ./manage.py test $(TEST_PATH)
-	coverage report
-	coverage html
+	@coverage erase
+	@coverage run ./manage.py test $(TEST_PATH)
+	@coverage report
+	@coverage html
 	@echo $(TODAY)
 
 .PHONY	: flake8
