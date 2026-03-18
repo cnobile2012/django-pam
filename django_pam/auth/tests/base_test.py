@@ -39,7 +39,7 @@ class BaseDjangoPAM(TestCase):
             username = lines.get('username')
             password = lines.get('password')
             email = lines.get('email')
-        else:
+        else:  # pragma: no cover
             temp_username = getpass.getuser()
             sys.stderr.write("Username ({}): ".format(temp_username))
             username = input()  # Prompt goes to stdout which is off.
@@ -57,16 +57,6 @@ class BaseDjangoPAM(TestCase):
 
         return username, password, email
 
-    def _clean_data(self, data):
-        if data is not None:
-            if isinstance(data, (list, tuple,)):
-                data = self.__clean_value(data)
-            else:
-                for key in data:
-                    data[key] = self.__clean_value(data.get(key))
-
-        return data
-
     def _create_user(self, username='', password='', email=''):
         # Get user's credentials.
         if username == '':
@@ -74,19 +64,6 @@ class BaseDjangoPAM(TestCase):
 
         User.objects.create_user(username=username, password=password)
         return username, password, email
-
-    def __clean_value(self, value):
-        if isinstance(value, (list, tuple,)):
-            value = [self.__clean_value(item) for item in value]
-        elif isinstance(value, (dict, OrderedDict,)):
-            for key in value:
-                value[key] = self.__clean_value(value.get(key))
-        elif isinstance(value, (int, bool, types.TypeType,)) or value is None:
-            pass
-        else:  # pragma: no cover
-            value = gettext(value)
-
-        return value
 
     def _has_error(self, response):
         result = False
@@ -121,7 +98,7 @@ class BaseDjangoPAM(TestCase):
                     err_msg = err_msg[0]
 
                 self.assertTrue(value in err_msg, msg)
-        else:
+        else:  # pragma: no cover
             msg = "No context_data"
             self.assertTrue(False, msg)
 

@@ -44,4 +44,4 @@ jobs:
           sudo usermod -a -G shadow $USER
           ln -s $SETTINGS/development.py $SETTINGS/local.py
           ls -la $SETTINGS/local.py
-          sudo make tests
+          sudo -E make tests
