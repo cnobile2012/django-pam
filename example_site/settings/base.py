@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for django_pam project.
 
@@ -160,8 +161,8 @@ LOGGING = {
             'include_html': 'True',
             },
         'console': {
-            'level':'DEBUG',
-            'class':'logging.StreamHandler',
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
             'formatter': 'simple'
             },
         'examples_file': {
@@ -170,7 +171,7 @@ LOGGING = {
             'level': 'DEBUG',
             'formatter': 'verbose',
             'filename': '/dev/null',
-            'maxBytes': 50000000, # 50 Meg bytes
+            'maxBytes': 50000000,  # 50 Meg bytes
             'backupCount': 5,
             },
         'django_pam_file': {
@@ -179,7 +180,7 @@ LOGGING = {
             'level': 'DEBUG',
             'formatter': 'verbose',
             'filename': '/dev/null',
-            'maxBytes': 50000000, # 50 Meg bytes
+            'maxBytes': 50000000,  # 50 Meg bytes
             'backupCount': 5,
             },
         },

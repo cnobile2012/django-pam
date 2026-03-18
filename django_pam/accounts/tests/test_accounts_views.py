@@ -11,8 +11,6 @@ from django.urls import reverse
 
 from django_pam.auth.tests.base_test import BaseDjangoPAM
 
-from ..views import LoginView, LogoutView
-
 
 class TestLoginView(BaseDjangoPAM):
 
@@ -272,7 +270,7 @@ class TestLogoutView(BaseDjangoPAM):
         data = {'next': ''}
 
         with self.assertRaises(ImproperlyConfigured) as cm:
-            response = self.client.post(url, data=data)
+            self.client.post(url, data=data)
 
         message = str(cm.exception)
         msg = "Exception message: {}".format(message)

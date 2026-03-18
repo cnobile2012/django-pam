@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 #
 # django_pam/accounts/views.py
 #
@@ -12,8 +12,7 @@ import logging
 import json
 
 from django.core.exceptions import ImproperlyConfigured
-from django.contrib.auth import (
-    REDIRECT_FIELD_NAME, login, logout, get_user_model)
+from django.contrib.auth import REDIRECT_FIELD_NAME, login, logout
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 from django.utils.encoding import force_str

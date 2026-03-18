@@ -4,12 +4,10 @@
 #
 
 from django.test import RequestFactory
-from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AnonymousUser
 from django.http import QueryDict
-from django.contrib.auth.hashers import make_password
-
 from django_pam.auth.tests.base_test import BaseDjangoPAM
+
 from ..forms import AuthenticationForm
 
 
@@ -29,7 +27,6 @@ class TestAuthenticationForm(BaseDjangoPAM):
         Form constructor signature::
 
           __init__(self, request=None, *args, **kwargs)
-
         """
         #self.skipTest("Temporarily skipped")
         # Get user's credentials.
@@ -76,8 +73,6 @@ class TestAuthenticationForm(BaseDjangoPAM):
         Test for invalid credentials.
         """
         #self.skipTest("Temporarily skipped")
-        err_msg0 = ("Either the credentials are invalid or the user does not "
-                    "have shadow permissions.")
         username, password, email = "somebody", "password", "bad@email.net"
         request = self.factory.get('django-pam:login')
         request.user = AnonymousUser()

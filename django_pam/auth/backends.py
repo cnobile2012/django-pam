@@ -8,14 +8,12 @@ Django PAM backend.
 __docformat__ = "restructuredtext en"
 
 import logging
-import types
 import pam as pam_base
 
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.backends import ModelBackend
-from django.contrib.auth import get_user_model
 
 User = get_user_model()
 log = logging.getLogger('django_pam.auth.backends')
@@ -85,9 +83,8 @@ class PAMBackend(ModelBackend):
         UserModel = get_user_model()
         obj = None
 
-        if user_data is not None and (
-            isinstance(user_data, int)
-            or user_data.isdigit()):
+        if user_data is not None and (isinstance(user_data, int)
+                                      or user_data.isdigit()):
             query = models.Q(pk=user_data)
         elif isinstance(user_data, str):
             query = models.Q(username=user_data) | models.Q(email=user_data)

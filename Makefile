@@ -16,9 +16,17 @@ PIP_ARGS	= # Pass variables for pip install.
 TEST_PATH	= # The path to run tests on.
 
 #----------------------------------------------------------------------
-all	: tar
+all	: help
 
 #----------------------------------------------------------------------
+.PHONY: help
+help    :
+        @LC_ALL=C $(MAKE) -pRrq -f $(firstword $(MAKEFILE_LIST)) : \
+                2>/dev/null | awk -v RS= \
+                -F: '/(^|\n)# Files(\n|$$)/,/(^|\n)# Finished Make data \
+                     base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | grep \
+                -E -v -e '^[^[:alnum:]]' -e '^$@$$'
+
 .PHONY	: tar
 tar	: clobber
 	@(cd ..; tar -czvf $(PACKAGE_DIR).tar.gz --exclude=".git" \
@@ -31,6 +39,13 @@ tests	: clobber
 	coverage report
 	coverage html
 	@echo $(TODAY)
+
+.PHONY	: flake8
+flake8	:
+#       Error on syntax errors or undefined names.
+	flake8 . --select=E9,F7,F63,F82 --show-source
+#       Warn on everything else.
+	flake8 . --exit-zero
 
 .PHONY	: sphinx
 sphinx	: clean
@@ -65,7 +80,6 @@ upload-test: clobber build
 .PHONY  : install-dev
 install-dev:
 	pip install $(PIP_ARGS) -r requirements/development.txt
-
 
 #----------------------------------------------------------------------
 

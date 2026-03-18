@@ -1,0 +1,14 @@
+[flake8]
+exclude =
+    .git,
+    __pycache__,
+    build,
+    dist
+
+per-file-ignores =
+    django_pam/*: E129,E402
+    django_pam/auth/tests/*: E265
+    django_pam/accounts/tests/*: E265
+    django_pam/accounts/view_mixins.py: E501
+    example_site/settings/*: F401, F403, F405
+    docs/source/conf.py: E265

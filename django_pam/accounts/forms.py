@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 #
 # django_pam/accounts/forms.py
 #
@@ -8,7 +8,6 @@ Django PAM forms.
 __docformat__ = "restructuredtext en"
 
 import logging
-import inspect
 
 from django import forms
 from django.contrib.auth import authenticate

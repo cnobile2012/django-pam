@@ -3,8 +3,6 @@
 # django_pam/auth/tests/test_auth_backends.py
 #
 
-from django.contrib.auth import get_user_model
-
 from ..backends import PAMBackend
 from .base_test import BaseDjangoPAM
 
@@ -78,7 +76,7 @@ class TestPAMBackend(BaseDjangoPAM):
         """
         #self.skipTest("Temporarily skipped")
         # Get user's credentials.
-        username, password, email = "username", "password", "email"
+        username, password = "username", "password"
         # Test auth
         user = self.pam.authenticate(
             None, username=username, password=password)
@@ -90,6 +88,9 @@ class TestPAMBackend(BaseDjangoPAM):
         Test that the ``PAMBackend.authenticate()`` method works properly.
         """
         #self.skipTest("Temporarily skipped")
+        err_msg0 = ("The user argument type should be either an integer "
+                    "(valid pk) or a string (username or email), found "
+                    "type <class 'NoneType'>.")
         # Get user's credentials.
         username, password, email = self._prompt(need_email=True)
         # Create user
@@ -112,16 +113,19 @@ class TestPAMBackend(BaseDjangoPAM):
         # Test with a string representing an integer.
         user = self.pam.get_user(str(pk))
         self.assertEqual(user.pk, pk, msg)
+
         # Test that the exception gets raised
         with self.assertRaises(TypeError) as cm:
             self.pam.get_user(None)
+
+        ex = str(cm.exception)
+        self.assertEqual(err_msg0, ex)
 
     def test_get_user_invalid(self):
         """
         Test that an invalid user returns a ``None`` object.
         """
         #self.skipTest("Temporarily skipped")
-        UserModel = get_user_model()
         # Test that the exception gets raised
         pk = 99999
         user = self.pam.get_user(pk)

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # django_pam/urls.py
 #
@@ -9,7 +10,7 @@ __docformat__ = "restructuredtext en"
 
 try:
     from django.urls import include, re_path
-except:
+except Exception:
     from django.conf.urls import include, url as re_path
 
 

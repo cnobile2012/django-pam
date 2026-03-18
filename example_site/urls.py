@@ -22,7 +22,7 @@ __docformat__ = "restructuredtext en"
 
 try:
     from django.urls import include, re_path
-except:
+except Exception:
     from django.conf.urls import include, url as re_path
 
 from django.views.static import serve
@@ -41,7 +41,7 @@ urlpatterns = [
     re_path(r'^$', home_page_view, name='home-page'),
     re_path(r'^django-pam/', include('django_pam.urls')),
     re_path(r'^login/$', LoginView.as_view(template_name='home/login.html'),
-        name='login'),
+            name='login'),
     re_path(r"^logout/(?P<next>[\w\-\:/]+)?$", LogoutView.as_view(
         template_name='home/logout.html'), name='logout')
     ]
@@ -52,11 +52,11 @@ if settings.DEBUG:
 
     urlpatterns += [
         re_path(r'^dev/(?P<path>.*)$', serve,
-            {'document_root': settings.STATIC_URL, 'show_indexes': True}),
+                {'document_root': settings.STATIC_URL, 'show_indexes': True}),
         re_path(r'^__debug__/', include(debug_toolbar.urls)),
         ]
 else:
     urlpatterns += [
         re_path(r'^static/(?P<path>.*)$', serve,
-            {'document_root': settings.STATIC_URL, 'show_indexes': True}),
+                {'document_root': settings.STATIC_URL, 'show_indexes': True}),
         ]

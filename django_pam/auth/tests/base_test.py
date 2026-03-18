@@ -42,7 +42,7 @@ class BaseDjangoPAM(TestCase):
         else:
             temp_username = getpass.getuser()
             sys.stderr.write("Username ({}): ".format(temp_username))
-            username = input() # Prompt goes to stdout which is off.
+            username = input()  # Prompt goes to stdout which is off.
 
             if not username:
                 username = temp_username
@@ -51,7 +51,7 @@ class BaseDjangoPAM(TestCase):
 
             if need_email:
                 sys.stderr.write("Email: ")
-                email = input() # Prompt goes to stdout which is off.
+                email = input()  # Prompt goes to stdout which is off.
             else:
                 email = None
 
@@ -81,10 +81,9 @@ class BaseDjangoPAM(TestCase):
         elif isinstance(value, (dict, OrderedDict,)):
             for key in value:
                 value[key] = self.__clean_value(value.get(key))
-        elif (isinstance(value, (int, long, bool, types.TypeType,)) or
-              value is None):
+        elif isinstance(value, (int, bool, types.TypeType,)) or value is None:
             pass
-        else:
+        else:  # pragma: no cover
             value = gettext(value)
 
         return value

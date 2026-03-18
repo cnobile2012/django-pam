@@ -2,21 +2,33 @@
 Django PAM
 ==========
 
+.. image:: http://img.shields.io/pypi/l/django-pam.svg
+   :target: https://pypi.python.org/pypi/django-pam
+   :alt: License
+
 .. image:: http://img.shields.io/pypi/v/django-pam.svg
    :target: https://pypi.python.org/pypi/django-pam
    :alt: PyPI Version
-
-.. image:: http://img.shields.io/pypi/wheel/django-pam.svg
-   :target: https://pypi.python.org/pypi/django-pam
-   :alt: PyPI Wheel
 
 .. image:: http://img.shields.io/pypi/pyversions/django-pam.svg
    :target: https://pypi.python.org/pypi/django-pam
    :alt: Python Versions
 
-.. image:: http://img.shields.io/pypi/l/django-pam.svg
+.. image:: http://img.shields.io/pypi/wheel/django-pam.svg
    :target: https://pypi.python.org/pypi/django-pam
-   :alt: License
+   :alt: PyPI Wheel
+
+.. image:: https://github.com/cnobile2012/django-pam/actions/workflows/master.yml/badge.svg?branch=master
+   :target: https://github.com/cnobile2012/django-pam/actions/workflows/master.yml
+   :alt: Build Status
+
+.. image:: https://coveralls.io/repos/github/cnobile2012/django-pam/badge.svg?branch=master&dummy=987654321
+   :target: https://coveralls.io/github/cnobile2012/django-pam?branch=master
+   :alt: Coverage
+
+.. image:: https://img.shields.io/pypi/dm/django-pam.svg
+    :target: https://pypi.python.org/pypi/django-pam
+    :alt: PyPI Downloads
 
 A Django PAM authentication backend implementation.
 

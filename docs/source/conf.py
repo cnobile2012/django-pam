@@ -24,7 +24,7 @@ from django.conf import settings
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath(os.path.join('..', '..')))
-#sys.path.insert(0, os.path.abspath('_ext'))
+# sys.path.insert(0, os.path.abspath('_ext'))
 settings.configure(
     INSTALLED_APPS=[
         'django.contrib.auth',
@@ -35,6 +35,7 @@ settings.configure(
     DEBUG=False,
     )
 django.setup()
+
 
 def version_info():
     regex = r'(?m)(^{}[\s]*=[\s]*(?P<ver>\d*)$)'
@@ -50,10 +51,11 @@ def version_info():
     release = "{}.{}.{}".format(major, minor, patch)
     return version, release
 
+
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
-#needs_sphinx = '1.0'
+# needs_sphinx = '1.0'
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -166,9 +168,9 @@ html_theme = 'sphinx_rtd_theme'
 # of the sidebar.
 #html_logo = None
 
-# The name of an image file (relative to this directory) to use as a favicon of
-# the docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
-# pixels large.
+# The name of an image file (relative to this directory) to use as a favicon
+# of the docs.  This file should be a Windows icon file (.ico) being 16x16 or
+# 32x32 pixels large.
 #html_favicon = None
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -244,17 +246,17 @@ htmlhelp_basename = 'DjangoPAMdoc'
 # -- Options for LaTeX output ---------------------------------------------
 
 latex_elements = {
-# The paper size ('letterpaper' or 'a4paper').
+    # The paper size ('letterpaper' or 'a4paper').
     'papersize': 'letterpaper',
 
-# The font size ('10pt', '11pt' or '12pt').
+    # The font size ('10pt', '11pt' or '12pt').
     'pointsize': '10pt',
 
-# Additional stuff for the LaTeX preamble.
-#'preamble': '',
+    # Additional stuff for the LaTeX preamble.
+    #'preamble': '',
 
-# Latex figure (float) alignment
-#'figure_align': 'htbp',
+    # Latex figure (float) alignment
+    #'figure_align': 'htbp',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples

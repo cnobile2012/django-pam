@@ -5,17 +5,13 @@
 
 """
 Django PAM accounta/urls.py
-
 """
 __docformat__ = "restructuredtext en"
 
 try:
-    from django.urls import include, re_path
-except:
-    from django.conf.urls import include, url as re_path
-
-
-from django.views.generic import TemplateView
+    from django.urls import re_path
+except Exception:
+    from django.conf.urls import url as re_path
 
 from .views import LoginView, LogoutView
 
