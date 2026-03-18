@@ -40,10 +40,10 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Test with Django test and with shadow group access.
         run: |
-          SETTINGS=example_site/settings
           sudo usermod -a -G shadow $USER
+          newgrp shadow << EOF
+          SETTINGS=example_site/settings
           ln -s $SETTINGS/development.py $SETTINGS/local.py
           ls -la $SETTINGS/local.py
-          newgrp shadow << EOF
           make tests
           EOF
