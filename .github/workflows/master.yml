@@ -42,12 +42,5 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with Django test and with shadow group access.
       run: |
-        if [ -r /etc/shadow ]; then
-          echo "Already have shadow access"
-        else
-          sudo usermod -a -G shadow $USER
-          newgrp shadow << EOF
-          source venv/bin/activate
-          make tests
-          EOF
-        fi
+        sudo usermod -a -G shadow $USER
+        sg shadow -c "make tests"
