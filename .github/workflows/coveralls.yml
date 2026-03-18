@@ -24,11 +24,10 @@ jobs:
       - name: Test with Django test and with shadow group access.
         run: |
           sudo usermod -a -G shadow $USER
-          newgrp shadow << EOF
+          newgrp shadow
           SETTINGS=example_site/settings
           ln -s $SETTINGS/development.py $SETTINGS/local.py
           ls -la $SETTINGS/local.py
           make tests
-          EOF
       - name: Upload coverage report to Coveralls
         uses: coverallsapp/github-action@v2
