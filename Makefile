@@ -45,10 +45,10 @@ tar	: clobber
 # $ make tests TEST_PATH=tests.test_bases.py.TestBases.test_version
 .PHONY	: tests
 tests	: clobber
-	@coverage erase
-	@coverage run ./manage.py test $(TEST_PATH)
-	@coverage report
-	@coverage html
+	@$(VIRTUAL_ENV)/bin/coverage erase
+	@$(VIRTUAL_ENV)/bin/coverage run ./manage.py test $(TEST_PATH)
+	@$(VIRTUAL_ENV)/bin/coverage report
+	@$(VIRTUAL_ENV)/bin/coverage html
 	@echo $(TODAY)
 
 .PHONY	: flake8

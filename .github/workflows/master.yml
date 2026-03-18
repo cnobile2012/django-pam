@@ -52,4 +52,7 @@ jobs:
           (cd example_site/settings
           ln -s development.py local.py
           ls -la local.py)
-          sudo -E -u $USER make tests
+          echo "PATH=$PATH"
+          which python
+          which coverage
+          sudo -u $USER make tests
