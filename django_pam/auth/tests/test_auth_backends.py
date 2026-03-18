@@ -6,14 +6,13 @@
 from django.contrib.auth import get_user_model
 
 from ..backends import PAMBackend
-
 from .base_test import BaseDjangoPAM
 
 
 class TestPAMBackend(BaseDjangoPAM):
 
     def __init__(self, name):
-        super(TestPAMBackend, self).__init__(name)
+        super().__init__(name)
 
     def setUp(self):
         self.pam = PAMBackend()
@@ -24,7 +23,7 @@ class TestPAMBackend(BaseDjangoPAM):
         """
         #self.skipTest("Temporarily skipped")
         # Get user's credentials.
-        username, password, email = self._prompt()
+        username, password, email = self._create_user()
         # Test auth
         user = self.pam.authenticate(
             None, username=username, password=password)

@@ -9,14 +9,15 @@ __docformat__ = "restructuredtext en"
 
 import logging
 import types
-import six
 import pam as pam_base
 
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.backends import ModelBackend
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 log = logging.getLogger('django_pam.auth.backends')
 
 
@@ -66,6 +67,10 @@ class PAMBackend(ModelBackend):
                 extra_fields.pop("request", None)
                 user = UserModel._default_manager.create_user(
                     username, **extra_fields)
+        else:
+            msg = ("Either the credentials are invalid or the user does not "
+                   "have shadow permissions.")
+            log.error(msg)
 
         return user
 
@@ -81,10 +86,10 @@ class PAMBackend(ModelBackend):
         obj = None
 
         if user_data is not None and (
-            isinstance(user_data, six.integer_types)
+            isinstance(user_data, int)
             or user_data.isdigit()):
             query = models.Q(pk=user_data)
-        elif isinstance(user_data, six.string_types):
+        elif isinstance(user_data, str):
             query = models.Q(username=user_data) | models.Q(email=user_data)
         else:
             msg = _("The user argument type should be either an integer "

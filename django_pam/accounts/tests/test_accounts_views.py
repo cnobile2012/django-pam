@@ -17,7 +17,7 @@ from ..views import LoginView, LogoutView
 class TestLoginView(BaseDjangoPAM):
 
     def __init__(self, name):
-        super(TestLoginView, self).__init__(name)
+        super().__init__(name)
         self.client = None
 
     def setUp(self):
@@ -44,7 +44,7 @@ class TestLoginView(BaseDjangoPAM):
         """
         #self.skipTest("Temporarily skipped")
         # Get user's credentials.
-        username, password, email = self._prompt(need_email=True)
+        username, password, email = self._create_user()
         # Setup request
         url = reverse('django-pam:login')
         data = {'username': username, 'password': password, 'email': email}
@@ -66,7 +66,7 @@ class TestLoginView(BaseDjangoPAM):
         """
         #self.skipTest("Temporarily skipped")
         # Get user's credentials.
-        username, password, email = self._prompt(need_email=True)
+        username, password, email = self._create_user()
         # Setup request
         url = reverse('django-pam:login')
         data = {'username': username, 'password': password, 'email': email}
@@ -119,7 +119,7 @@ class TestLoginView(BaseDjangoPAM):
         """
         #self.skipTest("Temporarily skipped")
         # Get user's credentials.
-        username, password, email = self._prompt(need_email=True)
+        username, password, email = self._create_user()
         # Setup request
         url = reverse('django-pam:login')
         data = json.dumps([
@@ -184,7 +184,7 @@ class TestLoginView(BaseDjangoPAM):
 class TestLogoutView(BaseDjangoPAM):
 
     def __init__(self, name):
-        super(TestLogoutView, self).__init__(name)
+        super().__init__(name)
         self.client = None
 
     def setUp(self):
@@ -192,7 +192,7 @@ class TestLogoutView(BaseDjangoPAM):
 
     def _login_form(self):
         # Get user's credentials.
-        username, password, email = self._prompt(need_email=True)
+        username, password, email = self._create_user()
         # Setup request
         url = reverse('django-pam:login')
         data = {'username': username, 'password': password, 'email': email}
@@ -201,7 +201,7 @@ class TestLogoutView(BaseDjangoPAM):
         self.assertEqual(response.status_code, 302, msg)
 
     def _login_ajax(self):
-        username, password, email = self._prompt(need_email=True)
+        username, password, email = self._create_user()
         # Setup request
         url = reverse('django-pam:login')
         data = json.dumps([

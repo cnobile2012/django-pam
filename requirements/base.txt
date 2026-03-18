@@ -3,4 +3,3 @@
 Django
 docutils
 python-pam
-six

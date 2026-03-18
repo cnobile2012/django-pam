@@ -31,7 +31,7 @@ package. Django PAM can be used in an SSO (Single Sign On) environment
 or just with a single box where you want to log into a Django app with
 your UNIX login.
 
-Updated for Django 4.2.x and Python 3.11.
+Updated for Django 6.0.x and Python 3.13.
 
 Python 2.x has been depricated. If you need a version of Django PAM use
 version 2.0.1.
@@ -70,6 +70,12 @@ is necessary so the web server can authenticate other users. To do
 this run the command below with the proper user::
 
   $ sudo usermod -a -G shadow <user>
+
+Or if you need to run tests as a different user you can do this::
+
+  $ newgrp shadow
+  $ source venv/bin/activate
+  $ ./manage.py test
 
 Complete Documentation can be found on
 `Read the Docs <https://readthedocs.org/>`_ at:

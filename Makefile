@@ -5,29 +5,29 @@ include include.mk
 
 TODAY		= $(shell date +"%Y-%m-%dT%H:%M:%S.%N%:z")
 PREFIX		= $(shell pwd)
-BASE_DIR	= $(shell echo $${PWD\#\#*/})
+BASE_DIR	= $(shell basename $(PREFIX))
 TEST_TAG	=
 PACKAGE_DIR	= $(BASE_DIR)-$(VERSION)$(TEST_TAG)
 DOCS_DIR	= $(PREFIX)/docs
-TODAY		= $(shell date +"%Y-%m-%d_%H%M")
 RM_REGEX	= '(^.*.pyc$$)|(^.*.wsgic$$)|(^.*~$$)|(.*\#$$)|(^.*,cover$$)'
 RM_CMD		= find $(PREFIX) -regextype posix-egrep -regex $(RM_REGEX) \
                   -exec rm {} \;
-PIP_ARGS	=
+PIP_ARGS	= # Pass variables for pip install.
+TEST_PATH	= # The path to run tests on.
 
 #----------------------------------------------------------------------
 all	: tar
 
 #----------------------------------------------------------------------
 .PHONY	: tar
-tar	: clean
+tar	: clobber
 	@(cd ..; tar -czvf $(PACKAGE_DIR).tar.gz --exclude=".git" \
-          --exclude="example_site/static" $(BASE_DIR))
+          --exclude="__pycache__" --exclude="example_site/static" $(BASE_DIR))
 
 .PHONY	: tests
 tests	: clobber
 	coverage erase
-	coverage run ./manage.py test
+	coverage run ./manage.py test $(TEST_PATH)
 	coverage report
 	coverage html
 	@echo $(TODAY)

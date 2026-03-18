@@ -25,6 +25,6 @@ class HomePageView(TemplateView):
         # Either way works, with or with out the reverse function.
         #kwargs[self.redirect_field_name] = reverse('home-page')
         kwargs[self.redirect_field_name] = 'home-page'
-        return super(HomePageView, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
 home_page_view = HomePageView.as_view()

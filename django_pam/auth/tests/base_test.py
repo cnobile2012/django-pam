@@ -8,7 +8,6 @@ import sys
 import json
 import types
 import getpass
-import six
 
 from io import open
 from collections import OrderedDict
@@ -16,13 +15,16 @@ from collections import OrderedDict
 from django.conf import settings
 from django.test import TestCase
 from django.utils.translation import gettext
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class BaseDjangoPAM(TestCase):
     _CONFIG = '.django_pam'
 
     def __init__(self, name):
-        super(BaseDjangoPAM, self).__init__(name)
+        super().__init__(name)
 
     def _prompt(self, need_email=False):
         home = os.path.join(settings.BASE_DIR, '..', self._CONFIG)
@@ -40,7 +42,7 @@ class BaseDjangoPAM(TestCase):
         else:
             temp_username = getpass.getuser()
             sys.stderr.write("Username ({}): ".format(temp_username))
-            username = six.moves.input() # Prompt goes to stdout which is off.
+            username = input() # Prompt goes to stdout which is off.
 
             if not username:
                 username = temp_username
@@ -49,7 +51,7 @@ class BaseDjangoPAM(TestCase):
 
             if need_email:
                 sys.stderr.write("Email: ")
-                email = six.moves.input() # Prompt goes to stdout which is off.
+                email = input() # Prompt goes to stdout which is off.
             else:
                 email = None
 
@@ -64,6 +66,14 @@ class BaseDjangoPAM(TestCase):
                     data[key] = self.__clean_value(data.get(key))
 
         return data
+
+    def _create_user(self, username='', password='', email=''):
+        # Get user's credentials.
+        if username == '':
+            username, password, email = self._prompt(need_email=True)
+
+        User.objects.create_user(username=username, password=password)
+        return username, password, email
 
     def __clean_value(self, value):
         if isinstance(value, (list, tuple,)):

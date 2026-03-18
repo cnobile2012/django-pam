@@ -7,16 +7,16 @@ from django.test import RequestFactory
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AnonymousUser
 from django.http import QueryDict
+from django.contrib.auth.hashers import make_password
 
 from django_pam.auth.tests.base_test import BaseDjangoPAM
-
 from ..forms import AuthenticationForm
 
 
 class TestAuthenticationForm(BaseDjangoPAM):
 
     def __init__(self, name):
-        super(TestAuthenticationForm, self).__init__(name)
+        super().__init__(name)
         self.factory = None
 
     def setUp(self):
@@ -33,7 +33,7 @@ class TestAuthenticationForm(BaseDjangoPAM):
         """
         #self.skipTest("Temporarily skipped")
         # Get user's credentials.
-        username, password, email = self._prompt(need_email=True)
+        username, password, email = self._create_user()
         # Setup request
         request = self.factory.get('django-pam:login')
         request.user = AnonymousUser()
@@ -46,8 +46,7 @@ class TestAuthenticationForm(BaseDjangoPAM):
         msg = "kwargs: {}, errors: {}".format(kwargs, form.errors.as_data())
         self.assertTrue(form.is_valid(), msg)
         self.assertEqual(form.user_cache.username, username, msg)
-        # Password should fail since it's never saved.
-        self.assertFalse(form.user_cache.check_password(password), msg)
+        self.assertTrue(form.user_cache.check_password(password), msg)
         self.assertEqual(form.user_cache.email, email, msg)
 
     def test_missing_credentials(self):
@@ -77,7 +76,8 @@ class TestAuthenticationForm(BaseDjangoPAM):
         Test for invalid credentials.
         """
         #self.skipTest("Temporarily skipped")
-        # Get user's credentials.
+        err_msg0 = ("Either the credentials are invalid or the user does not "
+                    "have shadow permissions.")
         username, password, email = "somebody", "password", "bad@email.net"
         request = self.factory.get('django-pam:login')
         request.user = AnonymousUser()

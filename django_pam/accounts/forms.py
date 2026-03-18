@@ -34,8 +34,7 @@ class AuthenticationForm(_AuthenticationForm):
 
         self.base_fields['username'].label_suffix = ''
         self.base_fields['password'].label_suffix = ''
-        super(AuthenticationForm, self).__init__(
-            request=request, *args, **kwargs)
+        super().__init__(request=request, *args, **kwargs)
 
     def clean(self):
         """

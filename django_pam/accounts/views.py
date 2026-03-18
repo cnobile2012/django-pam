@@ -62,7 +62,7 @@ class LoginView(AjaxableResponseMixin, FormView):
         :param kwargs: Keyword arguments.
         :rtype: The proper handler.
         """
-        return super(LoginView, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
         """
@@ -91,7 +91,7 @@ class LoginView(AjaxableResponseMixin, FormView):
 
             kwargs['data'] = data
         else:
-            kwargs = super(LoginView, self).get_form_kwargs()
+            kwargs = super().get_form_kwargs()
 
         return kwargs
 
@@ -106,7 +106,7 @@ class LoginView(AjaxableResponseMixin, FormView):
         """
         self.object = form.get_user()
         login(self.request, self.object)
-        return super(LoginView, self).form_valid(form)
+        return super().form_valid(form)
 
     def get_data(self, **context):
         """
@@ -120,7 +120,7 @@ class LoginView(AjaxableResponseMixin, FormView):
         context.update({'username': self.object.get_username(),
                         'full_name': self.object.get_full_name(),
                         self.redirect_field_name: self.get_success_url()})
-        return super(LoginView, self).get_data(**context)
+        return super().get_data(**context)
 
     def get_success_url(self):
         """
@@ -147,7 +147,7 @@ class LoginView(AjaxableResponseMixin, FormView):
         :rtype: dict
         """
         context[self.redirect_field_name] = self.get_success_url()
-        return super(LoginView, self).get_context_data(**context)
+        return super().get_context_data(**context)
 
 
 #
@@ -231,7 +231,7 @@ class LogoutView(JSONResponseMixin, TemplateView):
         :rtype: dict
         """
         # Called in JSONResponseMixin.
-        context = super(LogoutView, self).get_data(**context)
+        context = super().get_data(**context)
         json_data = json.loads(self.request.body.decode('utf-8'))
         log.debug("json_data: %s", json_data)
 
@@ -256,7 +256,7 @@ class LogoutView(JSONResponseMixin, TemplateView):
         :type kwargs: dict
         :rtype: dict
         """
-        context = super(LogoutView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         log.debug("kwargs: %s, context: %s", kwargs, context)
         context.update({
             self.redirect_field_name: kwargs.get(self.redirect_field_name),
