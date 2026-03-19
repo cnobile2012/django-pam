@@ -62,8 +62,13 @@ class BaseDjangoPAM(TestCase):
         if username == '':
             username, password, email = self._prompt(need_email=True)
 
-        User.objects.create_user(username=username, password=password)
-        return username, password, email
+        user = User.objects.filter(username=username)
+
+        if not user.exists():
+            user = User.objects.create_user(username=username, email=email,
+                                            password=password)
+
+        return user, username, password, email
 
     def _has_error(self, response):
         result = False

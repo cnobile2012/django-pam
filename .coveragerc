@@ -3,13 +3,13 @@ source = django_pam
 #branch = True
 omit =
      ../*migrations*
-     *urls*
-     *tests*
+     */urls*
+     */tests/*
 
 [report]
 show_missing = True
 skip_covered = True
-precision = 2
+precision = 3
 
 # Regexes for lines to exclude from consideration
 exclude_lines =

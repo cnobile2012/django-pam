@@ -30,7 +30,7 @@ class TestAuthenticationForm(BaseDjangoPAM):
         """
         #self.skipTest("Temporarily skipped")
         # Get user's credentials.
-        username, password, email = self._create_user()
+        user, username, password, email = self._create_user()
         # Setup request
         request = self.factory.get('django-pam:login')
         request.user = AnonymousUser()

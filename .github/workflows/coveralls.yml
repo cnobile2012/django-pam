@@ -23,8 +23,6 @@ jobs:
           pip install -r requirements/development.txt
       - name: Test with Django test and with shadow group access.
         run: |
-          sudo setfacl -m u:$USER:r /etc/shadow
-
           # Create the .django_pam file in repo root
           cat << EOF > .django_pam
           guest

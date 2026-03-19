@@ -42,7 +42,7 @@ class TestLoginView(BaseDjangoPAM):
         """
         #self.skipTest("Temporarily skipped")
         # Get user's credentials.
-        username, password, email = self._create_user()
+        user, username, password, email = self._create_user()
         # Setup request
         url = reverse('django-pam:login')
         data = {'username': username, 'password': password, 'email': email}
@@ -64,7 +64,7 @@ class TestLoginView(BaseDjangoPAM):
         """
         #self.skipTest("Temporarily skipped")
         # Get user's credentials.
-        username, password, email = self._create_user()
+        user, username, password, email = self._create_user()
         # Setup request
         url = reverse('django-pam:login')
         data = {'username': username, 'password': password, 'email': email}
@@ -117,7 +117,7 @@ class TestLoginView(BaseDjangoPAM):
         """
         #self.skipTest("Temporarily skipped")
         # Get user's credentials.
-        username, password, email = self._create_user()
+        user, username, password, email = self._create_user()
         # Setup request
         url = reverse('django-pam:login')
         data = json.dumps([
@@ -190,7 +190,7 @@ class TestLogoutView(BaseDjangoPAM):
 
     def _login_form(self):
         # Get user's credentials.
-        username, password, email = self._create_user()
+        user, username, password, email = self._create_user()
         # Setup request
         url = reverse('django-pam:login')
         data = {'username': username, 'password': password, 'email': email}
@@ -199,7 +199,7 @@ class TestLogoutView(BaseDjangoPAM):
         self.assertEqual(response.status_code, 302, msg)
 
     def _login_ajax(self):
-        username, password, email = self._create_user()
+        user, username, password, email = self._create_user()
         # Setup request
         url = reverse('django-pam:login')
         data = json.dumps([
@@ -261,6 +261,8 @@ class TestLogoutView(BaseDjangoPAM):
     def test_post_logout_form_invalid(self):
         """
         Test that if the success_url is not set an exception is raised.
+        This will leave a traceback and error message in a log file because
+        we're testing that condition.
         """
         #self.skipTest("Temporarily skipped")
         # Create user
