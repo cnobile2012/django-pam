@@ -17,8 +17,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11", "3.12",
-                         "3.13", "3.14"]
+        # Python 3.6 and 3.7 are no longer available for testing.
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
     env:
       TEST_RUNNING: true
     steps:
