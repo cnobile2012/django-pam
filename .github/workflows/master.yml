@@ -56,7 +56,7 @@ jobs:
 
           # Give access to workspace
           sudo chown -R testuser:testuser $GITHUB_WORKSPACE
-          sudo chmod -R 775 $GITHUB_WORKSPACE
+          sudo chmod -R 777 $GITHUB_WORKSPACE
           namei -l $GITHUB_WORKSPACE
 
           # Run tests as that user, but explicitly use the same Python
