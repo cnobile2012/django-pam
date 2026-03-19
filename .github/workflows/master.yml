@@ -52,5 +52,5 @@ jobs:
 
           (cd example_site/settings
           ln -s development.py local.py
-          make tests
+          make tests)
           REALEND
