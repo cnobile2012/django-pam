@@ -57,10 +57,10 @@ class PAMBackend(ModelBackend):
 
         if self._pam.authenticate(username, password, service=service,
                                   encoding=encoding, resetcreds=resetcreds):
-            try:
+            try:  # pragma: no cover
                 user = UserModel._default_manager.get_by_natural_key(
                     username=username)
-            except UserModel.DoesNotExist:
+            except UserModel.DoesNotExist:  # pragma: no cover
                 # delete "request" if exists in extra_fields
                 extra_fields.pop("request", None)
                 user = UserModel._default_manager.create_user(
