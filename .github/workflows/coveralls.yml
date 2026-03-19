@@ -24,10 +24,10 @@ jobs:
       - name: Test with Django test and with shadow group access.
         run: |
           sudo usermod -a -G shadow $USER
-          newgrp shadow
+          newgrp shadow << REALEND
 
           # Create the .django_pam file in repo root
-          cat <<EOF > .django_pam
+          cat << EOF > .django_pam
           guest
           zS3IKI!*%yfk
           guest@example.com
@@ -36,6 +36,7 @@ jobs:
           (cd example_site/settings
           ln -s development.py local.py
           ls -la local.py)
-          sudo -u $USER env "PATH=$pythonLocation/bin:$PATH" make tests
+          make tests
+          REALEND
       - name: Upload coverage report to Coveralls
         uses: coverallsapp/github-action@v2
