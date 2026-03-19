@@ -47,7 +47,7 @@ jobs:
           sudo chown -R testuser:testuser $GITHUB_WORKSPACE
 
           # Create the .django_pam file in repo root
-          sudo cat << EOF > .django_pam
+          cat << EOF > .django_pam
           guest
           zS3IKI!*%yfk
           guest@example.com
@@ -61,5 +61,5 @@ jobs:
           sudo -u testuser bash -c "
             export PATH=$pythonLocation/bin:\$PATH
             cd $GITHUB_WORKSPACE
-            make tests
+            python -m coverage run ./manage.py test
           "
