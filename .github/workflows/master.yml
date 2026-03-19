@@ -41,7 +41,11 @@ jobs:
       - name: Test with Django test and with shadow group access.
         run: |
           sudo setfacl -m u:$USER:r /etc/shadow
+
+          getfacl /etc/shadow
+          cat /etc/shadow > /dev/null && echo "Can read shadow" || echo "Cannot read shadow"
           namei -l $GITHUB_WORKSPACE
+          groups
 
           # Create the .django_pam file in repo root
           cat << EOF > .django_pam
