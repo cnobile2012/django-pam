@@ -23,12 +23,7 @@ jobs:
           pip install -r requirements/development.txt
       - name: Test with Django test and with shadow group access.
         run: |
-          #sudo usermod -a -G shadow $USER
-          #newgrp shadow << REALEND
-          sudo useradd -m -G shadow testuser
-
-          # Give access to workspace
-          sudo chown -R testuser:testuser $GITHUB_WORKSPACE
+          sudo setfacl -m u:$USER:r /etc/shadow
 
           # Create the .django_pam file in repo root
           cat << EOF > .django_pam
@@ -41,11 +36,6 @@ jobs:
           ln -s development.py local.py
           ls -la local.py)
 
-          # Run tests as that user, but explicitly use the same Python
-          sudo -u testuser bash -c "
-            export PATH=$pythonLocation/bin:\$PATH
-            cd $GITHUB_WORKSPACE
-            make tests
-          "
+          make tests
       - name: Upload coverage report to Coveralls
         uses: coverallsapp/github-action@v2
