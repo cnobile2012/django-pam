@@ -40,8 +40,11 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Test with Django test and with shadow group access.
         run: |
-          sudo usermod -a -G shadow $USER
-          newgrp shadow << REALEND
+          #sudo usermod -a -G shadow $USER
+          sudo useradd -m -G shadow testuser
+
+          # Give access to workspace
+          sudo chown -R testuser:testuser $GITHUB_WORKSPACE
 
           # Create the .django_pam file in repo root
           cat << EOF > .django_pam
@@ -52,5 +55,11 @@ jobs:
 
           (cd example_site/settings
           ln -s development.py local.py
-          make tests)
-          REALEND
+          ls -la local.py)
+
+          # Run tests as that user, but explicitly use the same Python
+          sudo -u testuser bash -c "
+            export PATH=$pythonLocation/bin:\$PATH
+            cd $GITHUB_WORKSPACE
+            make tests
+          "
