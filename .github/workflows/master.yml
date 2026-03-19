@@ -47,7 +47,7 @@ jobs:
           sudo chown -R testuser:testuser $GITHUB_WORKSPACE
 
           # Create the .django_pam file in repo root
-          cat << EOF > .django_pam
+          sudo cat << EOF > .django_pam
           guest
           zS3IKI!*%yfk
           guest@example.com
