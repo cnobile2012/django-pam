@@ -27,9 +27,9 @@ Login and Logout Views
 LoginView [#f3]_
 ----------------
 
-Usage:
+**Usage**
 
-.. code-block:: python
+.. code-block:: php
 
    re_path(r'^login/$',
            LoginView.as_view(form_class=MyAuthenticationForm,
@@ -44,9 +44,9 @@ This view is written to work with either a template *POST* or a
 LogoutView [#f4]_
 -----------------
 
-Usage:
+**Usage**
 
-.. code-block:: python
+.. code-block:: php
 
    re_path(r'^logout/$',
            LogoutView.as_view(template_name='my_template.html',
@@ -57,7 +57,8 @@ Usage:
 This view is written to work with either a template *POST* or a
 *XMLHttpRequest POST* request.
 
-.. rubric:: Footnotes
+Footnotes
+---------
 
 .. [#f1] See source docs :py:meth:`django_pam.auth.backends.PAMBackend.authenticate`
 .. [#f2] See source docs :py:meth:`django_pam.auth.backends.PAMBackend.get_user`

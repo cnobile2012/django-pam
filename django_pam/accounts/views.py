@@ -36,14 +36,16 @@ class LoginView(AjaxableResponseMixin, FormView):
     """
     A class version of django.contrib.auth.views.login.
 
-    Usage::
+    Usage:
 
-        re_path(r'^login/$', LoginView.as_view(
-            form_class=MyAuthenticationForm,
-            success_url='/my/success/url/',
-            redirect_field_name='my-redirect-field-name',
-            template_name='your_template.html'
-            ), name='login'),
+    .. code-block:: php
+
+       re_path(r'^login/$', LoginView.as_view(
+               form_class=MyAuthenticationForm,
+               success_url='/my/success/url/',
+               redirect_field_name='my-redirect-field-name',
+               template_name='your_template.html'
+               ), name='login'),
     """
     form_class = AuthenticationForm
     redirect_field_name = REDIRECT_FIELD_NAME
@@ -65,12 +67,14 @@ class LoginView(AjaxableResponseMixin, FormView):
 
     def get_form_kwargs(self):
         """
-        Incoming AJAX data structure from an HTML <form> tag::
+        Incoming AJAX data structure from an HTML <form> tag:
 
-          [{'name': 'username', 'value': '<username>'},
-           {'name': 'password', 'value': '<password>'},
-           {'name': 'next', 'value': '<redirect URI>'}
-          ]
+        .. code-block:: php
+
+           [{'name': 'username', 'value': '<username>'},
+            {'name': 'password', 'value': '<password>'},
+            {'name': 'next', 'value': '<redirect URI>'}
+           ]
 
         :rtype: dict
         """
@@ -156,13 +160,15 @@ class LogoutView(JSONResponseMixin, TemplateView):
     """
     A class version of django.contrib.auth.views.logout.
 
-    Usage::
+    Usage:
 
-        re_path(r'^logout/$', LogoutView.as_view(
-            template_name='my_template.html',
-            success_url='/my/success/url/),
-            redirect_field_name='my-redirect-field-name'
-            ), name='logout')
+    .. code-block:: php
+
+       re_path(r'^logout/$', LogoutView.as_view(
+               template_name='my_template.html',
+               success_url='/my/success/url/),
+               redirect_field_name='my-redirect-field-name'
+               ), name='logout')
     """
     template_name = "django_pam/accounts/logout.html"
     redirect_field_name = REDIRECT_FIELD_NAME
@@ -196,9 +202,12 @@ class LogoutView(JSONResponseMixin, TemplateView):
 
         .. note::
 
-          Incoming AJAX data structure from an HTML <form> tag::
+          Incoming AJAX data structure from an HTML <form> tag:
 
-            [{'name': 'next', 'value': '<redirect URI>'}]
+
+        .. code-block:: php
+
+           [{'name': 'next', 'value': '<redirect URI>'}]
 
         :param request: The Django request object.
         :param args: Positional arguments.

@@ -21,7 +21,7 @@ If not, then use the account that is running the `runserver`.
 Create a `guest` User
 =====================
 
-.. code-block:: bash
+.. code-block:: php
 
    $ sudo useradd guest -m -s /bin/bash -d /home/guest
    $ sudo passwd guest
@@ -40,11 +40,11 @@ Create a `.django_pam` file in the same directory as `manage.py`. On separate
 lines put `guest` (the username), the password you chose for it, and then a
 fake email address. Like this:
 
-.. code-block:: bash
+.. code-block:: php
 
    <username>
    <password>
    <username>@somesite.com
 
-With this file in-place the test will no longer prompt for the username and
-password and will run all the tests with no prompts.
+With this file in-place the tests will run to completion without asking for
+the username and password.
