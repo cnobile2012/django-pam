@@ -21,7 +21,7 @@ exclude = [".gitignore", ".github/**", "example_site/**", "**/tests/**"]
 
 [project]
 name = "django-pam"
-version = "3.0.1rc1"
+version = "3.0.1"
 description = "Django PAM authentication backend implementation."
 readme = "README.rst"
 authors = [
