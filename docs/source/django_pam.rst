@@ -13,12 +13,3 @@ django_pam.urls module
     :members:
     :undoc-members:
     :show-inheritance:
-
-
-.. Module contents
-   ---------------
-
-.. automodule:: django_pam
-    :members:
-    :undoc-members:
-    :show-inheritance:

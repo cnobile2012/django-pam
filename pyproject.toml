@@ -5,28 +5,23 @@
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-testpaths = [
-	"badidatetime/tests"
-	]
+testpaths = ["django_pam/auth/tests", "django_pam.accounts/tests"]
 
 [build-system]
 requires = ["hatchling", "wheel"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.sdist]
-include = ["django_pam", "django_pam.auth", "django_pam.accounts"]
-exclude = ["tests*"]
+only-include = ["django_pam", "README.rst", "LICENSE.txt"]
+exclude = [".gitignore", ".github/**", "example_site/**", "**/tests/**"]
 
 [tool.hatch.build.targets.wheel]
-only-include = ["django_pam", "django_pam.auth", "django_pam.accounts"]
-exclude = ["tests*"]
-
-#[project.scripts]
-#your-script = "your_package.module:main_function"
+only-include = ["django_pam"]
+exclude = [".gitignore", ".github/**", "example_site/**", "**/tests/**"]
 
 [project]
 name = "django-pam"
-version = "3.0.0"
+version = "3.0.1rc1"
 description = "Django PAM authentication backend implementation."
 readme = "README.rst"
 authors = [
@@ -41,7 +36,7 @@ dependencies = [
   "python-pam",
 ]
 keywords = ["Django", "PAM"]
-requires-python = ">= 3.10"
+requires-python = ">= 3.8"
 classifiers = [
   # How mature is this project? Common values are
   #   3 - Alpha
@@ -68,5 +63,5 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/cnobile2012/bahai-calendar"
-Issues = "https://github.com/cnobile2012/bahai-calendar/issues"
+Homepage = "https://github.com/cnobile2012/django-pam"
+Issues = "https://github.com/cnobile2012/django-pam/issues"

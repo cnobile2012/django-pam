@@ -36,11 +36,3 @@ django_pam.accounts.views module
     :members:
     :undoc-members:
     :show-inheritance:
-
-.. Module contents
-   ---------------
-
-.. automodule:: django_pam.accounts
-    :members:
-    :undoc-members:
-    :show-inheritance:

@@ -12,12 +12,3 @@ django_pam.auth.backends module
     :members:
     :undoc-members:
     :show-inheritance:
-
-
-.. Module contents
-   ---------------
-
-.. automodule:: django_pam.auth
-    :members:
-    :undoc-members:
-    :show-inheritance:

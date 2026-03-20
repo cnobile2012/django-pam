@@ -1,11 +1,12 @@
 Testing
 *******
 
-Since the user of the server that runs an application, that uses the backend
-provided by this package, needs to be a member of the UNIX shadow group,
-testing is a bit complicated. Because of this, this project is not able to run
-on `Travis CI <https://travis-ci.org>`_. However, setting up tests to run
-locally can be done by following the few steps.
+The `$USER` of the server that runs an application, that uses this backend,
+needs to be a member of the UNIX shadow group. This causes testing is a bit
+tricky. Because of this, some tests in the test suite remove the `python_pam`
+package from tests when run on GitHub. This allows the current maintainer to
+test with different versions or Python and run coverage. You can, however, run
+tests locally by following a few steps.
 
 Give Your User Account Shadow Privileges
 ========================================

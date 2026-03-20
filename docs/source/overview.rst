@@ -5,10 +5,10 @@ Backend Authenticator
 =====================
 
 PAMBackend.authenticate Authentication method [#f1]_
-  This method has two keyword arguments one for the username and the
-  other for the password, both are manditory. There is a third
-  argument used to pass in a dict of additional arguments that you may
-  want stored in the database on the first login of the user.
+  This method has two keyword arguments one for the username and the other for
+  the password, both are mandatory. There is a third  argument used to pass in
+  a dict of additional arguments that you may want stored in the database on
+  the first login of the user.
 
   In order to use the additional arguments both the
   ``django.contrib.auth.authenticate`` function and either the
@@ -27,14 +27,16 @@ Login and Logout Views
 LoginView [#f3]_
 ----------------
 
-Usage::
+Usage:
 
-  re_path(r'^login/$', LoginView.as_view(
-      form_class=MyAuthenticationForm,
-      success_url='/my/success/url/',
-      redirect_field_name='my-redirect-field-name',
-      template_name='your_template.html'
-      ), name='login'),
+.. code-block:: python
+
+   re_path(r'^login/$',
+           LoginView.as_view(form_class=MyAuthenticationForm,
+                             success_url='/my/success/url/',
+                             redirect_field_name='my-redirect-field-name',
+                             template_name='your_template.html'),
+           name='login'),
 
 This view is written to work with either a template *POST* or a
 *XMLHttpRequest POST* request.
@@ -42,13 +44,15 @@ This view is written to work with either a template *POST* or a
 LogoutView [#f4]_
 -----------------
 
-Usage::
+Usage:
 
-  re_path(r'^logout/$', LogoutView.as_view(
-      template_name='my_template.html',
-      success_url='/my/success/url/),
-      redirect_field_name='my-redirect-field-name'
-      ), name='logout')
+.. code-block:: python
+
+   re_path(r'^logout/$',
+           LogoutView.as_view(template_name='my_template.html',
+                              success_url='/my/success/url/),
+                              redirect_field_name='my-redirect-field-name'),
+           name='logout')
 
 This view is written to work with either a template *POST* or a
 *XMLHttpRequest POST* request.

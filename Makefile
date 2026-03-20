@@ -19,8 +19,8 @@ TEST_PATH	= # The path to run tests on.
 all	: help
 
 #----------------------------------------------------------------------
-.PHONY: help
-help    :
+.PHONY	: help
+help	:
         @LC_ALL=C $(MAKE) -pRrq -f $(firstword $(MAKEFILE_LIST)) : \
                 2>/dev/null | awk -v RS= \
                 -F: '/(^|\n)# Files(\n|$$)/,/(^|\n)# Finished Make data \
@@ -58,9 +58,24 @@ flake8	:
 #       Warn on everything else.
 	flake8 . --exit-zero
 
+#----------------------------------------------------------------------
+
 .PHONY	: sphinx
 sphinx	: clean
 	(cd $(DOCS_DIR); make html)
+
+.PHONY	: latexpdf
+latexpdf:
+	(cd $(DOCS_DIR); make latexpdf)
+
+.PHONY	: epub
+epub	:
+	(cd $(DOCS_DIR); make epub)
+
+.PHONY	: alldocs
+alldocs	: sphinx epub latexpdf
+
+#----------------------------------------------------------------------
 
 # To add a pre-release candidate such as 'rc1' to a test package name an
 # environment variable needs to be set that setup.py can read.
@@ -72,21 +87,21 @@ sphinx	: clean
 #
 .PHONY	: build
 build	: export PR_TAG=$(TEST_TAG)
-build	: clean
-	python setup.py sdist
+build	: clobber
+	@./config.py
+	hatch build dist
 
 # https://pypi.org
 .PHONY	: upload
-upload	: clobber
-	python setup.py sdist
-	python setup.py bdist_wheel --universal
-	twine upload --repository pypi dist/*
+upload	: build
+	hatch publish --repo main dist/*
+#	twine upload --repository pypi dist/*
 
 # https://test.pypi.org
 .PHONY	: upload-test
 upload-test: clobber build
-	python setup.py bdist_wheel --universal
-	twine upload --repository testpypi dist/*
+	hatch publish --repo test dist/*
+#	twine upload --repository testpypi dist/*
 
 .PHONY  : install-dev
 install-dev:

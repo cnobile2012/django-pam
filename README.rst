@@ -83,12 +83,6 @@ this run the command below with the proper user::
 
   $ sudo usermod -a -G shadow <user>
 
-Or if you need to run tests as a different user you can do this::
-
-  $ newgrp shadow
-  $ source venv/bin/activate
-  $ ./manage.py test
-
 Complete Documentation can be found on
 `Read the Docs <https://readthedocs.org/>`_ at:
 `Django PAM <http://django-pam.readthedocs.io/en/latest/>`_
