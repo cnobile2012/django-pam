@@ -90,7 +90,7 @@ twine==6.2.0
 typing_extensions==4.15.0
 urllib3==2.6.3
 userpath==1.9.2
-uv==0.10.11
+uv==0.11.6
 virtualenv==21.2.0
 wcwidth==0.6.0
 wheel==0.46.3
