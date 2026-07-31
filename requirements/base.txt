@@ -1,7 +1,5 @@
 # Base pip packages.
 
 Django
-docutils
 python-pam
-tomlkit
-six  # needed by python-pam
+six  # needed by python-pam < 2.1.0

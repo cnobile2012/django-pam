@@ -32,9 +32,7 @@ maintainers = [
 ]
 license = "MIT"
 license-files = ["LICEN[CS]E*"]
-dependencies = [
-  "python-pam",
-]
+dependencies = ["python-pam"]
 keywords = ["Django", "PAM"]
 requires-python = ">= 3.8"
 classifiers = [
